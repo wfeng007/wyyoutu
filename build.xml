@@ -1,0 +1,218 @@
+<?xml version="1.0"  encoding="utf-8" ?>
+
+<!--编译 打包 发布 -->
+<project default="release" basedir=".">
+	<property environment="SYSENV"/>
+	<property name="app" value="wyyoutu" />
+	<property name="version" value="0.1.0"/>
+	
+	<property name="src" value="src" />
+	<property name="build" value="building" />
+	<property name="dist" value="dist" />
+	<!-- for backup -->
+	<property name="backup" value="backup" />
+	
+	<property name="javadoc" value="javadoc" />
+	<property name="web.path" value="WebContent" />
+	<property name="lib.path" value="${web.path}/WEB-INF/lib" />
+	
+	
+	<!--
+	<property name="lib.axis11.path" value="${web.path}/WEB-INF/axis11" />
+	<property name="lib.axis13.path" value="${web.path}/WEB-INF/axis13" />
+	<property name="lib.xmlrpc2.path" value="${web.path}/WEB-INF/xmlrpc2" />
+	!-->
+	<property name="lib.webcontainer.path" value="lib/tomcat6" />
+	<property name="warname" value="${app}${version}" />
+	
+	<!--生成 classpath -->
+	<path id="classpath">
+		
+		<!-- d 
+		<fileset dir="${SYSENV.JAVA_HOME}/jre/lib">
+			<include name="**/*.jar" />
+		</fileset>
+		-->
+		<fileset dir="${lib.path}">
+			<include name="**/*.jar" />
+		</fileset>
+		<!-- -->
+		<fileset dir="${lib.webcontainer.path}">
+			<include name="**/*.jar" />
+		</fileset>
+	
+	</path>
+
+	<target name="init">
+		<echo message="JAVA_HOME=${SYSENV.JAVA_HOME}" />
+		<!--delete files and directories, created last time-->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+		<delete dir="${javadoc}" />
+
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${javadoc}" />
+	</target>
+
+	<!--编译(task:javac,java...) -->
+	<target name="javac" depends="init" description="--> compile...">
+		<!---->
+		<javac srcdir="${src}" destdir="${build}" classpathref="classpath" deprecation="javac" debug="true" encoding="utf-8"  target="1.6">
+			<!-- include name="dexpt.handler.properties" /-->
+			<!-- exclude name="log4j.properties" /-->
+			<!-- exclude name="dexpt/mock/**" / -->
+			<!-- <exclude name="config/**" />-->
+			<!-- <exclude name="struts.xml" /> 该部分起始没有用 默认javac只对.java其作用之后还是要拷贝 -->
+			
+			<!--<exclude name="test/**" />-->
+		</javac>
+	</target>
+
+	<!--生成jars...-->
+	<target name="jar" depends="javac" description="create jars">
+		<!-- copy file="${src}/dexpt.handler.properties" todir="${build}"/
+		<copy todir="${dist}/${warname}/WEB-INF/classes/config/">
+			<fileset dir="${src}/config/"/>
+		</copy>
+		-->
+		<!-- mybatis mapper	-->
+		<copy todir="${build}/wyyoutu/dao/">
+			<fileset dir="${src}/wyyoutu/dao/">
+				<include name="**/*.mpr.xml" />
+			</fileset>
+		</copy>
+
+		
+		<echo message="creating binary jar" />
+		<jar basedir="${build}" jarfile="${dist}/${app}_${version}.jar" />
+		<echo message="creating src jar" />
+		<jar basedir="${src}" jarfile="${dist}/${app}_${version}_src.jar" />
+	</target>
+	
+	<target name="war" depends="jar" description="war app">
+		<copy todir="${dist}/${warname}">
+			<fileset dir="${web.path}">
+				<!--不使用本地编译  no class-files -->
+				<exclude name="WEB-INF/classes/**" />
+			</fileset>
+			<!--
+			<filterset>
+				<filter token="TITLE" value="Foo Bar"/>
+			</filterset>
+			-->
+			
+		</copy>
+		
+
+		
+		<copy file="${dist}/${app}_${version}.jar" todir="${dist}/${warname}/WEB-INF/lib"/>
+		
+		<!--
+		<copy file="${src}/dexpt.handler.properties" todir="${dist}/${warname}/WEB-INF/classes"/>
+		<copy file="${src}/log4j.properties" todir="${dist}/${warname}/WEB-INF/classes"/>
+		-->
+		
+		
+		<copy file="${src}/struts.xml" todir="${dist}/${warname}/WEB-INF/classes/"/>
+		<!-- 
+		<copy file="${src}/exception_zh_CN.properties" todir="${dist}/${warname}/WEB-INF/classes/"/>
+		<copy file="${src}/exception.properties" todir="${dist}/${warname}/WEB-INF/classes/"/>
+		-->
+		
+		<!-- 
+		<copy file="${src}/vceconfig.properties" todir="${dist}/${warname}/WEB-INF/classes/"/>
+		-->
+
+		<!-- 将applicationContext-SP-scheduler.xml.nj作为默认配置,即没有定时处理功能 指定强制覆盖 
+		<copy file="${dist}/${warname}/WEB-INF/configbak/applicationContext-SP-scheduler.xml.nojob" 
+			tofile="${dist}/${warname}/WEB-INF/applicationContext-SP-scheduler.xml" overwrite="true"/>
+		  -->
+		<!-- 
+		<mkdir dir="${dist}/${warname}/WEB-INF/classes/config/spring/" />
+		<mkdir dir="${dist}/${warname}/WEB-INF/classes/config/struts/" />
+		<copy todir="${dist}/${warname}/WEB-INF/classes/config/spring/">
+		            <fileset dir="${src}/config/spring/"/>
+		</copy>
+		<copy todir="${dist}/${warname}/WEB-INF/classes/config/struts/">
+		            <fileset dir="${src}/config/struts/"/>
+		</copy>
+		
+		<mkdir dir="${dist}/${warname}/WEB-INF/classes/config/" />
+		<copy todir="${dist}/${warname}/WEB-INF/classes/config/">
+		            <fileset dir="${src}/config/"/>
+		</copy>
+		
+		<copy todir="${dist}/${warname}/WEB-INF/classes/ecdata/iccs/pm/dao/">
+			<fileset dir="${src}/ecdata/iccs/pm/dao/">
+				<include name="*.mpr.xml" />
+			</fileset>
+		</copy>
+		
+		-->
+		
+
+		<zip destfile="${dist}/${warname}.war"
+		       basedir="${dist}/${warname}"
+		/>
+		
+		<!-- 
+		<copy file="iccspm22_create.sql" todir="${dist}/"/>
+		<copy file="ipseg.sql" todir="${dist}/"/>
+		-->
+		
+	</target>
+	
+	<!--
+	<target name="warjobs" depends="war" description="have jobs">
+		<copy todir="${dist}/${warname}_jobs">
+			<fileset dir="${dist}/${warname}"/>
+		</copy>
+		将applicationContext-SP-scheduler.xml.jobs作为配置让本应用存在定时处理功能 
+		<copy file="${dist}/${warname}_jobs/WEB-INF/configbak/applicationContext-SP-scheduler.xml.jobs" 
+			tofile="${dist}/${warname}_jobs/WEB-INF/applicationContext-SP-scheduler.xml" overwrite="true"/>
+		
+		<zip destfile="${dist}/${warname}_jobs.war"
+		       basedir="${dist}/${warname}_jobs"
+		/>
+	</target>
+	 -->
+	<!--javadoc - no using-->
+	<target name="javadocs" depends="init" description="--> creates the API documentation">
+		<!--javadoc sourcepath and destdir are required, others are optional-->
+		<javadoc packagenames="*" sourcepath="${src}" defaultexcludes="yes" destdir="${javadoc}" author="true" version="true" use="true" windowtitle="Docs API">
+			<doctitle><![CDATA[<h1>${app} Docs API</h1>]]></doctitle>
+			<bottom><![CDATA[<i>${app}</i>]]></bottom>
+			<tag name="todo" scope="all" description="To do:" />
+		</javadoc>
+		
+		<zip destfile="${dist}/javadoc.zip"
+		       basedir="${javadoc}"
+		/>
+	</target>
+
+	<!-- -->
+	<target name="release" depends="war">
+		<echo message="release" />
+	</target>
+	
+	
+	<!-- backup for baseline -->
+	<target name="backup" depends="">
+		<echo message="backup" />
+		<tstamp/>
+		<echo message="tstamp:${DSTAMP}:${TSTAMP}:${TODAY}" />
+		<copy todir="${backup}/dist_${version}_${DSTAMP}${TSTAMP}">
+			<fileset dir="${dist}"/>
+		</copy>
+		
+		<tstamp prefix="MYTS">
+			<format property="DAY" pattern="yyyy-MM-dd"/>
+			<format property="TIME" pattern="HH:mm:ss"/>
+			<format property="DT" pattern="yyyy-MM-dd HH:mm:ss.SSS"/>
+		</tstamp>
+		<echo message="MYTS:${MYTS.DAY}  ${MYTS.TIME}  ${MYTS.DT}" />
+	</target>
+	
+
+</project>

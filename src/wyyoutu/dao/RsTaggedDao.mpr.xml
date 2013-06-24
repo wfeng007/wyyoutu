@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		table information
+		Generate time : 2013-04-18 20:01:00
+   		Version :  3.0.0
+		tableName :RS_TAGGED 
+		  seq_id  BIGINT   NOT NULL   primarykey, 		-REMARKS-:自增id，对应程序应该为long类型
+		  tag_id  VARCHAR   NOT NULL, 		-REMARKS-:id，可以用显示名称代替之,TAG可以当做评论用么？
+		  target_id  VARCHAR   NOT NULL		-REMARKS-:一般为项目标识，对应到iid，注意iid为item_id首选。（目标必须存在一个 128位以下的唯一键值）
+	-->
+<mapper namespace="wyyoutu.dao.RsTaggedDao">
+	<!-- table selected columns  -->
+	<sql id="selectedColumns">
+	<![CDATA[
+		  `seq_id` as "seqId", 
+		  `tag_id` as "tagId", 
+		  `target_id` as "targetId"
+	]]>
+	</sql>
+	
+	<!-- querying conditions -->
+	<sql id="queryingConditions">
+		<if test="@summ.framework.util.Ognl@isNotEmpty(seqId)"> 
+	      <![CDATA[	
+	        AND `seq_id` = #{seqId}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(tagId)"> 
+	      <![CDATA[	
+	        AND `tag_id` = #{tagId}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(targetId)"> 
+	      <![CDATA[	
+	        AND `target_id` = #{targetId}
+		  ]]>
+	 	</if>
+	</sql>
+	
+	<select id="query" resultType="wyyoutu.model.RsTagged">
+ 	<![CDATA[
+ 		select 
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.RsTaggedDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="selectedColumns"/>
+ 	<![CDATA[
+ 		from  RS_TAGGED 
+ 	]]>
+	    <where>
+		  <include refid="queryingConditions"/>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[
+		ORDER BY `seq_id`  ASC 
+		]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) FROM RS_TAGGED 
+	  ]]>
+	  <where>
+		<include refid="queryingConditions"/>
+	  </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+
+
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO RS_TAGGED (
+		  `seq_id`,
+		  `tag_id`,
+		  `target_id`
+		)
+		VALUES (		 
+	      #{seqId}, 
+	      #{tagId,jdbcType=VARCHAR}, 
+	      #{targetId,jdbcType=VARCHAR}
+	    )
+	]]>
+	</insert>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM RS_TAGGED WHERE 
+			`seq_id` =  #{seqId}
+	]]>
+	</delete>
+	
+	<update id="update">
+		UPDATE RS_TAGGED 
+		<set> 
+		<if test="tagId != null">
+		<![CDATA[
+		  `tag_id` = #{tagId,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="targetId != null">
+		<![CDATA[
+		  `target_id` = #{targetId,jdbcType=VARCHAR}
+	    ]]>
+	    </if>
+		</set> 
+		<![CDATA[
+		WHERE 	
+		  `seq_id` = #{seqId}
+		]]>
+	</update>
+	
+	<!--
+	手工添加 
+	 -->
+	<delete id="deleteByTargetId">
+	<![CDATA[
+		DELETE FROM RS_TAGGED WHERE 
+			`target_id` =  #{targetId}
+	]]>
+	</delete>
+	
+</mapper> 

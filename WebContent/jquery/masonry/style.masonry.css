@@ -1,0 +1,369 @@
+/**** Content  也是基础考虑放到整体css中 ****/
+#content {
+  margin:0 auto; 
+  width: 100%;
+  background: #eee;
+ /*  background: #fff; */
+}
+
+/* screens smaller than 640 
+@media screen and (max-width: 640px) {
+
+  #site-nav {
+    width: auto;
+    position: relative;
+    left: auto;
+    top: auto;
+    padding-top: 0px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  #content {
+    padding-left: 10px;
+  }
+}
+*/
+
+/**** masonry容器 ****/
+#container {
+  /* background: #FFF; */
+  background: #eee;
+  padding: 5px;
+ /* margin-bottom: 20px; */
+  margin-left: auto;
+  margin-right: auto;
+ /* width: 990px;  1024 以下用990  */
+  width: 1194px; /* 1280 以上用1194  */
+  clear: both; /* 1280 以上用1194  */
+  /*
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+          */
+}
+/** 
+#container .centered { margin: 0 auto; }
+*/
+
+#container .box {
+  margin: 5px;
+  padding: 2.5px;   /* 内部不需要pading */
+  font-size: 11px;
+  /* line-height: 1.4em; */
+  float: left;
+  /* box effect */
+  border: 1px solid #f2e8bb /*#f2541f #f2e8bb */ ;
+  /* box-shadow: 0 1px 2px 1px #AAA #f2541f; */
+  background: #fff;
+  /*background: #444; 调试 */
+  /* ...radius corner.. 四个角
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  */
+  /* 左上角 */
+  -webkit-border-top-left-radius:10px;
+  -moz-border-radius-topleft:10px;
+  border-top-left-radius:10px;
+  /* 右下角 */
+  -webkit-border-bottom-right-radius:10px;
+  -moz-border-radius-bottomright: 10px;        
+  border-bottom-right-radius:10px;
+  
+  /*  */
+  box-shadow:0px 0px 1px 0px #f2541f;
+  
+}
+#container .box:hover{
+	border: 1px solid /*#669f49*/ #f2541f;
+  	box-shadow:0px 1px 3px 1px #f2541f;
+}
+
+#container .box h2 {
+  font-size: 14px;
+  font-weight: 200;
+}
+
+#container .box img/*,#tumblelog img */{
+  display: block;
+  width: 100%;
+}
+
+#container .rtl .box {
+  float: right;
+  text-align: right; 
+  direction: rtl;
+}
+
+#container .col1 { width: 80px; }
+#container .col2 { width: 180px; }
+#container .col25 { width: 220px; }
+#container .col3 { width: 280px; }
+#container .col4 { width: 380px; }
+#container .col5 { width: 480px; }
+
+#container .col1 img { max-width: 80px; }
+#container .col2 img { max-width: 180px; }
+#container .col25 img { width: 220px; }
+#container .col3 img { max-width: 280px; }
+#container .col4 img { max-width: 380px; }
+#container .col5 img { max-width: 480px; }
+
+/**** Gutters
+
+.has-gutters .box {
+  margin: 5px 0;
+}
+
+.has-gutters .col1 { width: 90px; }
+.has-gutters .col2 { width: 230px; }
+.has-gutters .col3 { width: 370px; }
+.has-gutters .col4 { width: 550px; }
+ ****/
+ 
+/**** Transitions 透明样式
+
+.transitions-enabled.masonry,
+.transitions-enabled.masonry .masonry-brick {
+  -webkit-transition-duration: 0.7s;
+     -moz-transition-duration: 0.7s;
+       -o-transition-duration: 0.7s;
+          transition-duration: 0.7s;
+}
+
+.transitions-enabled.masonry {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.transitions-enabled.masonry  .masonry-brick {
+  -webkit-transition-property: left, right, top;
+     -moz-transition-property: left, right, top;
+       -o-transition-property: left, right, top;
+          transition-property: left, right, top;
+}
+ ****/
+
+/* disable transitions on container
+.transitions-enabled.infinite-scroll.masonry {
+  -webkit-transition-property: none;
+     -moz-transition-property: none;
+       -o-transition-property: none;
+          transition-property: none;
+}
+ */
+/**** Primer comparison 
+
+#comparison {
+  overflow: auto;
+}
+
+#comparison .example {
+  width: 420px;
+  float: left;
+  margin-right: 20px;
+}
+
+#comparison .box h5 {
+  float: left;
+  margin-bottom: 0;
+  font-size: 30px;
+  margin-right: 4px;
+  line-height: 28px;
+  font-weight: bold;
+  color: #FFF;
+}
+
+****/
+
+/* Homepage
+
+.homepage .item {
+  width: 200px;
+  float: left;
+  padding: 10px;
+  margin: 10px;
+  background: #D8D5D2;
+  font-weight: 300;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+}
+
+.homepage .big-text,
+.homepage .link {
+  font-size: 24px;
+  line-height: 1.2em;
+}
+
+.homepage .link {
+  padding: 0;
+}
+
+.homepage .link a {
+  display: block;
+  padding: 10px;
+  width: 200px;
+  background: #D26;
+  color: white;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+}
+
+.homepage .link a:hover {
+  background: #A2C;
+}
+
+.homepage .col2 {
+  width: 440px;
+}
+
+.homepage .example {
+  padding: 0;
+  width: 220px;
+  background: transparent;
+}
+
+.homepage .example a { display: block; }
+
+.homepage .example img {
+  display: block;
+  width: 100%;
+}
+
+.homepage .example a:hover { 
+  background: #D26;
+  color: white;
+}
+
+.homepage .loading {
+  background: black;
+  color: #D8D5D2;
+}
+
+.homepage .loading img {
+  float: left; 
+  padding-right: 5px;
+  width: 54px;
+}
+ */
+
+/* mini example
+
+.homepage .mini div {
+  float: left;
+  background: white;
+  margin: 3px;
+  color: #D8D5D2;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 46px;
+  text-align: center;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+}
+
+.homepage .mini .w1 { width: 44px; }
+.homepage .mini .h1 { height: 44px; }
+.homepage .mini .w2 { width: 94px; }
+.homepage .mini .h2 { height: 94px; }
+
+ */
+ 
+/* Tumblelog example
+
+#tumblelog {
+  background: #FFF;
+  padding: 1.0em;
+}
+
+#tumblelog .story {
+  margin: 10px;
+  border-top: 4px solid #DCB;
+  padding-top: 10px;
+  background: #FFF;
+  float: left;
+}
+
+#tumblelog h1, #tumblelog h2, #tumblelog h3 { font-weight: bold;}
+
+#tumblelog .col1 { width: 220px; }
+#tumblelog .col2 { width: 460px; }
+#tumblelog .col3 { width: 700px; }
+
+#tumblelog .col1 img,
+#tumblelog .col2 img,
+#tumblelog .col3 img {
+  max-width: none;
+}
+ */
+
+/* Infinite Scroll loader
+#infscr-loading { 
+  text-align: center;
+  z-index: 100;
+  position: fixed;
+  left: 45%;
+  bottom: 40px;
+  width: 200px;
+  padding: 10px;
+  background: #000; 
+  opacity: 0.8;
+  color: #FFF;
+  -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+          border-radius: 10px;
+}
+
+ */
+ 
+/**** Fluid 
+
+#container.fluid  {
+  padding: 5px 0;
+}
+****/
+
+/* right margin value is 0.1% less than calculated,
+  to allow for rounding errors in Firefox
+.fluid .box {
+  margin: 5px 0.9% 5px 1%;
+  padding: 5px 1%;
+}
+
+.fluid .box.col1 { width: 16%; }
+.fluid .box.col2 { width: 36%; }
+.fluid .box.col3 { width: 56%; }
+ */
+ 
+ 
+/**** Corner stamp 角戳区域   ****/
+.corner-stamp {
+  /* width: 345px;  使用col2(180px)样式时考虑用345  */
+  width: 425px; /* 使用col25(220px)样式时考虑用345  */
+  min-height: 200px;  
+  padding: 10px;
+  margin: 15px ;
+  float: right;
+  background: /*green*/ #f2e8bb ;
+  color: white;
+  
+  /*
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+          */
+}
+
+
+/**** Clearfix 
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+****/

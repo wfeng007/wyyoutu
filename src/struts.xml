@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+  
+    
+<struts>
+	<!-- 常量 -->
+	<!-- 使用spring托管action -->
+	<constant name="struts.objectFactory" value="spring" />
+	<!-- action后缀 默认就是action -->
+	<constant name="struts.action.extension" value="act"/>
+	
+	<!-- 使用utf-8字符编码  -->
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+	<!-- ???  
+	<constant name="struts.multipart.saveDir" value="/tmp"/> 
+	<constant name="struts.multipart.maxSize" value="1000000000"/>
+	-->
+	<!-- 导入default -->
+	<include file="struts-default.xml" />
+	
+	
+	<!-- action基本包  制定了该包的基础path=/pm
+	-->
+	<package name="c" extends="struts-default" namespace="/c">
+		<!-- 包级别拦截器
+ 		<interceptors>
+ 			<interceptor name="sessionOutOfDate" class="ecs.filter.SessionFilter"/>
+ 			<interceptor-stack name="ecsdefault">
+ 				<interceptor-ref name="sessionOutOfDate"/>
+ 				<interceptor-ref name="defaultStack"/>	
+ 			</interceptor-stack>
+ 		</interceptors>
+ 		<default-interceptor-ref name="ecsdefault"/>
+ 		 --> 		 
+		<!-- 使用反射方法调用action方法		
+		  /xx/doItRegion.act 对应到ecs.its.pm.action.RegionAction.doIt()
+ 		<action name="*Region" method="{1}" class="ecs.its.pm.action.RegionAction"></action>
+ 		
+ 		//一般这样配置 要求是/xx/item!listItem.act
+ 		<action name="item" method="listItem" class="rsItemAction"></action>
+		--> 
+		
+		<!-- 普通action.execute()方法 ,
+		且由于使用spring托管这里class指向spring中的bean-id 
+		默认没有其他配置时：
+		对于类中的方法可以使用!作为path分割 类方式调用到自定义方法（可能是spring的作用）
+		似：/pm/pmSmSystemInfo!listSystemInfo.act 其中.act后缀必须在最后 
+		listSystemInfo就是方法名称
+		pmSmSystemInfo的class="pmSmSystemInfoAction"  
+		
+		当使用spring托管时pmSmSystemInfoAction表示spring中的bean-id
+		-->
+		<action name="item" class="rsItemAction"></action>
+ 	</package>
+ 	
+ 	
+ 	<!-- 公共功能 不进行认证控制    / 下直接路径 -->
+ 	<package name="pub" extends="struts-default" namespace="/">
+ 		<global-exception-mappings>
+ 		<!-- 如果有exception也可以作为一种返回来处理并跳转到特定位置 -->
+ 			<exception-mapping result="error" exception="java.lang.Exception">/result.jsp</exception-mapping>
+ 		</global-exception-mappings>
+ 		
+ 		<!-- 指定到 方法-->
+ 		<action name="item" method="listItem" class="rsItemAction"></action>
+ 		
+ 		<!--获取session信息  现在还是使用 servletfilter完成的 session过滤，用struts的内部filter则很多内容需要复杂配置。-->
+		<action name="session" class="sessionAction">
+			<result name="error" >/result.jsp</result>
+			<result name="success" type="dispatcher">/result.jsp</result>
+		</action>
+ 	</package>
+ 	
+</struts>

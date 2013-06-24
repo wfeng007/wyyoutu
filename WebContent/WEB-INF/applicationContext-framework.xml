@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- place holder config resource -->
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/database.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- info-i18n resource 
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="fallbackToSystemLocale" value="false"/>
+        <property name="basenames">
+        	<list>
+        		<value>classpath:exception</value>
+        	</list>
+        </property>
+    </bean>
+    -->
+    
+	<!-- dataSource resource -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${database.driver}" />
+		<property name="url" value="${database.url}" />
+		<property name="username" value="${database.username}" />
+		<property name="password" value="${database.password}" />
+
+		<property name="initialSize" value="2" />
+		<property name="maxIdle" value="5" />
+		<property name="minIdle" value="2" />
+		<property name="maxActive" value="5" />
+
+		<property name="removeAbandonedTimeout" value="180" />
+		<property name="logAbandoned" value="true" />
+		<property name="removeAbandoned" value="true" />
+	</bean>
+	
+	
+	<!-- sqlSessionFactory 
+	 该属性用来指定MyBatis的XML配置文件路径,跟Spring整合时，编写MyBatis映射文件的目的无非是配置一下typeAlias、setting之类的 
+			元素。不用在其中指定数据源，或者事务处理方式。就算配置了也会被忽略。因为这些都是使用Spring中的配置 。当然如果你不打算添加typeAlias 
+			之类的设置的话，你连MyBatis的配置文件都不用写，更不用配置这个属性了 
+	 该配置文件用来指定Mapper映射文件的位置 ，如果映射文件与相应的接口同名，且在同一路径下，那么可以不配置该选项 
+	-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- <property name="configLocation" value="WEB-INF/mybatis.cfg.xml" /> -->
+		<property name="mapperLocations" value="classpath*:wyyoutu/**/*.mpr.xml"/>
+	</bean>
+	<!-- mybatis sql session template --> 
+	<bean id="sessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	
+</beans>

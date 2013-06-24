@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		table information
+		Generate time : 2013-02-06 20:08:56
+   		Version :  3.0.0
+		tableName :RS_ITEM 
+		  seq_id  INTEGER   NOT NULL   primarykey, 		
+		  iid  VARCHAR   NOT NULL, 		-REMARKS-:项目标识；唯一键可以使用任意算法生成。
+		  name  VARCHAR, 		-REMARKS-:名称或抬头
+		  url  VARCHAR, 		-REMARKS-:访问定位路径
+		  access_type  INTEGER, 		-REMARKS-:访问类型
+		  add_ts  DATETIME, 		-REMARKS-:新增时间戳
+		  modify_ts  DATETIME, 		-REMARKS-:最后更新时间戳
+		  status  INTEGER, 		-REMARKS-:项目状态；正常、删除、隐藏等
+		  text  VARCHAR, 		-REMARKS-:文本内容
+		  binary  LONGBLOB, 		-REMARKS-:图片、音频、压缩包等
+		  thumbnail  MEDIUMBLOB, 		-REMARKS-:缩略图或其他缩略数据
+		  owner_id  VARCHAR		-REMARKS-:关联用户id
+	-->
+<mapper namespace="wyyoutu.dao.RsItemDao">
+	<!-- table selected columns  -->
+	<sql id="selectedColumns">
+	<![CDATA[
+		  `seq_id` as "seqId", 
+		  `iid` as "iid", 
+		  `name` as "name", 
+		  `url` as "url", 
+		  `access_type` as "accessType", 
+		  `add_ts` as "addTs", 
+		  `modify_ts` as "modifyTs", 
+		  `status` as "status", 
+		  `text` as "text", 
+		  `owner_id` as "ownerId"
+	]]>
+	</sql>
+	
+	<!-- querying conditions -->
+	<sql id="queryingConditions">
+		<if test="@summ.framework.util.Ognl@isNotEmpty(seqId)"> 
+	      <![CDATA[	
+	        AND `seq_id` = #{seqId}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(iid)"> 
+	      <![CDATA[	
+	        AND `iid` = #{iid}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(name)"> 
+	      <![CDATA[	
+	        AND `name` = #{name}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(url)"> 
+	      <![CDATA[	
+	        AND `url` = #{url}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(accessType)"> 
+	      <![CDATA[	
+	        AND `access_type` = #{accessType}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(addTs)"> 
+	      <![CDATA[	
+	        AND `add_ts` = #{addTs}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(modifyTs)"> 
+	      <![CDATA[	
+	        AND `modify_ts` = #{modifyTs}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(status)"> 
+	      <![CDATA[	
+	        AND `status` = #{status}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(text)"> 
+	      <![CDATA[	
+	        AND `text` = #{text}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(ownerId)"> 
+	      <![CDATA[	
+	        AND `owner_id` = #{ownerId}
+		  ]]>
+	 	</if>
+	</sql>
+	
+	<select id="query" resultType="wyyoutu.model.RsItem">
+ 	<![CDATA[
+ 		select 
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.RsItemDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="selectedColumns"/>
+ 	<![CDATA[
+ 		from  RS_ITEM 
+ 	]]>
+	    <where>
+		  <include refid="queryingConditions"/>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[
+		ORDER BY `seq_id`  ASC 
+		]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) FROM RS_ITEM 
+	  ]]>
+	  <where>
+		<include refid="queryingConditions"/>
+	  </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+
+
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO RS_ITEM (
+		  `seq_id`,
+		  `iid`,
+		  `name`,
+		  `url`,
+		  `access_type`,
+		  `add_ts`,
+		  `modify_ts`,
+		  `status`,
+		  `text`,
+		  `owner_id`
+		)
+		VALUES (		 
+	      #{seqId}, 
+	      #{iid,jdbcType=VARCHAR}, 
+	      #{name,jdbcType=VARCHAR}, 
+	      #{url,jdbcType=VARCHAR}, 
+	      #{accessType}, 
+	      #{addTs,jdbcType=TIMESTAMP}, 
+	      #{modifyTs,jdbcType=TIMESTAMP}, 
+	      #{status}, 
+	      #{text,jdbcType=VARCHAR}, 
+	      #{ownerId,jdbcType=VARCHAR}
+	    )
+	]]>
+	</insert>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM RS_ITEM WHERE 
+			`seq_id` =  #{seqId}
+	]]>
+	</delete>
+	
+	<update id="update">
+		UPDATE RS_ITEM 
+		<set> 
+		<if test="iid != null">
+		<![CDATA[
+		  `iid` = #{iid,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="name != null">
+		<![CDATA[
+		  `name` = #{name,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="url != null">
+		<![CDATA[
+		  `url` = #{url,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="accessType != null">
+		<![CDATA[
+		  `access_type` = #{accessType}, 
+	    ]]>
+	    </if>
+		<if test="addTs != null">
+		<![CDATA[
+		  `add_ts` = #{addTs,jdbcType=TIMESTAMP}, 
+	    ]]>
+	    </if>
+		<if test="modifyTs != null">
+		<![CDATA[
+		  `modify_ts` = #{modifyTs,jdbcType=TIMESTAMP}, 
+	    ]]>
+	    </if>
+		<if test="status != null">
+		<![CDATA[
+		  `status` = #{status}, 
+	    ]]>
+	    </if>
+		<if test="text != null">
+		<![CDATA[
+		  `text` = #{text,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="ownerId != null">
+		<![CDATA[
+		  `owner_id` = #{ownerId,jdbcType=VARCHAR}
+	    ]]>
+	    </if>
+		</set> 
+		<![CDATA[
+		WHERE 	
+		  `seq_id` = #{seqId}
+		]]>
+	</update>
+	
+	
+</mapper> 

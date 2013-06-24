@@ -1,0 +1,78 @@
+/* paginator样式  for Jpaginator 插件 */
+#pagor {
+	width: 460px;
+	margin:0 auto;
+	clear: both;
+/* 	border:1px solid black; */
+	position: relative;
+	height:40px;
+}
+/* 左进<   右进> */
+#pagor_o_left {
+   width:26px; height:26px;
+   float:left;
+   background:url(image/icon/media_ctl/rewind.png);
+   /* background: #aaa; */
+   margin:0px 4px 0 0;
+}
+#pagor_o_right {
+   width:26px; height:26px;
+   float:left;
+   background:url(image/icon/media_ctl/fast_forward.png);
+   /* background: #aaa; */
+   margin:0px 0 0 4px;
+}
+/* 左进停止|<   右进停止>| */
+#pagor_m_left {
+   cursor:pointer;
+   width:26px; height:26px;
+   float:left;
+   background:url(image/icon/media_ctl/skip_to_start.png);
+  /*  background: #999; */
+   margin:0px 2px 0 0;
+}
+#pagor_m_right {
+   cursor:pointer;
+   width:26px; height:26px;
+   float:left;
+   background:url(image/icon/media_ctl/end.png);
+   /* background: #999; */
+   margin:0px 0 0 2px;
+}
+
+/* must set border width with px */
+#pagor .paginator_p {
+  	width:25px;
+	height:18px;
+	font-weight:bold;
+	color: #f2541f;
+	background-color:white;/* transparent; */
+	border: 1px solid black;
+	padding:3px 0 2px 0;
+} 
+#pagor .paginator_p_bloc {
+	
+}
+/*
+f2541f
+f2e8bb
+*/
+#pagor .paginator_p:hover {
+	/* color:white; */
+	background-color:#f2e8bb;
+}
+#pagor .paginator_p.selected {
+	color:white;
+	background-color:#f2541f;
+}
+#pagor .paginator_slider {
+	background-color:#f2d21b;
+	left:50px;
+}
+#pagor .paginator_slider .ui-slider-handle {
+	width: 4px;
+	height: 9px;
+	top: -4px;
+	background-color:#f18fa8;
+	border: solid 1px black ;
+}

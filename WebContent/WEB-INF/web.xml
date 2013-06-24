@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>testweb</display-name>
+	
+
+	
+	<!-- spring上下文配置文件 以及监听程序 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			WEB-INF/applicationContext*.xml
+		</param-value>
+	</context-param>
+	<listener>
+		<!-- 
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		 -->
+		<listener-class>summ.framework.SpringContextLoaderListener</listener-class>
+	</listener>
+	
+	
+	<servlet>
+		<servlet-name>Jersey-Spring Container</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey-Spring Container</servlet-name>
+		<url-pattern>/rest/v0.1/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- spring log4j集成配置 周期刷新器 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>WEB-INF/log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>6000</param-value>
+	</context-param>
+	<listener>	
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+	<!-- 
+		常用的spring CharacterEncodingFilter 只进行request的setencoding
+		forceEncoding会强制reponse setencoding, contenttype 也会追加一个类型
+	-->
+	<filter>
+		<description>springCharacterEncodingFilter</description>
+		<filter-name>springCharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>springCharacterEncodingFilter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+	
+	
+	<!-- summ框架web入口 开发状态 -->
+	<filter>
+		<description>summFilter</description>
+		<filter-name>summFilter</filter-name>
+		<filter-class>summ.framework.web.SummFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>summFilter</filter-name>
+		<url-pattern>/scripting/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<!-- for session check   --> 
+	<filter>
+		<description>sessionFilter</description>
+		<filter-name>sessionFilter</filter-name>
+		<filter-class>wyyoutu.web.SessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>/editor.html</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>/c/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>/svc/upload</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>/item!removeItem.act</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>/item!modifyText.act</url-pattern>
+	</filter-mapping>
+
+	
+	<!-- struts2  FilterDispatcher  -->  
+	<filter>  
+    	<filter-name>struts2</filter-name>  
+    	<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>  
+    	<!-- 可否不指定
+    	<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+		 -->
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.act</url-pattern>
+		<!-- ???
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+		 -->
+	</filter-mapping>
+	
+	
+	<!-- 简单的测试servlet -->
+	<servlet>
+		<description>for upload </description>
+		<display-name>uploader</display-name>
+		<servlet-name>Uploader</servlet-name>
+		<servlet-class>wyyoutu.web.UploadFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Uploader</servlet-name>
+		<url-pattern>/svc/upload</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 获取流数据 首先是图片 -->
+	<servlet>
+		<description>for upload </description>
+		<display-name>uploader</display-name>
+		<servlet-name>Image</servlet-name>
+		<servlet-class>wyyoutu.web.ImageViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Image</servlet-name>
+		<url-pattern>/svc/image</url-pattern>
+	</servlet-mapping>
+
+	
+	<servlet>
+		<description>basic test
+		</description>
+		<display-name>EasyServlet</display-name>
+		<servlet-name>EasyServlet</servlet-name>
+		<servlet-class>pm.servlet.EasyServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>AjaxProxyServlet</display-name>
+		<servlet-name>AjaxProxyServlet</servlet-name>
+		<servlet-class>pm.servlet.AjaxProxyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EasyServlet</servlet-name>
+		<url-pattern>/EasyServlet.svc/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AjaxProxyServlet</servlet-name>
+		<url-pattern>/AjaxProxyServlet</url-pattern>
+	</servlet-mapping>
+	
+	<!-- session 超时事件30分钟 默认20分钟 -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	
+	
+</web-app>

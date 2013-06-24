@@ -1,0 +1,322 @@
+
+/*** for picture background setting ***/
+#header2 .logo, #header2 .mark, #header2 .search-bar .search, #header2 .brick {
+    background: url("sprite.png") no-repeat scroll 0 0 transparent ;
+    /* 灰度？
+    -moz-filter:grayscale(1);
+    -webkit-filter:grayscale(1);
+    filter:grayscale(1);
+    */
+}
+/* position split*/
+#header2 .search-bar .search{
+	background-position: 0px -120px;
+}
+/*** picture backgrounc setting end ***/
+
+
+/**base**/
+#header2 {
+	width: 100%;
+	min-width: 990px; 
+	background: #eee;
+}
+
+/*for common-wrap for brand&nav*/
+#header2 .section-wrap {
+	/* width: 990px; */
+	width: 1194px; 
+	height: 100%;
+	margin: 0 auto;
+}
+
+/* for brand */
+#header2 #brand {
+	width: 100%;
+	height: 72px;
+	background: #fefefe;
+	/* 渐变效果
+	background: -moz-linear-gradient(top, #fefefe 1%, #f9f9f9 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, #fefefe),
+		color-stop(100%, #f9f9f9) );
+	background: -webkit-linear-gradient(top, #fefefe 1%, #f9f9f9 100%);
+	background: -o-linear-gradient(top, #fefefe 1%, #f9f9f9 100%);
+	background: -ms-linear-gradient(top, #fefefe 1%, #f9f9f9 100%);
+	background: linear-gradient(to bottom, #fefefe 1%, #f9f9f9 100%);
+	filter: progid : DXImageTransform.Microsoft.gradient ( startColorstr =  
+		'#fefefe', endColorstr =   '#f9f9f9', GradientType =   0 );
+	 */
+	
+}
+
+/*
+f2541f
+f2e8bb
+*/
+/* for navigater 3b8f16 ->  f2541f   368214 -> f2e8bb*/
+#header2 #nav {
+	width: 100%;
+	height: 43px;
+	background: #f2e8bb;
+	/* 渐变效果 
+	background: -moz-linear-gradient(top, #f2541f 0, #f2e8bb 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f2541f),
+		color-stop(100%, #f2e8bb) );
+	background: -webkit-linear-gradient(top, #f2541f 0, #f2e8bb 100%);
+	background: -o-linear-gradient(top, #f2541f 0, #f2e8bb 100%);
+	background: -ms-linear-gradient(top, #f2541f 0, #f2e8bb 100%);
+	background: linear-gradient(to bottom, #f2541f 0, #f2e8bb 100%);
+	filter: progid : DXImageTransform.Microsoft.gradient ( startColorstr =  
+		'#f2541f', endColorstr =   '#f2e8bb', GradientType =   0 );
+	*/	
+}
+
+/* header2 brand section-wrap logo*/
+#header2 .logo {
+	width: 260px;
+	height: 100%;
+	float: left;
+}
+
+/* header2 brand section-wrap logo,fon*/
+#header2 .logo h1 {
+	height: 100%;
+}
+#header2 .logo h1 a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+
+/* header2 brand section-wrap action*/
+#header2 .action {
+	width: 730px; 
+	height: 100%;
+	float: right; /* 放置到右侧 */
+	text-align: right;
+}
+
+/* header2 navigater section-wrap entries*/
+#header2 .entries {
+	width: 730px;
+	height: 100%;
+	float: left;
+}
+
+/* header2 navigater section-wrap search-bar*/
+#header2 .search-bar {
+	width: 260px;
+	height: 100%;
+	float: right;/* 放置到右侧 */
+}
+
+/* header2 navigater section-wrap entries .hot*/
+#header2 .hot,#header2 .new,#header2 .icon {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	height: 13px;
+	_font-size: 1px;
+	margin-left: 5px;
+	vertical-align: middle;
+}
+/* ? nav */
+#header2 .hot {
+	width: 25px;
+	background-position: -177px -248px;
+}
+/* ? nav */
+#header2 .new {
+	width: 27px;
+	background-position: -177px -266px;
+}
+
+/* header2 navigater section-wrap search-bar placeholder*/
+#header2 .placeholder {
+	color: #999;
+}
+
+/* multi-nav is unit of item-list */
+/* header2 navigater section-wrap entries multi-nav,header2 brand section-wrap multi-nav*/
+#header2 .multi-nav {
+	position: relative;
+	z-index: 3;
+}
+/* header2 navigater section-wrap entries multi-nav nav-trigger,header2 brand section-wrap multi-nav*/
+#header2 .multi-nav .nav-trigger {
+	cursor: pointer;
+	position: relative;
+	z-index: 52;
+}
+
+/* header2 navigater section-wrap entries multi-nav  more-nav, header2 brand section-wrap multi-nav , more-nav div will cover nav-trigger*/
+#header2 .multi-nav .more-nav {
+	position: absolute;
+	visibility: hidden;
+	z-index: 53;
+}
+
+/* header2 navigater section-wrap entries multi-nav ,header2 brand section-wrap multi-nav,for trigger more-nav*/
+#header2 .multi-nav:hover .more-nav/*,#header2 .multi-nav-hover .more-nav*/
+{
+	visibility: visible;
+}
+
+/***action deleted***/
+
+/*** header2 nav,header2 nav entries **/
+#header2 .entries li {
+	float: left;
+	height: 43px;
+}
+
+#header2 .entries li.split {
+	margin: 13px 0 14px;
+	padding: 0;
+	background: #539039;
+	width: 1px;
+	height: 16px;
+}
+
+#header2 .entries li a {
+	display: inline-block;
+	margin: 8px 7px 9px;
+	padding: 5px 10px;
+	font: bold 16px/1 "microsoft yahei", SimHei, sans-serif;
+	/* color: #fff; */
+	color: #f2541f
+}
+
+#header2 .entries li.first a {
+	margin-left: 0;
+}
+
+#header2 .entries li a:hover {
+	text-decoration: none;
+	color: #ffffff;
+	/*
+	background: #206100;
+	*/
+	background: #f2541f;
+	border-radius: 2px;
+	
+}
+/*
+#header2 .entries li:hover{
+	background: #206100;
+}
+*/
+
+
+#header2 .entries .nav-trigger {
+	_float: left;
+}
+
+#header2 .entries .multi-nav:hover,#header2 .entries .multi-nav-hover {
+	/*   menu-more item background
+	background: #206100;
+	*/
+	background: #f2541f;
+}
+
+#header2 .entries .multi-nav .nav-trigger {
+	*zoom: 1;
+}
+
+#header2 .entries .multi-nav .nav-trigger .icon {
+	width: 9px;
+	height: 7px;
+	background-position: -213px -248px;
+	position: absolute;
+	right: 16px;
+	top: 18px;
+}
+
+#header2 .entries .multi-nav .nav-trigger a {
+	margin-right: 18px;
+}
+
+#header2 .entries .multi-nav .nav-trigger a:hover {
+	background: transparent;
+}
+
+#header2 .entries .multi-nav .more-nav {
+	/* menu-more color
+	background: #206100; 
+	*/
+	background: #f2541f; 
+	padding: 10px 20px;
+	width: 216px;
+	_top: 43px;
+	_left: 0;
+}
+
+#header2 .entries .multi-nav .more-nav li {
+	width: 72px;
+	height: auto;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+#header2 .entries .multi-nav .more-nav a {
+	display: inline-block;
+	color: #fff;
+	font: normal 14px/1 SimSun, Tahoma, serif;
+	height: 15px;
+	padding: 10px 0;
+	margin: 0;
+	vertical-align: middle;
+}
+
+#header2 .entries .multi-nav .more-nav a:hover {
+	text-decoration: underline;
+	background: transparent;
+}
+
+#header2 .entries .multi-nav .topic {
+	padding-bottom: 8px;
+	/*border-bottom: 1px solid #82ac91;*/ /*one line bottom-line*/
+	border-bottom: 1px solid #ffffff;
+}
+
+#header2 .entries .multi-nav .category {
+	padding-top: 8px;
+}
+
+#header2 .search-bar .search {
+	float: right;
+	width: 239px;
+	height: 27px;
+	margin-top: 7px;
+	padding: 1px 1px 2px 1px;
+	background-color: #fff;
+	background-position: 0 -120px;
+	overflow: hidden;
+}
+
+#header2 .search-bar .search input {
+	float: left;
+	width: 193px;
+	height: 15px;
+	line-height: 15px;
+	padding: 6px 8px;
+	border: 0 none;
+	background: none;
+}
+
+#header2 .search-bar .search button {
+	float: left;
+	width: 30px;
+	height: 27px;
+	cursor: pointer;
+	opacity: 0;
+	*filter: progid : DXImageTransform.Microsoft.Alpha ( Opacity =   0 );
+	-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+}
+/*** header2 nav entries --end **/
+
+
+
+

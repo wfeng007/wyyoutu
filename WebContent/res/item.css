@@ -1,0 +1,128 @@
+/* for box  Masonry  or  other layout  ... by wfeng007*/
+
+.item .item_t {
+	padding: 0px 0px 0;
+}
+
+.item .item_t .img {
+	background-color: #FFFFFF;
+	margin: 0 auto;
+	position: relative;
+	width: 100%;
+	/* min-height: 210px; */
+}
+
+/* �����������ť��ʽ */
+.item .item_t .img a {
+	display: block;
+}
+
+.item .item_t .img a:hover {
+	/* background: #aaa; */
+}
+
+/* ������ͼƬ��ʾ��ʽ */
+.item .item_t .img a:hover img {
+	filter: alpha(opacity =   80);
+	-khtml-opacity: 0.8;
+	opacity: 0.8;
+	-webkit-transition: all 0.3s ease-out;
+	-khtml-transition: all 0.3s ease-out;
+}
+
+/* ��ǩ����ʾ��ʽ */
+.item .item_t .price { /* ��ʾ��ͼƬ���½� */
+	position: absolute;
+	bottom: 10px;
+	right: 0px;
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #FFF;
+	filter: progid :   DXImageTransform.Microsoft.gradient (   startcolorstr
+		= 
+		 #33000000, endcolorstr =   #33000000 );
+}
+
+/* �����ɰ� */
+.item .btns {
+	display: none; /* �ɰ�Ĭ�ϲ���ʾ */
+	
+}
+/* ���Ͻǲ�����ť */
+.item .img_album_btn {
+	top: 5px;
+	right: 5px;
+	position: absolute;
+	background: #ffffff url("image/icon/folder.png") no-repeat;
+	background-size:contain; /*css3*/
+	/* background: #ff6fa6; */
+	/* color: #ffffff; */
+	height: 24px;
+	/* line-height: 20px; */
+	width: 24px;
+	border: 1px solid #aaa;
+	/* border-radius:3px; */
+}
+.item .img_album_btn:hover {
+	color: #fff;
+}
+
+/* ���Ͻǲ�����ť */
+.item .img_album_btn_left {
+	top: 5px;
+	left: 5px;
+	position: absolute;
+	/* background: #ff6fa6; */
+	background: #ffffff url("image/icon/download.png") no-repeat;
+	background-size:contain; /*css3*/
+	color: #ffffff;
+	height: 24px;
+	/* line-height: 20px; */
+	width: 24px;
+	border: 1px solid #aaa;
+	/* border-radius:3px; */
+}
+.item .img_album_btn_left:hover {
+	/* color: #fff; */
+}
+
+/* ��������� */
+.item_t .title {
+	padding: 8px 0;
+	line-height: 18px;
+}
+
+.item_b {
+	padding: 0px 0px;
+}
+
+/*����ť*/
+.item_b .items_likes .like_btn {
+	background: #ffffff url("image/icon/like.png") no-repeat;/* ��ť  */
+	display: block;
+	float: left;
+	height: 24px; /* ������ʾͼƬ��Χ */
+	width: 24px;
+	margin-right: 5px;
+}
+
+/*������ʾ */
+.item_b .items_likes em {
+	line-height: 24px;
+	display: block;
+	float: left;
+	padding: 0px 6px;
+	color: #FF6699;
+	font-weight: 800; /*�Ӵ�*/
+	border: 1px solid #ff6fa6;
+	/* border-radius: 3px; */
+}
+
+/*���½�  ɾ��ť */
+.item_b .box_btn_bright{
+	background: #ffffff url("image/icon/system/delete.png") no-repeat;/* ��ť  */
+	display: block;
+	float: right;
+	height: 24px; /* ������ʾͼƬ��Χ */
+	width: 24px;
+	margin-right: 5px;
+}

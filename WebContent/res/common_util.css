@@ -1,0 +1,16 @@
+/*fix  block pai-lie */
+.clearfix:after {
+	content: '\0020';
+	display: block;
+	height: 0;
+	clear: both;
+}
+
+/*fix zoom */
+.clearfix {
+	*zoom: 1;
+}
+
+.clear{
+	clear: both;
+}

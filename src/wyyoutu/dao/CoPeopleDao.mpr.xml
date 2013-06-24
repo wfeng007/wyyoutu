@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		table information
+		Generate time : 2013-02-06 20:08:56
+   		Version :  3.0.0
+		tableName :co_people 
+		  id  VARCHAR   NOT NULL   primarykey, 		-REMARKS-:用户ID 登录用login
+		  seq_id  INTEGER   NOT NULL, 		
+		  name  VARCHAR, 		-REMARKS-:用户名称 显示用
+		  password  VARCHAR   NOT NULL, 		-REMARKS-:密码
+		  email  VARCHAR, 		-REMARKS-:邮箱
+		  add_ts  DATETIME		-REMARKS-:新增时间戳
+	-->
+<mapper namespace="wyyoutu.dao.CoPeopleDao">
+	<!-- table selected columns  -->
+	<sql id="selectedColumns">
+	<![CDATA[
+		  `id` as "id", 
+		  `seq_id` as "seqId", 
+		  `name` as "name", 
+		  `password` as "password", 
+		  `email` as "email", 
+		  `add_ts` as "addTs"
+	]]>
+	</sql>
+	
+	<!-- querying conditions -->
+	<sql id="queryingConditions">
+		<if test="@summ.framework.util.Ognl@isNotEmpty(id)"> 
+	      <![CDATA[	
+	        AND `id` = #{id}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(seqId)"> 
+	      <![CDATA[	
+	        AND `seq_id` = #{seqId}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(name)"> 
+	      <![CDATA[	
+	        AND `name` = #{name}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(password)"> 
+	      <![CDATA[	
+	        AND `password` = #{password}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(email)"> 
+	      <![CDATA[	
+	        AND `email` = #{email}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(addTs)"> 
+	      <![CDATA[	
+	        AND `add_ts` = #{addTs}
+		  ]]>
+	 	</if>
+	</sql>
+	
+	<select id="query" resultType="wyyoutu.model.CoPeople">
+ 	<![CDATA[
+ 		select 
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.CoPeopleDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="selectedColumns"/>
+ 	<![CDATA[
+ 		from  co_people 
+ 	]]>
+	    <where>
+		  <include refid="queryingConditions"/>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[
+		ORDER BY `id`  ASC 
+		]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) FROM co_people 
+	  ]]>
+	  <where>
+		<include refid="queryingConditions"/>
+	  </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+
+
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO co_people (
+		  `id`,
+		  `seq_id`,
+		  `name`,
+		  `password`,
+		  `email`,
+		  `add_ts`
+		)
+		VALUES (		 
+	      #{id,jdbcType=VARCHAR}, 
+	      #{seqId}, 
+	      #{name,jdbcType=VARCHAR}, 
+	      #{password,jdbcType=VARCHAR}, 
+	      #{email,jdbcType=VARCHAR}, 
+	      #{addTs,jdbcType=TIMESTAMP}
+	    )
+	]]>
+	</insert>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM co_people WHERE 
+			`id` =  #{id}
+	]]>
+	</delete>
+	
+	<update id="update">
+		UPDATE co_people 
+		<set> 
+		<if test="seqId != null">
+		<![CDATA[
+		  `seq_id` = #{seqId}, 
+	    ]]>
+	    </if>
+		<if test="name != null">
+		<![CDATA[
+		  `name` = #{name,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="password != null">
+		<![CDATA[
+		  `password` = #{password,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="email != null">
+		<![CDATA[
+		  `email` = #{email,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="addTs != null">
+		<![CDATA[
+		  `add_ts` = #{addTs,jdbcType=TIMESTAMP}
+	    ]]>
+	    </if>
+		</set> 
+		<![CDATA[
+		WHERE 	
+		  `id` = #{id}
+		]]>
+	</update>
+	
+	
+</mapper> 
