@@ -15,6 +15,8 @@
  */
 
 /**
+  * modify by wfeng007 2013-06-30
+  * 
   * Version 1.7.1
   *
   * ** means there is basic unit tests for this parameter. 
@@ -54,9 +56,11 @@
   * @param Function options[onerror]  function(settings, original, xhr) { ... } called on error
   *             
   * @param Hash    options[ajaxoptions]  jQuery Ajax options. See docs.jquery.com.
+  * 
+  * modify by wfeng007
+  * @param String  options[ajaxdatatype]  ajax data-type for response,default is 'html'. rewrite area using result when it's 'html'.
   *             
   */
-
 (function($) {
 
     $.fn.editable = function(target, options) {
@@ -343,14 +347,15 @@
                               var ajaxoptions = {
                                   type    : 'POST',
                                   data    : submitdata,
-                                  dataType: 'html',
+                                  //dataType: 'html',//modified by wfeng007 
+                                  dataType: settings.ajaxdatatype, 
                                   url     : settings.target,
                                   success : function(result, status) {
-                                      if (ajaxoptions.dataType == 'html') {
-                                        $(self).html(result);
+                                	  if (ajaxoptions.dataType == 'html') {
+                                          $(self).html(result);
                                       }
                                       self.editing = false;
-                                      callback.apply(self, [result, settings]);
+                                      callback.apply(self, [result, settings,submitdata]); //add submiteddata modify by wf 
                                       if (!$.trim($(self).html())) {
                                           $(self).html(settings.placeholder);
                                       }
@@ -537,7 +542,8 @@
         placeholder: 'Click to edit',
         loaddata   : {},
         submitdata : {},
-        ajaxoptions: {}
+        ajaxoptions: {},
+        ajaxdatatype   : "html" //modify by wfeng007
     };
 
 })(jQuery);

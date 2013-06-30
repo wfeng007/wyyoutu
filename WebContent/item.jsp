@@ -4,7 +4,10 @@
 <%@ page session="false"%>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="summ.framework.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
+<%@ page import="wyyoutu.service.RsItemService" %>
+<%@ page import="wyyoutu.model.RsItem" %>
 
 <%
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
@@ -15,6 +18,13 @@ if(accountInfo==null){
 String itemId=null;
 itemId=request.getParameter("itemId");
 System.out.print(itemId);
+
+//还是要获取一次本item的一些数据数据
+RsItemService rsis=(RsItemService)SpringContextHolder.getApplicationContext().getBean("rsItemService");
+RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
+//TODO 增加无法查询到指定id的item时的处理
+
+//
 if(itemId==null){
 	itemId="";
 }
@@ -33,14 +43,14 @@ if(itemId==null){
 
 <script src="./jquery/jquery-1.7.2.min.js"></script>
 <script src="./jquery/jeditable/jquery.autogrow.js"></script>
-<script src="./jquery/jeditable/jquery.jeditable.js"></script>
+<script src="./jquery/jeditable/jquery.jeditable_summ.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable.autogrow.js"></script>
 
 <div id="header2">
 	<!-- -->
 	<div id="brand">
 		<div class="section-wrap">
-			<div class="logo">v:0.4(α)
+			<div class="logo">v:0.5(α)
 				<h1>
 					<a href="#" title="51youtu"></a>
 				</h1>
@@ -117,7 +127,8 @@ img#itemMedia {
 	margin-bottom: 50px;
 	max-width: 800px;
 }
-#itemText {
+/*#itemText*/
+.edit_area {
 	display:block;
 	/* margin: 0 auto; */
 	margin-left: auto; margin-right: auto; /* 左右居中 */
@@ -143,31 +154,47 @@ img#itemMedia {
 				
 <script type="text/javascript">
 $(function(){
-	$('.edit_area').editable('./c/save.do',{
+	$('.edit_area').editable('./item!modifyText.act',{
+		 id   : 'itemId',//idkey
+         name : 'text',//textkey
+         submitdata:{action:"modify"},
 		 type      : 'autogrow',
 		 autogrow : {
 	           lineHeight : 16,
 	           minHeight  : 32
 	     },
 		 //rows: 5, 
-         cancel    : 'Cancel',
-         submit    : 'OK',
+         cancel    : '取消',
+         submit    : '保存',
          indicator : '<img src="img/indicator.gif">',
-         tooltip   : 'Click to edit...'
+         tooltip   : 'Click to edit...',
+         method :"POST",
+       	 callback : function(data, settings,submitdata) {//修改插件提供已经提交用的数据 submitdata
+       	  		console.log(this); //本jquery对应的dom对象
+            	console.log(data); //返回的内容
+             	console.log(settings); //参数
+             	if(data!=null&&typeof(data)==="object"&&data.success==true){
+             		//根据源代码情况，默认内容被放在了settings.name;
+             		//alert(submitdata[settings.name]);
+       				$(this).html(submitdata[settings.name]);
+             	}else{
+					alert("修改失败！"); // 测试 
+					//
+				}
+       			
+         },
+         ajaxdatatype:"json" //附加出来的ajax返回类型默认html
 	});
 });
-
 </script>
-		<div id="itemText" class="edit_area">
-			text这里显示描述内容
-		</div>
+		<!-- Text内容 itemText -->
+		<div id="<%=itemId%>" class="edit_area"><%=rsItem.getText()%></div>
+		
 		<div id="itemComments" >
-			这里显示回复内容
-			
-			<!-- Duoshuo Comment BEGIN -->
+	<!-- Duoshuo Comment BEGIN -->
 	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"51youtu"};
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"51youtu"};
 	(function() {
 		var ds = document.createElement('script');
 		ds.type = 'text/javascript';ds.async = true;
@@ -177,7 +204,7 @@ var duoshuoQuery = {short_name:"51youtu"};
 		|| document.getElementsByTagName('body')[0]).appendChild(ds);
 	})();
 	</script>
-<!-- Duoshuo Comment END -->
+	<!-- Duoshuo Comment END -->
 			
 		</div>
 	</div>
@@ -189,6 +216,7 @@ var duoshuoQuery = {short_name:"51youtu"};
     <script>
     $(function(){
     	
+    	//使用脚本程序
     	//$('#tags').tagit(); 
     	$.get("./scripting/listTag.jss?itemId="+<%=itemId%>, //默认使用post,json对象其实会转变为form格式数据向后传
 				function (data, textStatus){
@@ -198,8 +226,8 @@ var duoshuoQuery = {short_name:"51youtu"};
     				//$("#tags").tagit("createTag",data.tags); //改用这个操作createTag
 				}, 
 			"json"); 
-    	
     	//
+    	
     	$('#tagsForm').find('#tagsSubmit').click(function(){
 			//alert("1 TODO: ADD SERVERSID:"+$(this).parent('#tagsForm').find('#tags').attr('value'));
 			var tags=$(this).parent('#tagsForm').find('#tags').attr('value');

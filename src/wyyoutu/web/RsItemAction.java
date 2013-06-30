@@ -272,7 +272,6 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 				map.put("msg", "update ok!");
 			}
 			//
-			//
 			
 			// 构建json result
 			this.result=JSONObject.fromObject(map);

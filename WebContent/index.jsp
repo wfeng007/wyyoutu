@@ -275,7 +275,8 @@ $(function(){
 							+'</div>'
 						+'</div>'
 						+'<div class="tilte"  style="word-break:break-all;">'
-						+'<span>'+item.name+':<br/>'+item.text+'</span> '
+						+'<span>'+item.name+'</span>'
+						+'<p>'+item.text+'</p>'
 						+'<a class="showEditor" href="javascript:void(0)" title="编辑">编辑</a> '
 						+'<form itemId="'+item.seqId+'" class="editor" style="display:none">'
 						+'<textarea class="editor" rows="4" style="width:95%;overflow-y:visible;resize:none;"></textarea>'
@@ -364,11 +365,10 @@ $(function(){
 				//隐藏 文本内容 显示Textarea并将文本内容显示在Textarea中。
 				//
 				var txtCont =$(this).prev();
-				$(this).next("form").children("textarea.editor").html(txtCont.html());
+				$(this).next("form").children("textarea.editor").html(txtCont.html());//内容显示在
 				$(this).next("form").css("display","block")
-				//文本框隐藏
+				//文本框隐藏//隐藏 a.showEditor按钮
 				txtCont.hide();
-				//隐藏 展开a.showEditor
 				$(this).hide();
 				
 				//这里需要保证$tt在这个布局对象中
@@ -381,38 +381,32 @@ $(function(){
 			// 注册 editor保存 按钮功能
 			//
 			$tt.find("form.editor input.save").click(function(){
-				
 				// 整个form
 				var formEditor =$(this).parent();
-			
-				//
+				//获取itemid
 				var itemId=formEditor.attr("itemId");
-				
 				//获取文本框中的内容
 				var text = formEditor.children("textarea.editor").val();
-				
-				
+				//alert(text);
 				// 提交更新文本内容
  				$.post("./item!modifyText.act", {action:"modify",itemId:itemId,"text": text}, //默认使用post,json对象其实会转变为form格式数据向后传
 						function (data, textStatus){
 							//data 可以是 xmlDoc, jsonObj, html, text, 等等.
 							//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
 							//data 当前为json对象
-							if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断
+							//alert(data.success);
+							//
+							//window.location.href='\\';过是ajax的请求可以使用 该方法让浏览器跳转到指定页面，比如登录框。似乎很多系统提供一个延迟刷新的面板？
+							//
+							if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断 //需要区分ajax方式与普通跳转方法。
 								//alert("ok 修改成功"); // 测试 
 								
 								//放在这里显示内容
 								formEditor.prev().prev().html(text);//显示新内容 显示的时候转义而已 
-								
-								
-								
 							}else{
 								alert("修改失败！"); // 测试 
 								//
-								// 
-								//
 							}
-							
 							//内容变更后也要执行重新布局
 							$('#container').masonry( 'reload' );
 						}, 
@@ -431,7 +425,6 @@ $(function(){
 				// 
 				formEditor.prev().show();
 				
-				
 				//这里需要保证$tt在这个布局对象中
 				$('#container').masonry( 'reload' );
 			});
@@ -444,7 +437,7 @@ $(function(){
 				//
 				var formEditor =$(this).parent();
 				formEditor.children("textarea.editor").val(formEditor.prev().prev().html());
-				formEditor.css("display","none")
+				formEditor.css("display","none");
 				
 				//显示 文本
 				formEditor.prev().prev().show();
@@ -545,7 +538,7 @@ $(function(){
 	<!-- -->
 	<div id="brand">
 		<div class="section-wrap">
-			<div class="logo">v:0.4(α)
+			<div class="logo">v:0.5(α)
 				<h1>
 					<a href="#" title="51youtu"></a>
 				</h1>
