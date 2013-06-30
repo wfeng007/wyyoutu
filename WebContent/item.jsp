@@ -19,15 +19,15 @@ String itemId=null;
 itemId=request.getParameter("itemId");
 System.out.print(itemId);
 
-//还是要获取一次本item的一些数据数据
-RsItemService rsis=(RsItemService)SpringContextHolder.getApplicationContext().getBean("rsItemService");
-RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
-//TODO 增加无法查询到指定id的item时的处理
-
 //
 if(itemId==null){
 	itemId="";
 }
+
+//还是要获取一次本item的一些数据数据
+RsItemService rsis=(RsItemService)SpringContextHolder.getApplicationContext().getBean("rsItemService");
+RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
+//TODO 增加无法查询到指定id的item时的处理
 
 %>
 <!DOCTYPE html>
@@ -35,78 +35,67 @@ if(itemId==null){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>51youtu</title>
+<!-- TODO删除？ -->
 <link rel="stylesheet" href="res/basic.css"/>
 <link rel="stylesheet" href="res/common_util.css"/>
+<!-- bootstrap -->
+<link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <style type="text/css">
+    /** 这样做会让body的内容到navbar下面 ，包括自己在背景上写的内容。 **/
+      body { 
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
 <link rel="stylesheet" href="res/header2.css">
 <link rel="stylesheet" href="res/signin.css" />
 <link rel="stylesheet" href="res/footer.css">
 
+<!-- jquery -->
 <script src="./jquery/jquery-1.7.2.min.js"></script>
+<!-- bootstrap-js -->
+<script src="./js/bootstrap/bootstrap.js"></script>
+
+<!-- 区域编辑 -->
 <script src="./jquery/jeditable/jquery.autogrow.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable_summ.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable.autogrow.js"></script>
-
-<div id="header2">
-	<!-- -->
-	<div id="brand">
-		<div class="section-wrap">
-			<div class="logo">v:0.5(α)
-				<h1>
-					<a href="#" title="51youtu"></a>
-				</h1>
-			</div>
-			<ul class="action"><!-- 功能 -->
-				<div id="signin_area">			
-					<!-- 登录表单框 使用signin.css -->			
-					<div id="topnav" class="topnav"><div id="userId"> </div><a href="login" class="signin"><span>登录</span></a> </div>
-					  <fieldset id="signin_menu">
-					    <form method="post" id="signin" action="./session!login.act"> <!-- 这里直接用了form而不是ajax 这会要就页面重新刷新 -->
-					      <label for="username">账号</label>
-					      <input id="userId" name="userId" value="" title="username" tabindex="4" type="text" placeholder="邮箱 或 昵称">
-					      </p>
-					      <p>
-					        <label for="password">密码</label>
-					        <input id="password" name="password" value="" title="password" tabindex="5" type="password">
-					      </p>
-					      <p class="remember">
-					        <input id="signin_submit" value="Sign in" tabindex="6" type="submit">
-					        <input id="remember" name="remember_me" value="1" tabindex="7" type="checkbox">
-					        <label for="remember">记住</label>
-					      </p>
-						  <!-- 
-					      <p class="forgot"> <a href="#" id="resend_password_link">忘记密码?</a> </p>
-					      <p class="forgot-username"> <A id=forgot_username_link ="If you remember your password, try logging in with your email" href="#">忘记用户名?</A> </p>
-						-->
-						</form>
-					</fieldset>			
-				</div>			
-			</ul>
-		</div>
-	</div>
-	
-	<div id="nav">
-		<div class="section-wrap">
-			<ul class="entries clearfix">
-				<li class="first"><a
-					href="/">首页</a></li>
-			</ul>
-			<div class="search-bar">
-			</div>
-		</div>
-	</div>
-</div>
 </head>
 
 <body>
+
+<!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="brand" href="./">项目名称</a>
+         <div class="nav-collapse collapse">
+           <ul class="nav">
+             <li class="active"><a href="./">主页</a></li>
+             <li><a href="#about">关于</a></li>
+             <li><a href="#contact">联系</a></li>
+           </ul>
+         </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+
+
 <style type="text/css">
-#page_container {
+/* #page_container {
 	width: 1194px;
 	margin: 0 auto;
 	display:block;
-}
-#item {
+} */
+/* min-height: 800px; */
+/* #item {
 	float: left;
-	/* min-height: 800px; */
+	
 	width: 850px;
 	border: 1px solid #eeeeee;
 }
@@ -115,25 +104,55 @@ if(itemId==null){
 	min-height: 600px;
 	width: 330px;
 	border: 1px solid #eeeeee;
+} */
+.container,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container{
+	width: 1184px;/* 1180(1184) 15个span 默认940 为12个span */
+	/* border: 1px solid #eeeeee; */
 }
-.clear {
+.span12,
+.span11,
+.span10,
+.span9,
+.span8,
+.span7,
+.span6,
+.span5,
+.span4,
+.span3,
+.span2,
+.span1{
+	 /* border: 1px solid #eeeeee; */
+}
+
+/* .clear {
  	clear: both;
-}
+} */
 img#itemMedia {
 	display:block;
 	/* margin: 0 auto; */
 	margin-left: auto; margin-right: auto; /* 左右居中 */
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 30px;
+	margin-bottom: 30px;
 	max-width: 800px;
+}
+#img_area{
+	margin-left: auto; margin-right: auto; /* 左右居中 */
+	margin-top: 0px;
+	margin-bottom: 20px;
+	max-width: 800px;
+	background-image:url(res/image/img_bg_thick_40x40.png); 
+	border: 1px solid #eeeeee;
 }
 /*#itemText*/
 .edit_area {
 	display:block;
 	/* margin: 0 auto; */
 	margin-left: auto; margin-right: auto; /* 左右居中 */
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 	max-width: 800px;
 	border: 1px solid #eeeeee;
 }
@@ -141,20 +160,24 @@ img#itemMedia {
 	display:block;
 	/* margin: 0 auto; */
 	margin-left: auto; margin-right: auto; /* 左右居中 */
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 	max-width: 800px;
 	border: 1px solid #eeeeee;
 }
 </style>
 <section>
-<div id="page_container">
-	<div id="item">
-		<img id="itemMedia" alt="<%=itemId%>" class=".clear" src="./svc/image?itemId=<%=itemId%>" />
+<div class="container">
+
+<div class="row">
+	<div id="item" class="span11">
+		<div id="img_area" class="">
+			<img id="itemMedia" alt="<%=itemId%>" class=".clear" src="./svc/image?itemId=<%=itemId%>" />
+		</div>
 				
 <script type="text/javascript">
 $(function(){
-	$('.edit_area').editable('./item!modifyText.act',{
+	$('.editable').editable('./item!modifyText.act',{
 		 id   : 'itemId',//idkey
          name : 'text',//textkey
          submitdata:{action:"modify"},
@@ -188,8 +211,11 @@ $(function(){
 });
 </script>
 		<!-- Text内容 itemText -->
-		<div id="<%=itemId%>" class="edit_area"><%=rsItem.getText()%></div>
-		
+		<div class="edit_area">
+		<h1>说说：</h1>
+		<div id="<%=itemId%>" class="editable"><%=rsItem.getText()%></div>
+		</div>
+
 		<div id="itemComments" >
 	<!-- Duoshuo Comment BEGIN -->
 	<div class="ds-thread"></div>
@@ -247,15 +273,15 @@ $(function(){
     	
     });
     </script>
-	<div id="side_bar_right">
-		side_bar_right
-		<form id="tagsForm">
-			<input name="tags" id="tags" value="">
+	<div id="side_bar_right" class="span4">
+		<form id="tagsForm" >
+			<input name="tags" id="tags" value="" >
             <input id="tagsSubmit" type="button" value="Submit"/>
         </form>
 	</div>
 	<div class="clear"></div> <!-- 保证同级的left在上级目录中被包括。 -->
 </div>
+</div><!-- row -->
 </section>
 
 <footer>
@@ -263,7 +289,7 @@ $(function(){
 <div id="footer_stripe">
 </div>
 <div id="copyright">
-沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
+沪ICP备12041334号 Copyright &copy; 2012 - 2013 wfeng007 <br/> 
 wfeng007@163.com <br/>
 </div> 
 </div>
