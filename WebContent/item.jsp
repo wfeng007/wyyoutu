@@ -73,7 +73,7 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
            <span class="icon-bar"></span>
            <span class="icon-bar"></span>
          </button>
-         <a class="brand" href="./">项目名称</a>
+         <a class="brand" href="./">我要优图</a>
          <div class="nav-collapse collapse">
            <ul class="nav">
              <li class="active"><a href="./">主页</a></li>
@@ -190,7 +190,8 @@ $(function(){
          cancel    : '取消',
          submit    : '保存',
          indicator : '<img src="img/indicator.gif">',
-         tooltip   : 'Click to edit...',
+         tooltip   : '点击区域添加内容',
+         placeholder : '点击这里添加内容',
          method :"POST",
        	 callback : function(data, settings,submitdata) {//修改插件提供已经提交用的数据 submitdata
        	  		console.log(this); //本jquery对应的dom对象
@@ -204,7 +205,6 @@ $(function(){
 					alert("修改失败！"); // 测试 
 					//
 				}
-       			
          },
          ajaxdatatype:"json" //附加出来的ajax返回类型默认html
 	});
@@ -213,7 +213,7 @@ $(function(){
 		<!-- Text内容 itemText -->
 		<div class="edit_area">
 		<h1>说说：</h1>
-		<div id="<%=itemId%>" class="editable"><%=rsItem.getText()%></div>
+		<div id="<%=itemId%>" class="editable"><%=rsItem.getText()!=null?rsItem.getText():""%></div>
 		</div>
 
 		<div id="itemComments" >
