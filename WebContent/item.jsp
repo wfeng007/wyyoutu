@@ -36,7 +36,6 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>51youtu</title>
 <!-- TODO删除？ -->
-<link rel="stylesheet" href="res/basic.css"/>
 <link rel="stylesheet" href="res/common_util.css"/>
 <!-- bootstrap -->
 <link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
@@ -54,7 +53,7 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
 <!-- jquery -->
 <script src="./jquery/jquery-1.7.2.min.js"></script>
 <!-- bootstrap-js -->
-<script src="./js/bootstrap/bootstrap.js"></script>
+<script src="./jquery/bootstrap/js/bootstrap.js"></script>
 
 <!-- 区域编辑 -->
 <script src="./jquery/jeditable/jquery.autogrow.js"></script>
@@ -166,6 +165,7 @@ img#itemMedia {
 	border: 1px solid #eeeeee;
 }
 </style>
+
 <section>
 <div class="container">
 
@@ -284,10 +284,9 @@ $(function(){
 </div><!-- row -->
 </section>
 
+<hr/>
 <footer>
 <div id="footer"> 
-<div id="footer_stripe">
-</div>
 <div id="copyright">
 沪ICP备12041334号 Copyright &copy; 2012 - 2013 wfeng007 <br/> 
 wfeng007@163.com <br/>

@@ -1,4 +1,6 @@
-/* for box  Masonry  or  other layout  ... by wfeng007*/
+/* for box  Masonry  or  other layout  ... by wfeng007
+	2013-07-07 修改为基于bootstrap
+*/
 
 .item .item_t {
 	padding: 0px 0px 0;
@@ -12,7 +14,7 @@
 	/* min-height: 210px; */
 }
 
-/* �����������ť��ʽ */
+/**/
 .item .item_t .img a {
 	display: block;
 }
@@ -21,17 +23,26 @@
 	/* background: #aaa; */
 }
 
-/* ������ͼƬ��ʾ��ʽ */
+.item .item_t .img a img {
+	border: 1px solid #fff;
+}
+/* 鼠标移动图片上后的效果 */
 .item .item_t .img a:hover img {
-	filter: alpha(opacity =   80);
-	-khtml-opacity: 0.8;
-	opacity: 0.8;
-	-webkit-transition: all 0.3s ease-out;
-	-khtml-transition: all 0.3s ease-out;
+	border: 1px /* solid */dashed  #000;
+	filter: alpha(opacity =   50);
+	-khtml-opacity: 0.5;
+	opacity: 0.5; /*这个效果会使图片size小1px为何？ */
+	
+	/* 以下是使效果渐变 */
+	transition：all 1s ease-out;
+	-moz-transition: all 1s ease-out; /* Firefox 4 */
+	-o-transition: all 1s ease-out; /* Opera */
+	-webkit-transition: all 1s ease-out;
+	-khtml-transition: all 1s ease-out;
 }
 
-/* ��ǩ����ʾ��ʽ */
-.item .item_t .price { /* ��ʾ��ͼƬ���½� */
+/* img 右下角标题处 一般用来显示价位*/
+.item .item_t .price { /* */
 	position: absolute;
 	bottom: 10px;
 	right: 0px;
@@ -42,87 +53,87 @@
 		 #33000000, endcolorstr =   #33000000 );
 }
 
-/* �����ɰ� */
+/* */
 .item .btns {
-	display: none; /* �ɰ�Ĭ�ϲ���ʾ */
-	
+	display: none; /* */
 }
-/* ���Ͻǲ�����ť */
-.item .img_album_btn {
+/**/
+.item .img_album_btn_right {
 	top: 5px;
 	right: 5px;
 	position: absolute;
-	background: #ffffff url("image/icon/folder.png") no-repeat;
+	/* background: #ffffff url("image/icon/folder.png") no-repeat; */
 	background-size:contain; /*css3*/
 	/* background: #ff6fa6; */
 	/* color: #ffffff; */
-	height: 24px;
+	/* height: 24px; */
 	/* line-height: 20px; */
-	width: 24px;
+	/* width: 24px; */
 	border: 1px solid #aaa;
 	/* border-radius:3px; */
 }
-.item .img_album_btn:hover {
-	color: #fff;
+.item .img_album_btn_right:hover {
+	color: #ff0000;
 }
 
-/* ���Ͻǲ�����ť */
+/**/
 .item .img_album_btn_left {
 	top: 5px;
 	left: 5px;
 	position: absolute;
 	/* background: #ff6fa6; */
-	background: #ffffff url("image/icon/download.png") no-repeat;
+	/* background: #ffffff url("image/icon/download.png") no-repeat; */
 	background-size:contain; /*css3*/
-	color: #ffffff;
-	height: 24px;
+	/* color: #ffffff; */
+	/* height: 24px; */
 	/* line-height: 20px; */
-	width: 24px;
+	/* width: 24px; */
 	border: 1px solid #aaa;
 	/* border-radius:3px; */
 }
 .item .img_album_btn_left:hover {
-	/* color: #fff; */
+	 color: #ff0000; 
 }
 
-/* ��������� */
+/* */
 .item_t .title {
 	padding: 8px 0;
 	line-height: 18px;
 }
 
+/* item_b 为item 底部位置 */
 .item_b {
 	padding: 0px 0px;
 }
 
-/*����ť*/
+/**/
 .item_b .items_likes .like_btn {
-	background: #ffffff url("image/icon/like.png") no-repeat;/* ��ť  */
+	background: #ffffff url("image/icon/like.png") no-repeat;/* */
 	display: block;
 	float: left;
-	height: 24px; /* ������ʾͼƬ��Χ */
+	height: 24px; /*  */
 	width: 24px;
 	margin-right: 5px;
 }
 
-/*������ʾ */
+/**/
 .item_b .items_likes em {
 	line-height: 24px;
 	display: block;
 	float: left;
 	padding: 0px 6px;
 	color: #FF6699;
-	font-weight: 800; /*�Ӵ�*/
+	font-weight: 800; /* */
 	border: 1px solid #ff6fa6;
 	/* border-radius: 3px; */
 }
 
-/*���½�  ɾ��ť */
-.item_b .box_btn_bright{
-	background: #ffffff url("image/icon/system/delete.png") no-repeat;/* ��ť  */
+/**/
+.item_b .btn_right{
+	/* background: #ffffff url("image/icon/system/delete.png") no-repeat;  */
 	display: block;
 	float: right;
-	height: 24px; /* ������ʾͼƬ��Χ */
-	width: 24px;
+	/* height: 24px; 
+	width: 24px; */
 	margin-right: 5px;
 }

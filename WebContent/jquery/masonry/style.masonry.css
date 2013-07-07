@@ -1,85 +1,66 @@
-/**** Content  也是基础考虑放到整体css中 ****/
-#content {
-  margin:0 auto; 
-  width: 100%;
-  background: #eee;
- /*  background: #fff; */
-}
-
-/* screens smaller than 640 
-@media screen and (max-width: 640px) {
-
-  #site-nav {
-    width: auto;
-    position: relative;
-    left: auto;
-    top: auto;
-    padding-top: 0px;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  
-  #content {
-    padding-left: 10px;
-  }
-}
-*/
-
 /**** masonry容器 ****/
+/* 也可以使用bootstrap的样式 */
 #container {
   /* background: #FFF; */
-  background: #eee;
-  padding: 5px;
+ /*  background: #eee; */
+  /* padding: 5px; */
  /* margin-bottom: 20px; */
-  margin-left: auto;
-  margin-right: auto;
+ /*  margin-left: auto;
+  margin-right: auto; */
  /* width: 990px;  1024 以下用990  */
-  width: 1194px; /* 1280 以上用1194  */
-  clear: both; /* 1280 以上用1194  */
+ min-width: 990px;
+ /* width: 1194px;  1280 以上用1194  */
+ /* clear: both;  1280 以上用1194  */
   /*
   border-radius: 5px;
   -webkit-border-radius: 5px;
      -moz-border-radius: 5px;
           border-radius: 5px;
           */
+  
 }
 /** 
 #container .centered { margin: 0 auto; }
 */
 
 #container .box {
-  margin: 5px;
-  padding: 2.5px;   /* 内部不需要pading */
+  margin: 4px;
+  padding: 4px;   /* 内部不需要pading */
   font-size: 11px;
   /* line-height: 1.4em; */
   float: left;
   /* box effect */
-  border: 1px solid #f2e8bb /*#f2541f #f2e8bb */ ;
+
+  /* border: 1px solid #f2e8bb ;*/   /*#f2541f #f2e8bb */ 
+  border:1px solid #dddddd;
   /* box-shadow: 0 1px 2px 1px #AAA #f2541f; */
   background: #fff;
   /*background: #444; 调试 */
-  /* ...radius corner.. 四个角
+  /* ...radius corner.. 四个角同时设置*/
   -webkit-border-radius: 5px;
      -moz-border-radius: 5px;
           border-radius: 5px;
-  */
-  /* 左上角 */
+  
+  /* 左上角圆角 
   -webkit-border-top-left-radius:10px;
   -moz-border-radius-topleft:10px;
   border-top-left-radius:10px;
-  /* 右下角 */
+  */
+  /* 右下角圆角
   -webkit-border-bottom-right-radius:10px;
   -moz-border-radius-bottomright: 10px;        
   border-bottom-right-radius:10px;
+   */
   
-  /*  */
+  /* 阴影
   box-shadow:0px 0px 1px 0px #f2541f;
-  
+   */
 }
 #container .box:hover{
 	border: 1px solid /*#669f49*/ #f2541f;
   	box-shadow:0px 1px 3px 1px #f2541f;
 }
+
 
 #container .box h2 {
   font-size: 14px;
@@ -360,10 +341,3 @@
           border-radius: 5px;
           */
 }
-
-
-/**** Clearfix 
-.clearfix:before, .clearfix:after { content: ""; display: table; }
-.clearfix:after { clear: both; }
-.clearfix { zoom: 1; }
-****/

@@ -5,38 +5,38 @@
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
-
 <%
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
-
 if(accountInfo==null){
 	out.println("need to login");
 }
-
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>51youtu</title>
-<link rel="stylesheet" href="res/basic.css">
+
 <link rel="stylesheet" href="res/common_util.css">
-<link rel="stylesheet" href="res/header2.css">
+<link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<style type="text/css">
+/** 这样做会让body的内容到navbar下面 ，包括自己在背景上写的内容。 **/
+  body { 
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
 <link rel="stylesheet" href="res/signin.css" />
 <link rel="stylesheet" href="res/footer.css">
 <link rel="stylesheet" href="./jquery/masonry/style.masonry.css" />
-
 <link href="./jquery/lightbox/lightbox.css" rel="stylesheet" />
-
 <!-- 上传box框样式    暂时用fineuploader
 <link href="./jquery/uploader/css/styles2.css" rel="stylesheet" />
 -->
 <!-- 上传控件    -->
 <link href="./jquery/fineuploader/fineuploader2.css" rel="stylesheet">
-
 <link href="./jquery/jPaginator/jPaginator.css" rel="stylesheet" />
-
 
 <style type="text/css"></style>
 
@@ -51,17 +51,23 @@ if(accountInfo==null){
 </script><style type="text/css">.demo{width:1194px;}</style>
 
 <!-- js -->
+<!-- jquery -->
 <script src="./jquery/jquery-1.7.2.min.js"></script>
+<!-- bootstrap-js -->
+<script src="./jquery/bootstrap/js/bootstrap.js"></script>
+<!-- masonry -->
 <script src="./jquery/masonry/jquery.masonry.min.js"></script>
 <script src="./jquery/masonry/jquery.masonry.corner.js"></script>
+<!-- infinitescroll -->
+<script src="./jquery/infinitescroll/jquery.infinitescroll.js"></script>
+<!-- lightbox -->
 <script src="./jquery/lightbox/lightbox.js"></script>
-
 <!-- drop file uploader 暂时用fineuploader
 <script type="text/javascript" src="jquery/uploader/js/jquery.filedrop.js"></script>
 -->
 
 <!-- jPaginator all -->
-<!-- for jPaginator -->
+<!-- for jPaginator jquery.ui. -->
 <script src="./jquery/jPaginator/slider/jquery.ui.core.min.js"></script>
 <script src="./jquery/jPaginator/slider/jquery.ui.widget.min.js"></script>
 <script src="./jquery/jPaginator/slider/jquery.ui.mouse.min.js"></script>
@@ -156,42 +162,6 @@ $(function(){
 //on load document main
 	$(function() {	
 		
-	
-		//session check
-		// TODO 修改为后台验证显示
-		// 获取session信息
-		// 并根据session信息
-		// 界面变化
-		//
-		//jQuery.post(url,data,success(data, textStatus, jqXHR),dataType)
-/* 		$.post("./session!session.act", { Action: "post", Name: "lulu" }, //默认使用post的json对象其实会转变为form格式数据向后传
-				function (data, textStatus){
-				//data 可以是 xmlDoc, jsonObj, html, text, 等等.
-				//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
-				//alert(JSON.stringify(data)); // jquery直接将数据转化为对象
-				if(data!=null&&typeof(data)==="object"&&typeof(data.userId)==="string"){ //类型判断
-					$("#topnav #userId").html(data.userId);
-					
-					// 显示用户登录后的面板 需要其他js配置
-					// 显示用户信息框 ( stampcorner)
-					//
-					// TODO 单独形成模板
-					//
-					$('#container').prepend("<div class='corner-stamp' >"
-							+"<div class='rel'>"
-					+"<div id='userInfo'></div>"
-					+"<img class='portrait' alt='头像' src='./res/image/portrait_def.jpg' >"
-					+"</div>"
-					+"</div>");
-					
-					$('#container').masonry({cornerStampSelector: ".corner-stamp" });//显示 瀑布角落内容
-					$('#container #userInfo').html("用户："+data.userId+"您好！");
-					//$('#container').masonry( 'reload' );
-					//
-				}
-		}, "json"); */
-		//session check end
-		
 		<% //使用后台技术传递到前台。使用全局js变量
 		if (accountInfo!=null) {%>
 		accountInfo={};
@@ -199,10 +169,8 @@ $(function(){
 		accountInfo.userName='<%=accountInfo.getUserName()%>';
 		//alert(accountInfo.userId);
 		<%} %>
-
 		
-		
-		//登录框 设置  以后考虑作为 jquery的插件
+		//ajax登录框 设置  以后考虑作为 jquery的插件
 	    $(".signin").click(function(e) {          
 			e.preventDefault();
                $("fieldset#signin_menu").toggle();
@@ -218,13 +186,14 @@ $(function(){
 				$("fieldset#signin_menu").hide();
 			}
 		});
-		//登录框结束
+		//ajax登录框结束
+		
 		
 		//设置瀑布布局
 		$('#container').masonry({
 			itemSelector : '.box',			
 			isAnimated : false,
- 			  /* animationOptions: {
+ 			/* animationOptions: {
 				    duration: 750,
 				    easing: 'linear',
 				    queue: false
@@ -235,7 +204,6 @@ $(function(){
 			}, */
 			//cornerStampSelector: '.corner-stamp' //左上角的一个预留空间 样式为'.corner-stamp' //使用ajax方式展示
 		});
-		
 		//
 		//检测登录信息并追加瀑布布局中的corner-stamp 注意这个其实要在 $('#container').masonry()第一次初始化后执行，否则界面会因为初始化设置与后续设置相反二出问题。
 		if(typeof(accountInfo)!='undefined'&&accountInfo!=null){
@@ -270,17 +238,17 @@ $(function(){
 							+'</a>'
 							+'<span class="price">有图有真相</span>'
 							+'<div class="btns" >'
-								+'<a href="'+item.url+'" class="img_album_btn_left" target="_blank" title="下载"/>'
-								+'<a href="./item.jsp?itemId='+item.seqId+'" class="img_album_btn" target="_blank" title="加入专辑"/>'
+								+'<a href="'+item.url+'" class="btn btn-small img_album_btn_left" target="_blank" title="下载"><i class="icon-download-alt"></i>下</a>'
+								+'<a href="./item.jsp?itemId='+item.seqId+'" class="btn btn-small img_album_btn_right" target="_blank" title="详细">详<i class="icon-file"></i></a>'
 							+'</div>'
 						+'</div>'
-						+'<div class="tilte"  style="word-break:break-all;">'
-						+'<span>'+item.name+'</span>'
+						+'<h5 class="" style="word-break:break-all;">'+item.name+'</h5>'
+						+'<div class="title"  style="word-break:break-all;">'
 						+'<p>'+item.text+'</p>'
 						+'<a class="showEditor" href="javascript:void(0)" title="编辑">编辑</a> '
 						+'<form itemId="'+item.seqId+'" class="editor" style="display:none">'
-						+'<textarea class="editor" rows="4" style="width:95%;overflow-y:visible;resize:none;"></textarea>'
-						+'<input class="save" type="button" onclick="" value="保存"/> <input class="reset" type="button" onclick="" value="放弃"/>'
+						+'<textarea class="editor" rows="4" style="overflow-y:visible;resize:none;"></textarea>'
+						+'<input class="btn btn-mini btn-primary save" type="button" onclick="" value="保存"/> <input class="btn btn-mini reset" type="button" onclick="" value="放弃"/>'
 						+'</form>'
 						+'</div>'
 					+'</div>'
@@ -290,7 +258,7 @@ $(function(){
 							+'<!-- <a href="#" class="like_btn"></a><em class="bold">916</em> -->'
 						+'</div>'
 						+'<!-- <div class="items_comment fr"><a href="#">底部备用按钮</a><em class="bold">(0)</em></div>-->'
-						+'<a id="delete" itemId="'+item.seqId+'" class="box_btn_bright delete" href="javascript:void(0);" title="删除"></a>'
+						+'<a itemId="'+item.seqId+'" class="btn btn-small btn-danger btn_right delete" href="javascript:void(0);" title="删除">删<i class="icon-trash icon-white"></i></a>'
 					+'</div>'
 				+'</div>'
 				+'<!--item box end-->'
@@ -485,9 +453,50 @@ $(function(){
 			userIdPara="peopleId="+accountInfo.userId;
 		}
 		
+		//页面初始化的时候做一次
 		$.getJSON("./item!listItem.act"+"?"+userIdPara, fnRenderListItem); //注册一个全局函数
-		
 		//查询并放入 
+		
+		//
+		//  滚轴分页加载内容
+		//
+		$('#container').infinitescroll({
+			navSelector : "#page-nav", //导航的选择器，会被隐藏 */
+			nextSelector : "#page-nav a",//包含下一页链接的选择器 
+			//itemSelector : ".box",//你将要取回的选项(内容块) 
+			path:function(crrPageNum){ //使用path而不是 锚点
+				return "./item!listItem.act?pageNum=" + crrPageNum
+				+ "&numPerPage=10" + "&"+userIdPara//使用url不用navselector}
+			},
+			debug : true, //启用调试信息
+			//默认采用："http://www.infinite-scroll.com/loading.gif"
+			animate : true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
+			extraScrollPx : 50, //滚动条距离底部多少像素的时候开始加载，默认150
+			bufferPx : 40,//载入信息的显示时间，时间越大，载入信息显示时间越短
+			dataType:"json",
+			appendCallback:false,//默认true
+/* 			template: function(data) { // 如果appendCallback==true 则提供给 callback的必须是html。 template则是将返回处理为html的方法。如appendCallback==false则其callback方法就是用户需要自己处理内容append
+				fnRenderListItem(data);
+				return data;
+			}, */
+			errorCallback : function() {
+				alert("error");
+			},//当出错的时候，比如404页面的时候执行的函数
+			localMode : true
+			//是否允许载入具有相同函数的页面，默认为false
+		}, function(data,opts) {
+				var page = opts.state.currPage; 
+				//alert("page:"+page);
+				if(data==null||typeof(data)!=="object"/* ||data.success==true */||data.rows.length<=0){
+					$(this).infinitescroll('destroy');
+					return;
+				}
+				fnRenderListItem(data);
+				$('#container').masonry('reload');
+				//alert("ok!!");
+		});
+		// 滚轴分页加载内容 end
+		
 
 		// 分页组件
 		// jPaginator 依赖于 jquery-ui的slider jquery-ui-1.8.13.slider.min.js
@@ -516,7 +525,8 @@ $(function(){
 				//况且 对于互联网应用 可能需要改成原始的分页组件 （自己简单画的即可）+ 滚轴风格的分页
 				//
 				$.getJSON("./item!listItem.act?pageNum=" + num
-						+ "&numPerPage=10"+"&"+userIdPara, fnRenderListItem);
+								+ "&numPerPage=10" + "&" + userIdPara,
+								fnRenderListItem);
 				//如自定义该paging插件，可能要保留现有风格以及增加一个ajax 缓存状态的风格？ 因为如果是简单分页功能 不需要保存页面状态
 				//如果想用ajax 可能要考虑缓存 以及缓存对象反复操作后的情况。 jquery会缓存每个新生成的jquery中新增的属性么？ 应该会吧 如果不会则需要插件中缓存。
 				//这个分页插件无法在点击按钮后修改其本身的属性？
@@ -533,18 +543,78 @@ $(function(){
 
 	});
 </script>
+</head>
+<body>
+<style type="text/css">
+/* 页面主题样式  */
+/**** Content  也是基础考虑放到整体css中 ****/
+#content {
+  margin:0 auto; 
+  width: 100%;
+  /* background: #eee; */
+ /*  background: #fff; */
+}
+.container,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container{
+	width: 1194px;/* 1180(1184) 15个span 默认940 为12个span */
+	/* border: 1px solid #eeeeee; */
+}
+.span12,
+.span11,
+.span10,
+.span9,
+.span8,
+.span7,
+.span6,
+.span5,
+.span4,
+.span3,
+.span2,
+.span1{
+	 /* border: 1px solid #eeeeee; */
+}
 
-<div id="header2">
-	<!-- -->
-	<div id="brand">
-		<div class="section-wrap">
-			<div class="logo">v:0.5(α)
-				<h1>
-					<a href="#" title="51youtu"></a>
-				</h1>
-			</div>
-			<ul class="action"><!-- 功能 -->
-				<div id="signin_area">			
+/*一个相对定位框 内部可以放绝对定位框*/
+div.rel{
+	position: relative;
+}
+img.portrait{
+	top: 5px;
+	right: 5px;
+	height: 100px;
+	width: 100px;
+	position: absolute;
+}
+</style>
+
+<!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+     <div class="container">
+         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+           <span class="icon-bar"></span>
+         </button>
+         <a class="brand" href="./">我要优图</a>
+         <div class="nav-collapse collapse">
+           <ul class="nav">
+             <li class="active"><a href="./"><i class="icon-home icon-white"></i>主页</a></li>
+             <li><a href="#about"><i class="icon-book"></i>关于</a></li>
+             <li><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
+           </ul>
+           	<form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">登录</button>
+            </form>
+         </div><!--/.nav-collapse -->
+    </div>	 
+  </div>
+</div>
+		    <div id="signin_area">			
 					<!-- 登录表单框 使用signin.css -->			
 					<div id="topnav" class="topnav"><div id="userId"> </div><a href="login" class="signin"><span>登录</span></a> </div>
 					  <fieldset id="signin_menu">
@@ -567,86 +637,10 @@ $(function(){
 						-->
 						</form>
 					</fieldset>			
-				</div>			
-			</ul>
-		</div>
-	</div>
-	
-	<div id="nav">
-		<div class="section-wrap">
-			<ul class="entries clearfix">
-				<li class="first"><a
-					href="/">首页</a></li>
+				</div>	
 
-<!-- 				<li class="split"></li>
-				<li class="multi-nav">
-
-					<div class="nav-trigger">
-						<a href="javascript:void(0);">大家看</a> <span class="icon"></span>
-					</div>
-					<div class="more-nav">
-					分类的菜单
-						<ul class="topic clearfix">
-							<li><a
-								href="#">最热</a><span class="hot">这里是图片</span>
-							</li>
-						</ul>
-						<ul class="category clearfix">
-							<li><a href="#">服饰</a></li>
-							<li><a href="#">家居</a></li>
-							<li><a href="#">创意DIY</a></li>
-						</ul>
-						 
-					</div>
-					</li> -->
-<!-- 				<li class="split"></li>
-
-				<li><a
-					href="#">豆豆图库</a>
-				</li>
-
-				<li class="split"></li>
-
-				<li><a
-					href="#">其他</a>
-				</li> -->
-			</ul>
-			<div class="search-bar">
-<!-- 		搜索框之后实现
-			<form id="pix-search-form" class="search clearfix"
-					action="#" method="get">
-					<input id="pix-search-input" name="q" placeholder="搜图片 / 图集 / 找人"
-						maxlength="30" type="text">
-					<button type="submit"></button>
-				</form> -->
-			</div>
-		</div>
-	</div>
-</div>
-</head>
-
-
-<body>
-<style type="text/css">
-/*一个相对定位框 内部可以放绝对定位框*/
-div.rel{
-	position: relative;
-}
-img.portrait{
-	top: 5px;
-	right: 5px;
-	height: 100px;
-	width: 100px;
-	position: absolute;
-}
-</style>
-
-<style type="text/css">
-/*上传按钮 2*/
-
-</style>
-	<section id="content">
-		<div id="container" class="clearfix" >
+<section id="content">
+		<div id="container" class="container" >
 		
 <!-- cornerstamp 使用jquery写入 不是直接显示的首先
 	<div class="corner-stamp" >
@@ -661,8 +655,10 @@ img.portrait{
 /* .userpanel{
 	display:none;
 } */
-</style>	
+</style>
 
+			<div style="display: none;" id="page-nav"><a href="http://www.17sucai.com/preview/1/2013-05-05/masonry/pages/2.html"></a></div>
+			
 			<div id="dropEditor" class="box col25 userpanel">
 <!-- 暂时不用dropbox 但后续还是以扩展这个dropbox为好 暂时只用 fine-uploader ，但dropbox可以扩展出需要的界面效果。fine-uploader扩展效果比较麻烦。
 			  <div id="dropbox">
@@ -670,33 +666,6 @@ img.portrait{
 			  </div> -->
 			  <div id="jquery-wrapped-fine-uploader">上传</div>
 			</div>
-			
-			<!--item start
-			<div class="box col25 item">
-				<div class="item_t">
-					<div class="img">
-						<a href="http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg">
-							<img alt="test" src="http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg" >
-						</a>
-						<span class="price">￥195.00</span>
-						<div class="btns">
-							<a href="http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg" class="img_album_btn">加入专辑</a>
-							<a href="http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg" class="img_album_btn_left">左上角</a>
-						</div>
-					</div>
-					<div class="title"><span>图片标题 或基本内容</span></div>
-				</div>
-				
-				<div class="item_b clearfix">
-					<div class="items_likes fl">
-						<a href="#" class="like_btn"></a><em class="bold">916</em>
-					</div>
-					<div class="items_comment fr"><a href="#">评论底部按钮</a><em class="bold">(0)</em></div>
-				</div>
-			</div>
-			-->
-			<!--item end-->
-
 			
 		</div>
 		<!-- #container -->
@@ -727,11 +696,10 @@ img.portrait{
 	<!-- #content -->
 
 </body>
-
+<hr/>
 <footer>
 <div id="footer"> 
-<div id="footer_stripe">
-</div>
+
 <div id="copyright">
 沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
 wfeng007@163.com <br/>
