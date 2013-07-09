@@ -9,7 +9,7 @@
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 if(accountInfo==null){
-	out.println("need to login");
+	//out.println("need to login"); 这里不能再加载css之前输出否则会影响一些样式，甚至直接导致ie无法正常展示页面，原因不明。 
 }
 %>
 <!DOCTYPE html>
@@ -492,7 +492,7 @@ $(function(){
 					return;
 				}
 				fnRenderListItem(data);
-				$('#container').masonry('reload');
+				//$('#container').masonry('reload');
 				//alert("ok!!");
 		});
 		// 滚轴分页加载内容 end
@@ -543,7 +543,9 @@ $(function(){
 
 	});
 </script>
+
 </head>
+
 <body>
 <style type="text/css">
 /* 页面主题样式  */
@@ -607,7 +609,7 @@ img.portrait{
            </ul>
            	<form class="navbar-form pull-right">
               <input class="span2" type="text" placeholder="Email">
-              <input class="span2" type="password" placeholder="Password">
+              <input class="span2"  type="password" placeholder="Password">
               <button type="submit" class="btn">登录</button>
             </form>
          </div><!--/.nav-collapse -->
