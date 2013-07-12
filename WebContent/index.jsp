@@ -1,15 +1,27 @@
+<%@page import="org.apache.commons.lang.math.NumberUtils"%>
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
 <%@ page language="java"%>
 <%@ page session="false"%>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
 <%
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 if(accountInfo==null){
 	//out.println("need to login"); 这里不能再加载css之前输出否则会影响一些样式，甚至直接导致ie无法正常展示页面，原因不明。 
+}
+
+// TODO 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
+// 当前页实际页数：
+String pns=request.getParameter("pageNum");
+int pn=1;
+if(pns==null || "".equals(pns)||!StringUtils.isNumeric(pns)){
+	pn=1;
+}else{
+	pn=Math.abs(NumberUtils.stringToInt(pns));
 }
 %>
 <!DOCTYPE html>
@@ -74,6 +86,8 @@ if(accountInfo==null){
 <script src="./jquery/jPaginator/slider/jquery.ui.slider.min.js"></script>
 <!-- jPaginator -->
 <script src="./jquery/jPaginator/jPaginator.js"></script>
+
+<script src="./jquery/bootstrap/js/jquery.bootpag.js"></script>
 
 <!-- fineuploader (uploader2) -->
 <script src="./jquery/fineuploader/header.js"></script>
@@ -454,7 +468,7 @@ $(function(){
 		}
 		
 		//页面初始化的时候做一次
-		$.getJSON("./item!listItem.act"+"?"+userIdPara, fnRenderListItem); //注册一个全局函数
+		$.getJSON("./item!listItem.act"+"?"+"pageNum="+<%=(pn*3)-2%>+"&"+userIdPara, fnRenderListItem); //注册一个全局函数
 		//查询并放入 
 		
 		//
@@ -465,13 +479,14 @@ $(function(){
 			nextSelector : "#page-nav a",//包含下一页链接的选择器 
 			//itemSelector : ".box",//你将要取回的选项(内容块) 
 			path:function(crrPageNum){ //使用path而不是 锚点
-				return "./item!listItem.act?pageNum=" + crrPageNum
+				
+				return "./item!listItem.act?pageNum=" + (<%=(pn*3)-2%>+crrPageNum)
 				+ "&numPerPage=10" + "&"+userIdPara//使用url不用navselector}
 			},
 			debug : true, //启用调试信息
 			//默认采用："http://www.infinite-scroll.com/loading.gif"
 			animate : true, //当有新数据加载进来的时候，页面是否有动画效果，默认没有
-			extraScrollPx : 50, //滚动条距离底部多少像素的时候开始加载，默认150
+			extraScrollPx : 10, //滚动条距离底部多少像素的时候开始加载，默认150
 			bufferPx : 40,//载入信息的显示时间，时间越大，载入信息显示时间越短
 			dataType:"json",
 			appendCallback:false,//默认true
@@ -482,11 +497,16 @@ $(function(){
 			errorCallback : function() {
 				alert("error");
 			},//当出错的时候，比如404页面的时候执行的函数
-			localMode : true
-			//是否允许载入具有相同函数的页面，默认为false
+			localMode : true,//是否允许载入具有相同函数的页面，默认为false
+			//maxPage: 2  //这个maxPage 在使用appendCallback:false时似乎会报错。
+			
 		}, function(data,opts) {
 				var page = opts.state.currPage; 
 				//alert("page:"+page);
+				if(page%(3+1)==0){ //3的倍数页则停止
+					$(this).infinitescroll('destroy');
+					return 
+				}
 				if(data==null||typeof(data)!=="object"/* ||data.success==true */||data.rows.length<=0){
 					$(this).infinitescroll('destroy');
 					return;
@@ -500,6 +520,7 @@ $(function(){
 
 		// 分页组件
 		// jPaginator 依赖于 jquery-ui的slider jquery-ui-1.8.13.slider.min.js
+		/*
 		jPaginatorB = {
 			selectedPage : 1,
 			nbPages : 12,
@@ -540,7 +561,18 @@ $(function(){
 			}
 		}
 		$("#pagor").jPaginator(jPaginatorB);
-
+		*/
+		
+		//页面获取数据。
+		$("#pagor2").bootpag({
+			total: 10,
+			page: <%=pn%>, //当前页
+			maxVisible: 10,
+			href: "./index.jsp?pageNum={{number}}&numPerPage=10", // TODO 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
+			leaps: false,
+			next: '>>',
+			prev: '<<'
+		});
 	});
 </script>
 
@@ -589,6 +621,11 @@ img.portrait{
 	width: 100px;
 	position: absolute;
 }
+
+.pagor2{
+	margin: 0 auto;
+	text-align: center;
+}
 </style>
 
 <!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
@@ -616,6 +653,9 @@ img.portrait{
     </div>	 
   </div>
 </div>
+
+
+
 		    <div id="signin_area">			
 					<!-- 登录表单框 使用signin.css -->			
 					<div id="topnav" class="topnav"><div id="userId"> </div><a href="login" class="signin"><span>登录</span></a> </div>
@@ -642,6 +682,8 @@ img.portrait{
 				</div>	
 
 <section id="content">
+
+
 		<div id="container" class="container" >
 		
 <!-- cornerstamp 使用jquery写入 不是直接显示的首先
@@ -675,27 +717,27 @@ img.portrait{
 
 <link href="./res/paginator.css" rel="stylesheet" />
 
-  <!-- paginator  -->	
+  <!-- paginator 
   <div id="pagor" class="clearfix" >
-      <!-- optional left control buttons-->
       <a id="pagor_m_left"></a><div id="pagor_o_left"></div>
       <div class='paginator_p_wrap'>
         <div class='paginator_p_bloc'>
-          <!--<a class='paginator_p'></a> // page number : dynamically added -->
         </div>
       </div>
-      <!-- optional right control buttons-->
       <div id="pagor_o_right"></div><a id="pagor_m_right"></a>
-      <!-- slider -->
       <div class='paginator_slider' class='ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all'>
         <a class='ui-slider-handle ui-state-default ui-corner-all' href='#'></a>
       </div>
   </div>
-	
+	 -->	
 	<!-- paginator end -->
+	
+	
 
 </section>
 	<!-- #content -->
+
+<p id="pagor2" class="pagor2"></p>
 
 </body>
 <hr/>
