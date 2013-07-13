@@ -79,29 +79,45 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
     		this.result=JSONObject.fromObject(map);
     		
     		
+    		
+    		//登录成功会转发到 result.jsp 并使其redirect to /index.jsp
+//    		HttpServletResponse response=ServletActionContext.getResponse();
+        	HttpServletRequest req= ServletActionContext.getRequest();
+        	try {
+        		req.setAttribute("resultJson", this.result);
+        		req.setAttribute("forwardUrl", "/index.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
+        		req.setAttribute("msg", "ok");
+    			req.getRequestDispatcher("/result.jsp").forward(req, ServletActionContext.getResponse());
+    			
+    			return; //forward
+    		} catch (Exception e1) {
+    			throw new RuntimeException(e1);
+    		}
+    		
     	}else{
     		Map<String, Object> map = new HashMap<String, Object>(0);
     		map.put("msg", "failed!");
     		map.put("success", false);
     		this.result=JSONObject.fromObject(map);
+    		
+    		
+    		
+    		//错误则进入login.jsp
+//    		HttpServletResponse response=ServletActionContext.getResponse();
+        	HttpServletRequest req= ServletActionContext.getRequest();
+        	try {
+        		req.setAttribute("resultJson", this.result);
+        		req.setAttribute("forwardUrl", "/login.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
+        		req.setAttribute("msg", "failed");
+    			req.getRequestDispatcher("/result.jsp").forward(req, ServletActionContext.getResponse());
+    			return; //forward
+    		} catch (Exception e1) {
+    			throw new RuntimeException(e1);
+    		}
+    		
     	}
     	
     	
-    	//
-//		HttpServletResponse response=ServletActionContext.getResponse();
-    	HttpServletRequest req= ServletActionContext.getRequest();
-    	try {
-    		req.setAttribute("resultJson", this.result);
-    		req.setAttribute("forwardUrl", "/index.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
-    		req.setAttribute("msg", "ok");
-			req.getRequestDispatcher("/result.jsp").forward(req, ServletActionContext.getResponse());
-			
-			return; //forward
-		} catch (Exception e1) {
-			throw new RuntimeException(e1);
-		}
-		
-		
 		/*
 		ServletActionContext.getResponse().setContentType("application/json");// 设置http头部为json
 		
