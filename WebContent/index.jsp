@@ -39,7 +39,6 @@ if(pns==null || "".equals(pns)||!StringUtils.isNumeric(pns)){
     padding-bottom: 40px;
   }
 </style>
-<link rel="stylesheet" href="res/signin.css" />
 <link rel="stylesheet" href="res/footer.css">
 <link rel="stylesheet" href="./jquery/masonry/style.masonry.css" />
 <link href="./jquery/lightbox/lightbox.css" rel="stylesheet" />
@@ -183,24 +182,6 @@ $(function(){
 		accountInfo.userName='<%=accountInfo.getUserName()%>';
 		//alert(accountInfo.userId);
 		<%} %>
-		
-		//ajax登录框 设置  以后考虑作为 jquery的插件
-	    $(".signin").click(function(e) {          
-			e.preventDefault();
-               $("fieldset#signin_menu").toggle();
-			$(".signin").toggleClass("menu-open");
-           });
-		
-		$("fieldset#signin_menu").mouseup(function() {
-			return false
-		});
-		$(document).mouseup(function(e) {
-			if($(e.target).parent("a.signin").length==0) {
-				$(".signin").removeClass("menu-open");
-				$("fieldset#signin_menu").hide();
-			}
-		});
-		//ajax登录框结束
 		
 		
 		//设置瀑布布局
@@ -644,42 +625,16 @@ img.portrait{
              <li><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
            </ul>
-           	<form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="Email">
-              <input class="span2"  type="password" placeholder="Password">
-              <button type="submit" class="btn">登录</button>
+           	<form class="navbar-form pull-right" action="./session!login.act" >
+              <input id="userId" name="userId" class="span2" type="text" placeholder="邮箱 或 昵称">
+              <input id="password" name="password" class="span2"  type="password" placeholder="密码">
+              <button id="signin_submit" type="submit" class="btn">登录</button>
             </form>
          </div><!--/.nav-collapse -->
     </div>	 
   </div>
 </div>
 
-
-
-		    <div id="signin_area">			
-					<!-- 登录表单框 使用signin.css -->			
-					<div id="topnav" class="topnav"><div id="userId"> </div><a href="login" class="signin"><span>登录</span></a> </div>
-					  <fieldset id="signin_menu">
-					    <form method="post" id="signin" action="./session!login.act"> <!-- 这里直接用了form而不是ajax 这会要就页面重新刷新 -->
-					      <label for="username">账号</label>
-					      <input id="userId" name="userId" value="" title="username" tabindex="4" type="text" placeholder="邮箱 或 昵称">
-					      </p>
-					      <p>
-					        <label for="password">密码</label>
-					        <input id="password" name="password" value="" title="password" tabindex="5" type="password">
-					      </p>
-					      <p class="remember">
-					        <input id="signin_submit" value="Sign in" tabindex="6" type="submit">
-					        <input id="remember" name="remember_me" value="1" tabindex="7" type="checkbox">
-					        <label for="remember">记住</label>
-					      </p>
-						  <!-- 
-					      <p class="forgot"> <a href="#" id="resend_password_link">忘记密码?</a> </p>
-					      <p class="forgot-username"> <A id=forgot_username_link ="If you remember your password, try logging in with your email" href="#">忘记用户名?</A> </p>
-						-->
-						</form>
-					</fieldset>			
-				</div>	
 
 <section id="content">
 
@@ -745,8 +700,9 @@ img.portrait{
 <div id="footer"> 
 
 <div id="copyright">
-沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
+51youtu v0.5@ 沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
 wfeng007@163.com <br/>
+<br/>
 </div> 
 </div>
 </footer>
