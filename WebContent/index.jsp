@@ -14,7 +14,7 @@ if(accountInfo==null){
 	//out.println("need to login"); 这里不能再加载css之前输出否则会影响一些样式，甚至直接导致ie无法正常展示页面，原因不明。 
 }
 
-// TODO 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
+// 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
 // 当前页实际页数：
 String pns=request.getParameter("pageNum");
 int pn=1;
@@ -624,6 +624,7 @@ img.portrait{
              <li class="active"><a href="./"><i class="icon-home icon-white"></i>主页</a></li>
              <li><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
+             <li><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
            </ul>
            	<form class="navbar-form pull-right" action="./session!login.act" >
               <input id="userId" name="userId" class="span2" type="text" placeholder="邮箱 或 昵称">

@@ -78,6 +78,7 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
              <li class="active"><a href="./">主页</a></li>
              <li><a href="#about">关于</a></li>
              <li><a href="#contact">联系</a></li>
+             <li><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
            </ul>
          </div><!--/.nav-collapse -->
     </div>
