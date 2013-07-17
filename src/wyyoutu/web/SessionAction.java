@@ -20,7 +20,7 @@ import wyyoutu.model.CoPeople;
 import wyyoutu.service.LoginService;
 
 /**
- * 
+ * 与账户token及session有关的功能
  * @author wfeng007
  * @date 2012-11-7 下午10:06:04
  */
@@ -41,10 +41,12 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
     // 返回给前台的内容，其实给ui的是result.toString()返回的字符串,即response内容默认用result返回
     private JSONObject result;
 
-    //登录
+    /**
+     * 登录。
+     */
 	public void login(){
 		
-		logger.debug("userId:"+userId);
+		logger.debug("To login! userId:"+userId);
 		
 //		System.out.println(ServletActionContext.getServletContext().getRealPath("/"));
 //		System.out.println(ServletActionContext.getServletContext().getContextPath());

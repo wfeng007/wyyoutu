@@ -49,6 +49,22 @@ body {
 .span1{
 	 /* border: 1px solid #eeeeee; */
 }
+
+
+/* 账号信息表单 */
+.form-account {
+  padding: 19px 29px 29px;
+  margin: 0 auto 20px; /* 左右没有方框，并居中。 */
+  background-color: #fff;
+  border: 1px solid #eeeeee;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
 </style>
 <!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -72,15 +88,69 @@ body {
 </div>
 </head>
 <body>
+
 <div class="container">
 <%if(accountInfo!=null ){%>
-<h3>...已经登录...</h3>
-<hr>
-accountInfo.getUserId():<%=accountInfo.getUserId()%><br>
-accountInfo.getUserName():<%=accountInfo.getUserName()%><br>
-accountInfo:<%=accountInfo%><br>
+	<div class="row">
+		<div class="span3">
+		</div>
+		<div class="span12">
+			<form class="form-horizontal form-account" action="./scripting/modifyPeople.jss" method="post">
+				<legend><h2>基本信息</h2></legend>
+				<div class="control-group">
+					<label class="control-label">账号标识：</label>
+					<div class="controls">
+						<span class="uneditable-input"><%=accountInfo.getUserId()%></span>(登录名，不可修改！)
+						<input id="userId" name="userId" type="text" class="hide" value="<%=accountInfo.getUserId()%>"/>
+					</div>
+				</div> 
+				<div class="control-group">
+					<label class="control-label">账号名称：</label>
+					<div class="controls">
+						<input id="userName" name="userName" type="text" value="<%=accountInfo.getUserName()%>"/> 
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-primary" type="submit">保存</button>
+						<button class="btn " type="reset">重置</button>
+					</div>
+				</div>
+			</form>
+			<form class="form-horizontal form-account" action="./scripting/modifyPassword.jss" method="post">
+				<input id="userId" name="userId" type="text" class="hide" value="<%=accountInfo.getUserId()%>"/>
+				<legend><h2>密码</h2></legend>
+				<div class="control-group">
+					<label class="control-label">现有密码：</label>
+					<div class="controls">
+						<input id="curPwd" name="curPwd" type="password" placeholder="现有密码确认" />
+					</div>
+				</div> 
+				<div class="control-group">
+					<label class="control-label">新的密码：</label>
+					<div class="controls">
+						<input id="newPwd" name="newPwd" type="password" placeholder="新的密码"/> 
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">确认新码：</label>
+					<div class="controls">
+						<input id="checkPwd" name="checkPwd" type="password" placeholder="再确认一次新的密码"/> 
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-primary" type="submit">保存</button>
+						<button class="btn " type="reset">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 <%}//if(accountInfo==null)%>
 </div>
+
 
 <hr/>
 <footer>

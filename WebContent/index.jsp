@@ -622,9 +622,10 @@ img.portrait{
          <div class="nav-collapse collapse">
            <ul class="nav">
              <li class="active"><a href="./"><i class="icon-home icon-white"></i>主页</a></li>
+             <li><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
+             <li><a href="./account.jsp"><i class="icon-pencil"></i>设置</a></li>
              <li><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
-             <li><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
            </ul>
            	<form class="navbar-form pull-right" action="./session!login.act" >
               <input id="userId" name="userId" class="span2" type="text" placeholder="邮箱 或 昵称">
