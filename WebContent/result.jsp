@@ -2,54 +2,48 @@
 <%@ page import="java.lang.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="net.sf.json.JSONObject" %>
+<%@ page import="wyyoutu.web.WebResult" %>
 <%@ page isErrorPage="true" %>
 <%!
-
-//处理类型
-public static final String HANDLE_TYPE_REDIRECT="HANDLE_TYPE_REDIRECT";
-public static final String HANDLE_TYPE_DISPLAY="HANDLE_TYPE_DISPLAY";
-public static final String HANDLE_OPTION_KEY_AUTO_DELAY="HANDLE_OPTION_KEY_AUTO_DELAY";//当该参数为null时，则直接跳转。//TODO <0时为手动跳转 >0时为页面自动定时跳转。
-//数据
-public static final String RESULT_DATA_KEY_REDIRECT_URL="RESULT_DATA_KEY_REDIRECT_URL";//用于跳转的路径。相对路径则指相对于本页面。
-public static final String RESULT_DATA_KEY_ERROR="RESULT_DATA_KEY_ERROR";//用于显示或通知的异常对象
-public static final String RESULT_DATA_KEY_MSG_TEXT="RESULT_DATA_KEY_MSG_TEXT"; //用于显示或通知的消息
-public static final String RESULT_DATA_KEY_RESULT_JSON="RESULT_DATA_KEY_RESULT_JSON";//复杂的json结构的结果集
+//
+// 依赖WebResult的常量。WebResult可以转发到本result-traffic。
+// 需要参考webresult定义跳转数据规范。
+// 
 %>
 <%
-
 //TODO 增加404等协议状态处理。
 //确定类型
-String handleType=HANDLE_TYPE_DISPLAY;
+String handleType=WebResult.HANDLE_TYPE_DISPLAY;
 String redirectUrl=null;
-if(request.getAttribute(RESULT_DATA_KEY_REDIRECT_URL) instanceof String){
-	redirectUrl = (String) request.getAttribute(RESULT_DATA_KEY_REDIRECT_URL);
-	handleType=HANDLE_TYPE_REDIRECT;
+if(request.getAttribute(WebResult.RESULT_DATA_KEY_REDIRECT_URL) instanceof String){
+	redirectUrl = (String) request.getAttribute(WebResult.RESULT_DATA_KEY_REDIRECT_URL);
+	handleType=WebResult.HANDLE_TYPE_REDIRECT;
 }
 Integer autoDelay=null;
-if(request.getAttribute(HANDLE_OPTION_KEY_AUTO_DELAY) instanceof Integer){
-	autoDelay = (Integer) request.getAttribute(HANDLE_OPTION_KEY_AUTO_DELAY);
+if(request.getAttribute(WebResult.HANDLE_OPTION_KEY_AUTO_DELAY) instanceof Integer){
+	autoDelay = (Integer) request.getAttribute(WebResult.HANDLE_OPTION_KEY_AUTO_DELAY);
 }
 
 //读取普通文本信息
 String msgText=null;
-if(request.getAttribute(RESULT_DATA_KEY_MSG_TEXT) instanceof String){
-	msgText=(String)request.getAttribute(RESULT_DATA_KEY_MSG_TEXT);
+if(request.getAttribute(WebResult.RESULT_DATA_KEY_MSG_TEXT) instanceof String){
+	msgText=(String)request.getAttribute(WebResult.RESULT_DATA_KEY_MSG_TEXT);
 }
 //读取异常错误信息
 Throwable error=null;
-if(request.getAttribute(RESULT_DATA_KEY_ERROR) instanceof Throwable){
-	error=(Throwable)request.getAttribute(RESULT_DATA_KEY_ERROR);
+if(request.getAttribute(WebResult.RESULT_DATA_KEY_ERROR) instanceof Throwable){
+	error=(Throwable)request.getAttribute(WebResult.RESULT_DATA_KEY_ERROR);
 }
 if (exception != null) { //是isErrorPage导致的获取错误信息。
 	error=exception; //首先处理isErrorPage默认的
 }
 //读取json信息对象
 JSONObject resultJson=null;
-if(request.getAttribute(RESULT_DATA_KEY_RESULT_JSON) instanceof JSONObject){
-	resultJson=(JSONObject)request.getAttribute(RESULT_DATA_KEY_RESULT_JSON);
+if(request.getAttribute(WebResult.RESULT_DATA_KEY_RESULT_JSON) instanceof JSONObject){
+	resultJson=(JSONObject)request.getAttribute(WebResult.RESULT_DATA_KEY_RESULT_JSON);
 }
-if(request.getAttribute(RESULT_DATA_KEY_RESULT_JSON) instanceof String){
-	resultJson=JSONObject.fromObject((String)request.getAttribute(RESULT_DATA_KEY_RESULT_JSON));//FIXME 这里可能会应该解析 json而出错。
+if(request.getAttribute(WebResult.RESULT_DATA_KEY_RESULT_JSON) instanceof String){
+	resultJson=JSONObject.fromObject((String)request.getAttribute(WebResult.RESULT_DATA_KEY_RESULT_JSON));//FIXME 这里可能会应该解析 json而出错。
 }
 
 //
@@ -57,7 +51,7 @@ if(request.getAttribute(RESULT_DATA_KEY_RESULT_JSON) instanceof String){
 //
 
 //直接跳转情况
-if(HANDLE_TYPE_REDIRECT.equals(handleType) && redirectUrl!=null && autoDelay==null){
+if(WebResult.HANDLE_TYPE_REDIRECT.equals(handleType) && redirectUrl!=null && autoDelay==null){
 	response.sendRedirect(application.getContextPath()+redirectUrl); //这里其实只是跳转而已 并非forword。
 	return ;
 }
@@ -89,7 +83,11 @@ if(HANDLE_TYPE_REDIRECT.equals(handleType) && redirectUrl!=null && autoDelay==nu
 
 // FIXME 后面输出代码有个问题如果当时out已经关闭如何处理？
 %>
-
+<jsp:include page="/header.jsp" flush="true">
+	<jsp:param name="header_title" value="51youtu-login" />   
+</jsp:include>
+<jsp:include page="/neck.jsp" flush="true"/>
+<div class="contianer">
 <%if(redirectUrl!=null){%>
 <p>Redirect Url:<a href="<%=application.getContextPath()+redirectUrl%>"><%=redirectUrl%></a></p>
 <%out.flush();
@@ -118,7 +116,8 @@ out.flush();
 %>
 </p>
 <%}%>
-
+</div>
+<jsp:include page="/footer.jsp" flush="true"/>
 
 
 

@@ -30,61 +30,22 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
 //TODO 增加无法查询到指定id的item时的处理
 
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>51youtu</title>
-<!-- TODO删除？ -->
-<link rel="stylesheet" href="res/common_util.css"/>
+<jsp:include page="/header.jsp" flush="true">
+	<jsp:param name="header_title" value="51youtu-login" />   
+</jsp:include>
+
+<!-- TODO删除？
+<link rel="stylesheet" href="res/common_util.css"/> -->
 <!-- bootstrap -->
 <link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-    <style type="text/css">
-    /** 这样做会让body的内容到navbar下面 ，包括自己在背景上写的内容。 **/
-      body { 
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-<link rel="stylesheet" href="res/header2.css">
-<link rel="stylesheet" href="res/signin.css" />
-<link rel="stylesheet" href="res/footer.css">
 
-<!-- jquery -->
-<script src="./jquery/jquery-1.7.2.min.js"></script>
-<!-- bootstrap-js -->
-<script src="./jquery/bootstrap/js/bootstrap.js"></script>
 
 <!-- 区域编辑 -->
 <script src="./jquery/jeditable/jquery.autogrow.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable_summ.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable.autogrow.js"></script>
-</head>
 
-<body>
-
-<!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
-<div class="navbar navbar-inverse navbar-fixed-top">
-   <div class="navbar-inner">
-     <div class="container">
-         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="brand" href="./">我要优图</a>
-         <div class="nav-collapse collapse">
-           <ul class="nav">
-             <li class="active"><a href="./">主页</a></li>
-             <li><a href="#about">关于</a></li>
-             <li><a href="#contact">联系</a></li>
-             <li><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
-           </ul>
-         </div><!--/.nav-collapse -->
-    </div>
-  </div>
-</div>
-
+<jsp:include page="/neck.jsp" flush="true"/>
 
 <style type="text/css">
 /* #page_container {
@@ -109,7 +70,6 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container{
-	width: 1184px;/* 1180(1184) 15个span 默认940 为12个span */
 	/* border: 1px solid #eeeeee; */
 }
 .span12,
@@ -167,7 +127,7 @@ img#itemMedia {
 }
 </style>
 
-<section>
+
 <div class="container">
 
 <div class="row">
@@ -281,21 +241,7 @@ $(function(){
         </form>
 	</div>
 	<div class="clear"></div> <!-- 保证同级的left在上级目录中被包括。 -->
-</div>
 </div><!-- row -->
-</section>
-
-<hr/>
-<footer>
-<div id="footer"> 
-<div id="copyright">
-沪ICP备12041334号 Copyright &copy; 2012 - 2013 wfeng007 <br/> 
-wfeng007@163.com <br/>
-</div> 
 </div>
-</footer>
 
-</body>
-
-
-</html>
+<jsp:include page="/footer.jsp" flush="true"/>

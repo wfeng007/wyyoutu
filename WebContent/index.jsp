@@ -1,12 +1,13 @@
-<%@page import="org.apache.commons.lang.math.NumberUtils"%>
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
 <%@ page language="java"%>
 <%@ page session="false"%>
+<%@ page import="org.apache.commons.lang.math.NumberUtils"%>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
+
 <%
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
@@ -24,22 +25,12 @@ if(pns==null || "".equals(pns)||!StringUtils.isNumeric(pns)){
 	pn=Math.abs(NumberUtils.stringToInt(pns));
 }
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>51youtu</title>
+<jsp:include page="/header.jsp" flush="true">
+	<jsp:param name="header_title" value="51youtu-index" />   
+</jsp:include>
 
-<link rel="stylesheet" href="res/common_util.css">
-<link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-<style type="text/css">
-/** 这样做会让body的内容到navbar下面 ，包括自己在背景上写的内容。 **/
-  body { 
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-</style>
-<link rel="stylesheet" href="res/footer.css">
+
+<!-- <link rel="stylesheet" href="res/common_util.css"> -->
 <link rel="stylesheet" href="./jquery/masonry/style.masonry.css" />
 <link href="./jquery/lightbox/lightbox.css" rel="stylesheet" />
 <!-- 上传box框样式    暂时用fineuploader
@@ -63,9 +54,7 @@ if(pns==null || "".equals(pns)||!StringUtils.isNumeric(pns)){
 
 <!-- js -->
 <!-- jquery -->
-<script src="./jquery/jquery-1.7.2.min.js"></script>
-<!-- bootstrap-js -->
-<script src="./jquery/bootstrap/js/bootstrap.js"></script>
+<!-- bootstrap-js in include!-->
 <!-- masonry -->
 <script src="./jquery/masonry/jquery.masonry.min.js"></script>
 <script src="./jquery/masonry/jquery.masonry.corner.js"></script>
@@ -557,9 +546,10 @@ $(function(){
 	});
 </script>
 
-</head>
 
-<body>
+<jsp:include page="/neck.jsp" flush="true"/>
+
+
 <style type="text/css">
 /* 页面主题样式  */
 /**** Content  也是基础考虑放到整体css中 ****/
@@ -609,33 +599,7 @@ img.portrait{
 }
 </style>
 
-<!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
-<div class="navbar navbar-inverse navbar-fixed-top">
-   <div class="navbar-inner">
-     <div class="container">
-         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="brand" href="./">我要优图</a>
-         <div class="nav-collapse collapse">
-           <ul class="nav">
-             <li class="active"><a href="./"><i class="icon-home icon-white"></i>主页</a></li>
-             <li><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
-             <li><a href="./account.jsp"><i class="icon-pencil"></i>设置</a></li>
-             <li><a href="#about"><i class="icon-book"></i>关于</a></li>
-             <li><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
-           </ul>
-           	<form class="navbar-form pull-right" action="./session!login.act" >
-              <input id="userId" name="userId" class="span2" type="text" placeholder="邮箱 或 昵称">
-              <input id="password" name="password" class="span2"  type="password" placeholder="密码">
-              <button id="signin_submit" type="submit" class="btn">登录</button>
-            </form>
-         </div><!--/.nav-collapse -->
-    </div>	 
-  </div>
-</div>
+
 
 
 <section id="content">
@@ -671,9 +635,7 @@ img.portrait{
 		</div>
 		<!-- #container -->
 				
-
-<link href="./res/paginator.css" rel="stylesheet" />
-
+	<link href="./res/paginator.css" rel="stylesheet" />
   <!-- paginator 
   <div id="pagor" class="clearfix" >
       <a id="pagor_m_left"></a><div id="pagor_o_left"></div>
@@ -690,23 +652,9 @@ img.portrait{
 	<!-- paginator end -->
 	
 	
+	<p id="pagor2" class="pagor2"></p>
 
 </section>
-	<!-- #content -->
+<!-- #content -->
 
-<p id="pagor2" class="pagor2"></p>
-
-</body>
-<hr/>
-<footer>
-<div id="footer"> 
-
-<div id="copyright">
-51youtu v0.5@ 沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
-wfeng007@163.com <br/>
-<br/>
-</div> 
-</div>
-</footer>
-
-</html>
+<jsp:include page="/footer.jsp" flush="true"/>

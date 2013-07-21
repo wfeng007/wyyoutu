@@ -84,18 +84,20 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
     		
     		//登录成功会转发到 result.jsp 并使其redirect to /index.jsp
 //    		HttpServletResponse response=ServletActionContext.getResponse();
-        	HttpServletRequest req= ServletActionContext.getRequest();
-        	try {
-        		req.setAttribute("resultJson", this.result);
-        		req.setAttribute("forwardUrl", "/index.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
-        		req.setAttribute("msg", "ok");
-    			req.getRequestDispatcher("/result.jsp").forward(req, ServletActionContext.getResponse());
-    			
-    			return; //forward
-    		} catch (Exception e1) {
-    			throw new RuntimeException(e1);
-    		}
-    		
+//        	HttpServletRequest req= ServletActionContext.getRequest();
+//        	try {
+//        		req.setAttribute("RESULT_DATA_KEY_RESULT_JSON", this.result);
+//        		req.setAttribute("HANDLE_OPTION_KEY_AUTO_DELAY",null); //直接跳转
+//        		req.setAttribute("RESULT_DATA_KEY_REDIRECT_URL", "/index.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
+//        		req.setAttribute("RESULT_DATA_KEY_MSG_TEXT", "ok");
+//    			req.getRequestDispatcher("/result.jsp").forward(req, ServletActionContext.getResponse());
+//    			return; //forward
+//    		} catch (Exception e1) {
+//    			throw new RuntimeException(e1);
+//    		}
+    		WebResult re=new WebResult(ServletActionContext.getRequest(),ServletActionContext.getResponse());
+    		re.setJSON(this.result).setRedirectUrl("/index.jsp", null).setMsg("ok").sendToTraffic();
+    		return;
     	}else{
     		Map<String, Object> map = new HashMap<String, Object>(0);
     		map.put("msg", "failed!");
@@ -103,20 +105,11 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
     		this.result=JSONObject.fromObject(map);
     		
     		
-    		
-    		//错误则进入login.jsp
-//    		HttpServletResponse response=ServletActionContext.getResponse();
-        	HttpServletRequest req= ServletActionContext.getRequest();
-        	try {
-        		req.setAttribute("resultJson", this.result);
-        		req.setAttribute("forwardUrl", "/login.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
-        		req.setAttribute("msg", "failed");
-    			req.getRequestDispatcher("/result.jsp").forward(req, ServletActionContext.getResponse());
-    			return; //forward
-    		} catch (Exception e1) {
-    			throw new RuntimeException(e1);
-    		}
-    		
+    		//错误则进入登录界面
+    		//结果处理 页面跳转
+    		WebResult re=new WebResult(ServletActionContext.getRequest(),ServletActionContext.getResponse());
+    		re.setJSON(this.result).setRedirectUrl("/login.jsp", -1).setMsg("登录失败").sendToTraffic();
+    		return ;
     	}
     	
     	
