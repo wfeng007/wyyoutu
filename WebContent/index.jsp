@@ -29,7 +29,6 @@ if(pns==null || "".equals(pns)||!StringUtils.isNumeric(pns)){
 	<jsp:param name="header_title" value="51youtu-index" />   
 </jsp:include>
 
-
 <!-- <link rel="stylesheet" href="res/common_util.css"> -->
 <link rel="stylesheet" href="./jquery/masonry/style.masonry.css" />
 <link href="./jquery/lightbox/lightbox.css" rel="stylesheet" />
@@ -449,8 +448,9 @@ $(function(){
 			nextSelector : "#page-nav a",//包含下一页链接的选择器 
 			//itemSelector : ".box",//你将要取回的选项(内容块) 
 			path:function(crrPageNum){ //使用path而不是 锚点
-				
-				return "./item!listItem.act?pageNum=" + (<%=(pn*3)-2%>+crrPageNum)
+				//alert("pn:"+<%=pn%>);
+				//alert("crrPageNum:"+crrPageNum);
+				return "./item!listItem.act?pageNum=" + (<%=(pn*3)-3%>+crrPageNum)
 				+ "&numPerPage=10" + "&"+userIdPara//使用url不用navselector}
 			},
 			debug : true, //启用调试信息
@@ -471,17 +471,23 @@ $(function(){
 			//maxPage: 2  //这个maxPage 在使用appendCallback:false时似乎会报错。
 			
 		}, function(data,opts) {
-				var page = opts.state.currPage; 
+				var page = opts.state.currPage; //这个其实每次都是1开始的当前页数。
 				//alert("page:"+page);
-				if(page%(3+1)==0){ //3的倍数页则停止
+/* 				if(page%(3+1)==0){ //3的倍数页则停止 不再查询数据。TODO 这个判断是否应该在path中完成么？本方法是在ajax之后的处理,否则每次都多读一次？
 					$(this).infinitescroll('destroy');
 					return 
-				}
+				} */
 				if(data==null||typeof(data)!=="object"/* ||data.success==true */||data.rows.length<=0){
 					$(this).infinitescroll('destroy');
 					return;
 				}
 				fnRenderListItem(data);
+				
+				if(page >= 3){ //第三页已经输出则停止插件。
+					$(this).infinitescroll('destroy'); //强制插件功能结束。
+					return 
+				}
+				
 				//$('#container').masonry('reload');
 				//alert("ok!!");
 		});
