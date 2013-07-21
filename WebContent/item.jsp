@@ -35,9 +35,6 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
 
 <!-- TODO删除？
 <link rel="stylesheet" href="res/common_util.css"/> -->
-<!-- bootstrap -->
-<link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-
 
 <!-- 区域编辑 -->
 <script src="./jquery/jeditable/jquery.autogrow.js"></script>
@@ -239,7 +236,7 @@ $(function(){
             <input id="tagsSubmit" type="button" value="Submit"/>
         </form>
 	</div>
-	<div class="clear"></div> <!-- 保证同级的left在上级目录中被包括。 -->
+	<!--<div class="clear"></div>  保证同级的left在上级目录中被包括。 -->
 </div><!-- row -->
 </div>
 
