@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
 <%@ page language="java"%>
+<%@ page session="false"%>
 <hr/>
 <link rel="stylesheet" href="res/footer.css"/>
 <footer>

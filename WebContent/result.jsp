@@ -1,3 +1,6 @@
+<%@ page language="java" pageEncoding="utf-8"
+	contentType="text/html; charset=utf-8"%>
+<%@ page session="false"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.io.*" %>

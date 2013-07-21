@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ page session="false"%>
 
 <jsp:include page="/header.jsp" flush="true">
 	<jsp:param name="header_title" value="51youtu-login" />   

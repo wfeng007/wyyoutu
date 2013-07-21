@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
-<%@ page language="java"%>
 <%@ page session="false"%>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
@@ -117,7 +116,10 @@ if(accountInfo==null){
 		</div>
 	</div>
 
-<%}//if(accountInfo==null)%>
+<%}//if(accountInfo==null)
+else{%>
+<p>请登录后修改。</p>
+<% }%>
 </div>
 
 

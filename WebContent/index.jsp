@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
-<%@ page language="java"%>
 <%@ page session="false"%>
 <%@ page import="org.apache.commons.lang.math.NumberUtils"%>
 <%@ page import="java.lang.*" %>
