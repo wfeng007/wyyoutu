@@ -1,3 +1,4 @@
+<%@page import="com.baidu.api.utils.HttpUtil"%>
 <%@page import="com.baidu.api.store.BaiduCookieStore"%>
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@page import="summ.framework.util.*"%>
@@ -32,22 +33,29 @@ queryParamMap.put("code", authCode);//authCode
 queryParamMap.put("client_id", "AfTCo9kptgqGGBjuYMMvmrSM"); //API Key
 queryParamMap.put("client_secret", "HX9sxvto2DsOuvOYzHrl79lyOnwCG2Ev"); //Secret Key
 queryParamMap.put("redirect_uri", "http%3A%2F%2Fwww.51youtu.com%2F51youtu%2Fbaidu_redirect.jsp");
-RestUtil.RestResult rr=RestUtil.doRestNoConfigNoAuth("https://openapi.baidu.com/oauth/2.0/token","POST",MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,queryParamMap, null/*  Form*/,"",new String[]{});
-%>
-RestResult:<%=rr%><br/>
+//RestUtil.RestResult rr=RestUtil.doRestNoConfigNoAuth("https://openapi.baidu.com/oauth/2.0/token","POST",MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,queryParamMap, null/*  Form*/,"",new String[]{});
 
+
+String text=HttpUtil.doPost("https://openapi.baidu.com/oauth/2.0/token",queryParamMap);
+
+%>
+
+<%-- RestResult:<%=rr%><br/>
 解析access_token包
 <%
 String jsonStr=rr.getEntity();
-%>
+%> --%>
 
 <hr/>
-<%
+<%-- <%
+
 BaiduStore store=new BaiduCookieStore("AfTCo9kptgqGGBjuYMMvmrSM",request,response);
 Baidu baidu=null;
 try{
 	baidu=new Baidu("AfTCo9kptgqGGBjuYMMvmrSM",
 			"HX9sxvto2DsOuvOYzHrl79lyOnwCG2Ev","http://www.51youtu.com/51youtu/baidu_redirect.jsp",store,request);
+	
+	
 	String accessToken=baidu.getAccessToken();
 	%>
 	<p>accessToken:<%=accessToken %></p>
@@ -73,6 +81,5 @@ try{
 }
 
 %>
-
-<p>baidu:<%=baidu%></p>
-
+ 
+<p>baidu:<%=baidu%></p> --%>
