@@ -47,7 +47,7 @@ BaiduStore store=new BaiduCookieStore("AfTCo9kptgqGGBjuYMMvmrSM",request,respons
 Baidu baidu=null;
 try{
 	baidu=new Baidu("AfTCo9kptgqGGBjuYMMvmrSM",
-			"HX9sxvto2DsOuvOYzHrl79lyOnwCG2Ev","http%3A%2F%2Fwww.51youtu.com%2F51youtu%2Fbaidu_redirect.jsp",store,request);
+			"HX9sxvto2DsOuvOYzHrl79lyOnwCG2Ev","http://www.51youtu.com/51youtu/baidu_redirect.jsp",store,request);
 	String accessToken=baidu.getAccessToken();
 	%>
 	<p>accessToken:<%=accessToken %></p>
