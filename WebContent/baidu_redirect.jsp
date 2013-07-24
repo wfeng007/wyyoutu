@@ -36,6 +36,7 @@ queryParamMap.put("redirect_uri", "http%3A%2F%2Fwww.51youtu.com%2F51youtu%2Fbaid
 //RestUtil.RestResult rr=RestUtil.doRestNoConfigNoAuth("https://openapi.baidu.com/oauth/2.0/token","POST",MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,queryParamMap, null/*  Form*/,"",new String[]{});
 
 
+queryParamMap.put("redirect_uri", "http://www.51youtu.com/51youtu/baidu_redirect.jsp");
 String text=HttpUtil.doPost("https://openapi.baidu.com/oauth/2.0/token",queryParamMap);
 
 %>
