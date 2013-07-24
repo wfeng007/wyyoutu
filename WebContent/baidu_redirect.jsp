@@ -40,7 +40,7 @@ queryParamMap.put("redirect_uri", "http://www.51youtu.com/51youtu/baidu_redirect
 String text=HttpUtil.doPost("https://openapi.baidu.com/oauth/2.0/token",queryParamMap);
 
 %>
-
+<%=text%>
 <%-- RestResult:<%=rr%><br/>
 解析access_token包
 <%
