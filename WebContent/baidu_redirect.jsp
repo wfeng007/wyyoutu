@@ -1,3 +1,4 @@
+<%@page import="com.baidu.api.BaiduApiClient"%>
 <%@page import="net.sf.json.JSONObject"%>
 <%@page import="com.baidu.api.utils.HttpUtil"%>
 <%@page import="com.baidu.api.store.BaiduCookieStore"%>
@@ -46,17 +47,29 @@ String sessionKey=JSONObject.fromObject(text).getString("session_key");
 String refreshToken=JSONObject.fromObject(text).getString("refresh_token");
 
 
-
-//TODO 获取本登录用户的信息。
+// 获取本登录用户的信息。
 Map<String,String> loggedPms=new HashMap<String,String>();
-queryParamMap.put("access_token", accessToken);
-queryParamMap.put("format", "json"); 
-String loggedUserStr=HttpUtil.doPost("https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser",queryParamMap);
+loggedPms.put("access_token", accessToken);
+loggedPms.put("format", "json"); 
+String loggedUserStr=HttpUtil.doPost("https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser",loggedPms);
+
+
+
+String uid=JSONObject.fromObject(text).getString("uid");
+
+// TODO 获取某用户信息
+Map<String,String> upms=new HashMap<String,String>();
+upms.put("access_token", accessToken);
+upms.put("format", "json"); 
+String userStr=HttpUtil.doPost("https://openapi.baidu.com/rest/2.0/passport/users/getInfo",upms);
 
 %>
 <%=text%>
 <hr/>
 <%=loggedUserStr%>
+<hr/>
+<%=userStr%>
+
 <%-- RestResult:<%=rr%><br/>
 解析access_token包
 <%
