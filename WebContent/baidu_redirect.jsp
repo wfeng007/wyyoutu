@@ -55,7 +55,7 @@ String loggedUserStr=HttpUtil.doPost("https://openapi.baidu.com/rest/2.0/passpor
 
 
 
-String uid=JSONObject.fromObject(text).getString("uid");
+String uid=JSONObject.fromObject(loggedPms).getString("uid");
 
 // TODO 获取某用户信息
 Map<String,String> upms=new HashMap<String,String>();
