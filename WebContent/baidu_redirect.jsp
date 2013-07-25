@@ -1,3 +1,4 @@
+<%@page import="net.sf.json.JSONObject"%>
 <%@page import="com.baidu.api.utils.HttpUtil"%>
 <%@page import="com.baidu.api.store.BaiduCookieStore"%>
 <%@page language="java" import="java.util.*" pageEncoding="utf-8"%>
@@ -36,11 +37,26 @@ queryParamMap.put("redirect_uri", "http%3A%2F%2Fwww.51youtu.com%2F51youtu%2Fbaid
 //RestUtil.RestResult rr=RestUtil.doRestNoConfigNoAuth("https://openapi.baidu.com/oauth/2.0/token","POST",MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,queryParamMap, null/*  Form*/,"",new String[]{});
 
 
-queryParamMap.put("redirect_uri", "http://www.51youtu.com/51youtu/baidu_redirect.jsp");
+queryParamMap.put("redirect_uri", "http://www.51youtu.com/51youtu/baidu_redirect.jsp");//用HttpUtil则直接使用普通url写法。放入querystring时自动转换。
 String text=HttpUtil.doPost("https://openapi.baidu.com/oauth/2.0/token",queryParamMap);
+
+
+String accessToken=JSONObject.fromObject(text).getString("access_token");
+String sessionKey=JSONObject.fromObject(text).getString("session_key");
+String refreshToken=JSONObject.fromObject(text).getString("refresh_token");
+
+
+
+//TODO 获取本登录用户的信息。
+Map<String,String> loggedPms=new HashMap<String,String>();
+queryParamMap.put("access_token", accessToken);
+queryParamMap.put("format", "json"); 
+String loggedUserStr=HttpUtil.doPost("https://openapi.baidu.com/rest/2.0/passport/users/getLoggedInUser",queryParamMap);
 
 %>
 <%=text%>
+<hr/>
+<%=loggedUserStr%>
 <%-- RestResult:<%=rr%><br/>
 解析access_token包
 <%
