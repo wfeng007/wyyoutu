@@ -45,7 +45,7 @@ String text=HttpUtil.doPost("https://openapi.baidu.com/oauth/2.0/token",queryPar
 String accessToken=JSONObject.fromObject(text).getString("access_token");
 String sessionKey=JSONObject.fromObject(text).getString("session_key");
 String refreshToken=JSONObject.fromObject(text).getString("refresh_token");
-
+String scope=JSONObject.fromObject(text).getString("scope");
 
 // 获取本登录用户的信息。
 Map<String,String> loggedPms=new HashMap<String,String>();

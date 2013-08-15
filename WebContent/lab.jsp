@@ -1,5 +1,6 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.lang.*" %>
+<%! public String wf=null; %>
 <%
 	out.println(""+application.getContextPath()+"<br/>");
 	out.println(""+request.getRequestURI()+"<br/>");
@@ -13,5 +14,6 @@
 		Object o = (Object) it.next();
 		out.println("o:"+o+":"+o.getClass().getCanonicalName()+"<br/>");
 	}
+	
 	
 %>

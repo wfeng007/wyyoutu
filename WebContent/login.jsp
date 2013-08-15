@@ -60,7 +60,12 @@
 
 <div  class="container">
 	<div class="row">
-		<div class="span8">...</div>
+		<div class="span8">
+		...<br/>
+		<a href="https://openapi.baidu.com/oauth/2.0/authorize?client_id=AfTCo9kptgqGGBjuYMMvmrSM&response_type=code&redirect_uri=http%3A%2F%2Fwww.51youtu.com%2F51youtu%2Fbaidu_redirect2.jsp&scope=netdisk">
+			<img src="http://bcs.duapp.com/open-api/oauth%2Flogin-short.png"/>
+		</a>
+		</div>
 		<div class="span7">
 			<form class="form-signin" action="./session!login.act" method="post">
 				<!-- <h2 class="form-signin-heading">请登录</h2> -->
