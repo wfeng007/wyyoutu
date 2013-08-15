@@ -61,6 +61,7 @@ public class WebResult {
 		return this;
 	}
 	
+	//delay ==null则表示直接返回不等待
 	public WebResult setRedirectUrl(String url,Integer delay){
 		this.request.setAttribute(RESULT_DATA_KEY_REDIRECT_URL, url);
 		this.request.setAttribute(HANDLE_OPTION_KEY_AUTO_DELAY, delay);

@@ -33,11 +33,14 @@
              <li><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
            </ul>
+            
            <form class="navbar-form pull-right" action="./session!login.act" method="POST">
               <input id="userId" name="userId" class="span2" type="text" placeholder="邮箱 或 昵称">
               <input id="password" name="password" class="span2"  type="password" placeholder="密码">
               <button id="signin_submit" type="submit" class="btn">登录</button>
+              <a href="./session!logout.act" class="btn btn-warning">登出</a>
            </form>
+          
          </div><!--/.nav-collapse -->
     </div>	 
   </div>

@@ -47,8 +47,8 @@ HttpSession webSess=request.getSession(true);
 AccountInfo ai=AccountInfo.lookupAccountInfo(request);
 if(ai==null){
 	ai=new AccountInfo();
-	ai.setUserId("tmp_badiu_"+userinfo.getUid()+"_"+ai.getUserName());
-	ai.setUserName(ai.getUserName());
+	ai.setUserId("tmp_badiu_"+userinfo.getUid()+"_"+userinfo.getUname());
+	ai.setUserName(userinfo.getUname());
 	AccountInfo.setAccountInfo(request,ai);
 }
 ai.setOAuthBound(true);

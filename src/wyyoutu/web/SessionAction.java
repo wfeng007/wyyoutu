@@ -203,8 +203,19 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
-    
 
+	public void logout(){
+		HttpSession sess=ServletActionContext.getRequest().getSession(false);
+		if(sess!=null){
+			sess.invalidate();
+			sess=null;
+		}
+		WebResult re=new WebResult(ServletActionContext.getRequest(),ServletActionContext.getResponse());
+		Map<String, Object> map = new HashMap<String, Object>(0);
+		map.put("msg", "logout OK!");
+		map.put("success", true);
+		re.setJSON(this.result).setRedirectUrl("/index.jsp", null).setMsg("ok").sendToTraffic();
+	}
     
     /**
 	 * @return the userId
