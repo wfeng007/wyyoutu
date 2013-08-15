@@ -49,6 +49,7 @@ if(ai==null){
 	ai=new AccountInfo();
 	ai.setUserId("tmp_badiu_"+userinfo.getUid()+"_"+ai.getUserName());
 	ai.setUserName(ai.getUserName());
+	AccountInfo.setAccountInfo(request,ai);
 }
 ai.setOAuthBound(true);
 ai.putOAuthToken(AccountInfo.OAUTH_PROVIDER_BAIDU,bot);

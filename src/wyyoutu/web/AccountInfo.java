@@ -40,6 +40,20 @@ public class AccountInfo {
 	}
 	
 	/**
+	 * 设置Account到session
+	 * @param request
+	 * @return
+	 */
+	public static void setAccountInfo(HttpServletRequest request,AccountInfo ai){
+		 request.getSession(true).setAttribute(SESSION_KEY, ai);
+	}
+	
+	//TODO
+//	public void setIntoSession(request){
+//		
+//	}
+	
+	/**
 	 * 用户id、登录账号
 	 */
 	private String userId;
