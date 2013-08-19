@@ -332,9 +332,10 @@
   padding: 10px;
   margin: 15px ;
   float: right;
-  background: /*green*/ #f2e8bb ;
-  color: white;
+  background: #ffffff /*#f2e8bb*/  ;
+  color: #aaaaaa; 
   
+  /* border: 1px solid #eeeeee; */
   /*
   -webkit-border-radius: 5px;
      -moz-border-radius: 5px;
