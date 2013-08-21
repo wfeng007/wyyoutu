@@ -188,29 +188,33 @@ $(function(){
 		});
 		
 		//
-		//user profile html
-		var userProfile="<div class='corner-stamp' >"
-					+"<div class='rel'>" 
-					
-			+"<div class='marg'/>"
-			+"<div  class='prof'>"
-			+"<div id='userInfo' class='profinfo'>"
-			+"</div>"
-			+"</div>"
-			+"<div class='proffun'>"
-			+"<img class='portrait' alt='头像' src='./res/image/portrait_def.jpg' >"
-			+"</div>"
-			
-			+"</div>"
-			+"</div>";
-		//
+
 		
 		//检测登录信息并追加瀑布布局中的corner-stamp 注意这个其实要在 $('#container').masonry()第一次初始化后执行，否则界面会因为初始化设置与后续设置相反二出问题。
 		if(typeof(accountInfo)!='undefined'&&accountInfo!=null){
+			
+			//user profile html
+			var userProfile="<div class='corner-stamp' >"
+						+"<div class='rel'>" 
+				+"<div class='marg'/>"
+				+"<div  class='prof'>"
+				+"<div id='userInfo' class='profinfo'>"
+				+"<p class='text-info'><span class='label label-info'>用户：</span><strong>"+accountInfo.userId+"</strong></p>"
+				+"<p class='text-success'>"+accountInfo.userName+"<span class='label label-success'>你好！</span></p>"
+				+"</div>"
+				+"</div>"
+				+"<div class='proffun'>"
+				+"<img class='portrait' alt='头像' src='./res/image/portrait_def.jpg' >"
+				+"</div>"
+				
+				+"</div>"
+				+"</div>";
+			//	
+		
 			//$("#topnav #userId").html(accountInfo.userId);
 			$('#container').prepend(userProfile);
 			$('#container').masonry({cornerStampSelector: ".corner-stamp" });//显示 瀑布角落内容
-			$('#container #userInfo').html("用户："+accountInfo.userId+"您好！");
+			
 			//$('#container').masonry( 'reload' );
 		}
 		//
@@ -605,6 +609,7 @@ div.rel{
 	position: relative;
 	/* border: 1px solid #eeeeee; */
 }
+/* 用户profile-wedget样式 */
 img.portrait{
 	height: 96px;
 	width: 96px;
@@ -617,19 +622,27 @@ img.portrait{
 }
 .corner-stamp .prof{
 	min-height:100px;
-	border: 1px solid #eeeeee;
+	border: 5px solid #eeeeee;
+	/* 圆角 */
+	-webkit-border-radius: 5px;
+    	-moz-border-radius: 5px;
+          	border-radius: 5px;
+  	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          	box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 .corner-stamp .prof .profinfo{
 	width: 275px;
 	height: 130px;
-	border: 1px solid #eeeeee;
+	/* border: 1px solid #eeeeee; */
+	padding: 19px 29px 29px;
 }
 .corner-stamp .proffun{
 	top: 5px;
 	right: 20px;
 	position: absolute;
 	min-height: 150px;
-	border: 1px solid #eeeeee;
+	/* border: 1px solid #eeeeee; */
 	/* position: absolute; */
 }
 /**/
