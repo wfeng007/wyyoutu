@@ -56,7 +56,9 @@
 }
 </style>
 
-<jsp:include page="/neck.jsp" flush="true"/>
+<jsp:include page="/neck.jsp" flush="true">
+	<jsp:param value="LOGIN" name="nav_page"/>
+</jsp:include>
 
 <div  class="container">
 	<div class="row">

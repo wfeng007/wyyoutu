@@ -55,7 +55,9 @@ if(accountInfo==null){
 
 </style>
 
-<jsp:include page="/neck.jsp" flush="true"/>
+<jsp:include page="/neck.jsp" flush="true">
+	<jsp:param value="SETTING" name="nav_page"/>
+</jsp:include>
 
 <div class="container">
 <%if(accountInfo!=null ){%>

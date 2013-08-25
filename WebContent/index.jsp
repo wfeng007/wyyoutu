@@ -568,7 +568,9 @@ $(function(){
 </script>
 
 
-<jsp:include page="/neck.jsp" flush="true"/>
+<jsp:include page="/neck.jsp" flush="true">
+	<jsp:param value="HOME" name="nav_page"/>
+</jsp:include>
 
 
 <style type="text/css">
