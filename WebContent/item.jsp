@@ -30,7 +30,7 @@ RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
 
 %>
 <jsp:include page="/header.jsp" flush="true">
-	<jsp:param name="header_title" value="51youtu-login" />   
+	<jsp:param name="header_title" value="51youtu-item:${param.itemId}" />   
 </jsp:include>
 
 <!-- TODO删除？
@@ -92,7 +92,10 @@ img#itemMedia {
 	margin-left: auto; margin-right: auto; /* 左右居中 */
 	margin-top: 30px;
 	margin-bottom: 30px;
-	max-width: 800px;
+	width:auto;
+/* 	min-width:20%;
+	min-hight:20%; */
+	max-width: 100%;
 }
 #img_area{
 	margin-left: auto; margin-right: auto; /* 左右居中 */
@@ -121,13 +124,27 @@ img#itemMedia {
 	max-width: 800px;
 	border: 1px solid #eeeeee;
 }
+
+
+.hot-tags,.basic-info {
+	padding: 19px 29px 29px;
+	margin: 0 auto 20px; /* 左右没有方框，并居中。 */
+	background-color: #fff;
+	border: 1px solid #eeeeee;
+	-webkit-border-radius: 5px;
+	   -moz-border-radius: 5px;
+	        border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	   -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+	        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
 </style>
 
 
 <div class="container">
 
 <div class="row">
-	<div id="item" class="span11">
+	<div id="item" class="span9">
 		<div id="img_area" class="">
 			<img id="itemMedia" alt="<%=itemId%>" class=".clear" src="./svc/image?itemId=<%=itemId%>" />
 		</div>
@@ -191,30 +208,40 @@ $(function(){
 			
 		</div>
 	</div>
-	<script src="./jquery/jquery-ui-1.8.17.custom.min.js"></script>
+	<script src="./jquery/jqui/js/jquery-ui-1.8.16.custom.min.js"></script>
 	<script src="./jquery/autocomplete/jquery.autocomplete.js"></script>
+	<link href="./jquery/jqui/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" type="text/css"/>
 	<link href="./jquery/tagit/jquery.tagit.css" rel="stylesheet" type="text/css"/>
-    <link href="./jquery/tagit/tagit.ui-zendesk.css" rel="stylesheet" type="text/css"/>
+    <link href="./jquery/tagit/tagit.ui-wyyoutu.css" rel="stylesheet" type="text/css"/>
     <script src="./jquery/tagit/tag-it.js" type="text/javascript" charset="utf-8"></script>
     <script>
     $(function(){
     	
-    	//使用脚本程序
+    	//启动时加载数据
     	//$('#tags').tagit(); 
     	$.get("./scripting/listTag.jss?itemId="+<%=itemId%>, //默认使用post,json对象其实会转变为form格式数据向后传
 				function (data, textStatus){
 					//alert(data.tags);
-					$('#tagsForm').find('#tags').attr('value',data.tags); //修改内容
-					$('#tagsForm').find('#tags').tagit(); //刷新显示？
+					$('#tagsForm').find('#tags').attr('value',data.tags); //修改内容 逗号分割内容。
+					$('#tagsForm').find('#tags').tagit({
+						allowDuplicates:false,
+						tagLimit:3, //这么会出现调用close的url？
+						onTagLimitExceeded:function(event,ui){
+							 console.log(event.tag);	
+						}
+					}); //刷新显示？
     				//$("#tags").tagit("createTag",data.tags); //改用这个操作createTag
 				}, 
 			"json"); 
     	//
     	
+    	//点击注册按钮事件
+    	//按下时提交内容。
     	$('#tagsForm').find('#tagsSubmit').click(function(){
-			//alert("1 TODO: ADD SERVERSID:"+$(this).parent('#tagsForm').find('#tags').attr('value'));
+    		//获取tags的字符串形式
 			var tags=$(this).parent('#tagsForm').find('#tags').attr('value');
-			//alert('2 将target的功能自己+自己的交互事件，尝试自己分装成自己的jquery插件');
+			//其实应该用$("#myTags").tagit("assignedTags");
+			
 			var itemId=<%=itemId%>;
 			$.post("./scripting/addTags.jss", {action:'addTags',itemId:itemId, tags: tags }, //默认使用post,json对象其实会转变为form格式数据向后传
 					function (data, textStatus){
@@ -228,13 +255,37 @@ $(function(){
 				"json"); 
 		});
     	
+    	$('#tag_hottags').find('.hottagbtn').click(function(e){
+    		var tagContent=$(this).html();
+    		$('#tagsForm').find('#tags').tagit("createTag", tagContent);
+		});
+    	
     });
     </script>
-	<div id="side_bar_right" class="span4">
+
+
+	<div id="side_bar_right" class="span6">
+	
+		<div class="basic-info">
+			<p><%=rsItem.getOwnerId()%>发表于：<%=rsItem.getAddTs()%></p>
+			<p><b>:"</b><%=rsItem.getText()!=null?rsItem.getText():""%><b>"</b></p>
+		</div>
+		
 		<form id="tagsForm" >
 			<input name="tags" id="tags" value="" >
-            <input id="tagsSubmit" type="button" value="Submit"/>
+            <input id="tagsSubmit" type="button" class="btn btn-primary btn-small" value="提交"/>
         </form>
+        <div id="tag_hottags" class="hot-tags">
+        	<h4>热门Tag</h4>
+        	<hr/>
+        	<a class="hottagbtn btn" />世博</a>
+        	<a class="hottagbtn btn" />猫猫</a>
+        	<a class="hottagbtn btn" />狗狗</a>
+        	<a class="hottagbtn btn" />豆豆</a>
+        	<a class="hottagbtn btn" />小老鼠</a>
+        	<a class="hottagbtn btn" />小猴子</a>
+        	<a class="hottagbtn btn" />啊呜</a>
+        </div>
 	</div>
 	<!--<div class="clear"></div>  保证同级的left在上级目录中被包括。 -->
 </div><!-- row -->

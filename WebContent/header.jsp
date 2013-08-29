@@ -13,7 +13,7 @@
 <link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 
 <!-- jquery -->
-<script src="./jquery/jquery-1.7.2.min.js"></script>
+<script src="./jquery/jquery-1.7.js"></script>
 <!-- bootstrap.js -->
 <script src="./jquery/bootstrap/js/bootstrap.js"></script>
 
