@@ -14,6 +14,7 @@
 // 
 %>
 <%
+
 //TODO 增加404等协议状态处理。
 //确定类型
 String handleType=WebResult.HANDLE_TYPE_DISPLAY;
@@ -87,7 +88,7 @@ if(WebResult.HANDLE_TYPE_REDIRECT.equals(handleType) && redirectUrl!=null && aut
 // FIXME 后面输出代码有个问题如果当时out已经关闭如何处理？
 %>
 <jsp:include page="/header.jsp" flush="true">
-	<jsp:param name="header_title" value="51youtu-login" />   
+	<jsp:param name="header_title" value="51youtu-result-traffic" />   
 </jsp:include>
 <jsp:include page="/neck.jsp" flush="true"/>
 <div class="contianer">

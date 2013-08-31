@@ -3,19 +3,23 @@
 <%@ page language="java"%>
 <%@ page session="false"%>
 <%!%>
-<%%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String contextPath=path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><%=request.getParameter("header_title")%></title>
 <!-- bootstrap.css basic -->
-<link href="./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+<link href="<%=contextPath%>./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 
 <!-- jquery -->
-<script src="./jquery/jquery-1.7.js"></script>
+<script src="<%=contextPath%>./jquery/jquery-1.7.js"></script>
 <!-- bootstrap.js -->
-<script src="./jquery/bootstrap/js/bootstrap.js"></script>
+<script src="<%=contextPath%>./jquery/bootstrap/js/bootstrap.js"></script>
 
 
 <!-- bootstrap修改 -->

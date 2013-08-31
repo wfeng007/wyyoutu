@@ -7,10 +7,8 @@
  * 
  */
 $SW.parseParams();
-
 println("userName:"+param.userName);
 println("userId:"+param.userId);
-
 var accountService=$SF("loginService");
 
 importPackage(Packages.wyyoutu.model);
@@ -22,14 +20,21 @@ var b=accountService["modifyPeopleBaisc"](people);
 delete people;
 
 var result={success:b,msg:"add ok. "};
-
-//如果用json则用$SW.outJSON返回。
+//如果用json直接返回则用$SW.outJSON返回。
 //println(JSON.stringify(result));
-//
 //$SW.outJSON(result);
 
-//这里实现跳转功能，而非json。
-request.setAttribute("resultJson", result);
-request.setAttribute("forwardUrl", "/index.jsp");//index.html -> index.jsp TODO 应该修改为动态跳转目标 由登录页面选择跳转到哪里去
-request.setAttribute("msg", ""+b);
-request.getRequestDispatcher("/result.jsp").forward(request, response);
+var jsonObj=null;
+//如果是使用java的JSONObject对象则处理为：
+//importPackage(Packages.net.sf.json);
+//var jsonObj=JSONObject.fromObject(JSON.stringify(result));
+//System.out.println(jsonObj);
+
+//直接用框架装换
+jsonObj=$S.toJavJson(result);
+
+//这里实现跳转功能，而非json返回。
+importPackage(Packages.wyyoutu.web);
+var re=new WebResult(request,response);
+re.setJSON(jsonObj).setRedirectUrl("/account.jsp", -1).setMsg("修改完成！").sendToTraffic();
+

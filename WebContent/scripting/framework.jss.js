@@ -106,6 +106,7 @@ function streamClose(stream) {
 }
 
 /**
+ * 框架核心之一，js中eval其他js文件内容作为导入。
  * load a file/stream for eval
  * @param str
  * @returns
@@ -120,10 +121,9 @@ function load(str) {
     context.setAttribute(engine.FILENAME, str,context.ENGINE_SCOPE);
     //
     try {
-//        engine.eval(reader);  // engine需要java部分的环境给出. 
- //   	return engine.eval(reader); //需要返回 需要注意如果不给出ScriptContext 则eval会使用默认的sc而不一定是当前sc。
+//      engine.eval(reader);  // engine需要java部分的环境给出. 
+//   	return engine.eval(reader); //需要返回 需要注意如果不给出ScriptContext 则eval会使用默认的sc而不一定是当前sc。
     	return engine.eval(reader,context); //FIXED 必须选择当前的context 如果只用eval(reader)会使用默认的context而不是“当前”，当外部使用费默认执行到这里时就会有问题。
-    	
     }
     finally {
         //engine.put(engine.FILENAME, oldFilename);
@@ -209,9 +209,19 @@ function pwd() {
 }
 
 
+
+
+
+
 /********************
  * summ framework 
  ********************/
+
+//导入依赖的js
+//导入json2模块 默认web应用路径scripting下json2.js文件 //之后为每个模块单独提供一个依赖模块默认路径
+load(servletContext.getRealPath("/")+"/scripting/json2.js");
+
+
 println("..summ framework function and params init..");
 /**
  * 框架内部命名空间
@@ -222,8 +232,27 @@ summjs={};
  */
 summjs.bindings=this; //当前绑定属性
 
+//***********
+//基础工具utils
+//***********
+//依赖的java基础库
+importPackage(Packages.net.sf.json);
+/**
+* 将js对象或字符串转换为net.sf.json.JSONObject
+*/
+summjs.toJavJson=function(json){
+	if(typeof(json)=='object'){
+		return JSONObject.fromObject(JSON.stringify(json));
+	}
+	else{
+		return JSONObject.fromObject(json);
+	}
+}
+
 
 $S=summjs;
+
+
 //***********
 //核心框架部分
 //***********
@@ -344,8 +373,7 @@ summjs.web.outStr=function(str){
 	out.flush();
 }
 
-//依赖json2模块 默认web应用路径scripting下json2.js文件 //之后为每个模块单独提供一个依赖模块默认路径
-load(servletContext.getRealPath("/")+"/scripting/json2.js");
+
 /**
  * 输入
  * obj：javascript属性对象。
@@ -353,6 +381,7 @@ load(servletContext.getRealPath("/")+"/scripting/json2.js");
  * id 对象key
  * 输出：
  * 返回scope中对应的对象。
+ * 依赖依赖json2模块 json2.js
  */
 summjs.web.outJSON=function(obj){
 	response.setContentType("application/json");// 设置http头部为json

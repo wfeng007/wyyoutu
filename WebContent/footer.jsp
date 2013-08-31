@@ -2,8 +2,15 @@
 	contentType="text/html; charset=utf-8"%>
 <%@ page language="java"%>
 <%@ page session="false"%>
+<%
+//以下是myeclipse生成的部分
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String contextPath=path+"/";
+
+%>
 <hr/>
-<link rel="stylesheet" href="res/footer.css"/>
+<link rel="stylesheet" href="<%=contextPath%>./res/footer.css"/>
 <footer>
 <div id="footer"> 
 <div id="copyright">

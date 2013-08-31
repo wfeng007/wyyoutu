@@ -5,15 +5,25 @@
 <%@ page import="java.util.*" %>
 <%@ page import="summ.framework.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
+<%@ page import="wyyoutu.service.RsItemService" %>
+<%@ page import="wyyoutu.dao.CoPeopleDao" %>
+<%@ page import="wyyoutu.model.CoPeople" %>
 <%
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 if(accountInfo==null){
 	//out.println("need to login"); //在jsp界面输出前不要用out输出。
 }
+
+
+//还是要获取一次本item的一些数据数据
+CoPeopleDao peopleDao=(CoPeopleDao)SpringContextHolder.getApplicationContext().getBean("coPeopleDao");
+CoPeople people=peopleDao.getByPk(accountInfo.getUserId());//需要校验？
+//TODO 增加无法查询到指定id的item时的处理
+
 %>
 <jsp:include page="/header.jsp" flush="true">
-	<jsp:param name="header_title" value="51youtu-login" />   
+	<jsp:param name="header_title" value="51youtu-account" />   
 </jsp:include>
 
 <style type="text/css">
@@ -70,14 +80,14 @@ if(accountInfo==null){
 				<div class="control-group">
 					<label class="control-label">账号标识：</label>
 					<div class="controls">
-						<span class="uneditable-input"><%=accountInfo.getUserId()%></span>(登录名，不可修改！)
-						<input id="userId" name="userId" type="text" class="hide" value="<%=accountInfo.getUserId()%>"/>
+						<span class="uneditable-input"><%=people.getId()%></span>(登录名，不可修改！)
+						<input id="userId" name="userId" type="text" class="hide" value="<%=people.getId()%>"/>
 					</div>
 				</div> 
 				<div class="control-group">
 					<label class="control-label">账号名称：</label>
 					<div class="controls">
-						<input id="userName" name="userName" type="text" value="<%=accountInfo.getUserName()%>"/> 
+						<input id="userName" name="userName" type="text" value="<%=people.getName()%>"/> 
 					</div>
 				</div>
 				<div class="control-group">

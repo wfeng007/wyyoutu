@@ -8,6 +8,10 @@
 <%@ page session="false"%>
 <%!%>
 <%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String contextPath=path+"/";
+
 String navPage=request.getParameter("nav_page");
 if(navPage==null)navPage="HOME";
 %>
@@ -30,12 +34,12 @@ if(navPage==null)navPage="HOME";
            <span class="icon-bar"></span>
            <span class="icon-bar"></span>
          </button>
-         <a class="brand" href="./">我要优图</a>
+         <a class="brand" href="<%=contextPath%>./">我要优图</a>
          <div class="nav-collapse collapse">
            <ul class="nav">
-             <li <%=("HOME".equals(navPage))?"class='active' ":""%>><a href="./"><i class="icon-home"></i>主页</a></li>
-             <li <%=("LOGIN".equals(navPage))?"class='active' ":""%>><a href="./login.jsp"><i class="icon-book"></i>登录</a></li>
-             <li <%=("SETTING".equals(navPage))?"class='active' ":""%>><a href="./account.jsp"><i class="icon-pencil"></i>设置</a></li>
+             <li <%=("HOME".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./"><i class="icon-home"></i>主页</a></li>
+             <li <%=("LOGIN".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./login.jsp"><i class="icon-book"></i>登录</a></li>
+             <li <%=("SETTING".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./account.jsp"><i class="icon-pencil"></i>设置</a></li>
              <li <%=("ABOUT".equals(navPage))?"class='active' ":""%>><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li <%=("CALL".equals(navPage))?"class='active' ":""%>><a href="#contact"><i class="icon-pencil"></i>联系</a></li>
            </ul>
@@ -62,8 +66,8 @@ if(navPage==null)navPage="HOME";
     	</ul>
     </li>
     <li class="divider-vertical"></li>
-    <li><a href="./session!logout.act">
-      	登出
+    <li><a href="<%=contextPath%>./session!logout.act">
+      	退出
     </a></li>
 </ul>
 		<div class="pull-right">
