@@ -3,7 +3,7 @@
 <%@ page language="java"%>
 <%@ page session="false"%>
 <%
-//以下是myeclipse生成的部分
+//以下是参考myeclipse生成的部分的写法
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 String contextPath=path+"/";

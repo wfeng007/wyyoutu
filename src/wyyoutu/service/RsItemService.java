@@ -13,11 +13,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,7 +216,7 @@ public class RsItemService {
 	 */
 	public boolean addItemAtBinaryWithStream(String iid,InputStream in, String originalFilename,String ownerId){	
 		// return this.rsItemDao.insert(mp);insert into test(id,pic) values(?,?)
-		String sql = "insert into RS_ITEM(`iid`,`name`,`url`,`BINARY`,`owner_id`) values(?,?,?,?,?)";
+		String sql = "insert into RS_ITEM(`iid`,`name`,`url`,`add_ts`,`BINARY`,`owner_id`) values(?,?,?,?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -228,8 +231,9 @@ public class RsItemService {
 //			ps.setBinaryStream(1, in,(int)binarySize);
 			ps.setString(2, "#"+originalFilename); //这种行为都是web层做的？
 			ps.setString(3, "#");//这种行为都是web层做的？
-			ps.setBinaryStream(4, in,in.available()); //mysql写法 mysql的驱动内部可能会进行循环 获取流数据
-			ps.setString(5, ownerId); //用户
+			ps.setTimestamp(4, new Timestamp(System.currentTimeMillis())); //加入时间戳
+			ps.setBinaryStream(5, in,in.available()); //mysql写法 mysql的驱动内部可能会进行循环 获取流数据
+			ps.setString(6, ownerId); //用户
 			
 			int count = ps.executeUpdate(); 
 			// con.commit();

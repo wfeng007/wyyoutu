@@ -5,6 +5,7 @@ package wyyoutu.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import summ.framework.Paging;
+import summ.framework.util.DateUtils;
 import wyyoutu.model.RsItem;
 import wyyoutu.service.RsItemService;
 
@@ -169,6 +171,13 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 //			}
 //		}
 		
+		//FIXME 临时解决办法后续需要后台改成每次创建就提供数据
+		for(RsItem item:ls){
+			if(item.getAddTs()==null){
+				item.setAddTs(DateUtils.toDateTime("2013-01-01 08:00:00"));
+			}
+		}
+		
 		//替换界面显示内容结束
 		
 		
@@ -228,6 +237,15 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		System.out.println(itemId);
 		if(this.itemId!=null){
 			RsItem ri=this.rsItemService.getItemById(this.itemId);
+			
+			//处理内容
+			//FIXME 临时解决办法后续需要后台改成每次创建就提供数据
+			if(ri.getAddTs()==null){
+				ri.setAddTs(DateUtils.toDateTime("2013-01-01 08:00:00")); //这个路径已经配置化 TODO 需要提供两个不同的路径分别访问缩略图以及原始图
+				System.out.println(ri.getAddTs());
+			}
+			//处理内容结束
+			
 			
 			//
 			Map<String, Object> map = new HashMap<String, Object>(0);

@@ -23,6 +23,7 @@ import org.apache.commons.fileupload.util.Streams;
 
 /**
  * 简易的上传到指定目录的上传实现
+ * 可以作为一个例子只用。
  * @author wfeng007
  * @date 2012-11-25 下午04:08:48
  */

@@ -1,14 +1,21 @@
+<%@page import="summ.framework.util.DateUtils"%>
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
 <%@ page session="false"%>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="summ.framework.*" %>
+<%@ page import="summ.framework.util.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
 <%@ page import="wyyoutu.service.RsItemService" %>
 <%@ page import="wyyoutu.model.RsItem" %>
 
+
 <%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String contextPath=path+"/";
+
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 if(accountInfo==null){
@@ -26,6 +33,11 @@ if(itemId==null){
 //还是要获取一次本item的一些数据数据
 RsItemService rsis=(RsItemService)SpringContextHolder.getApplicationContext().getBean("rsItemService");
 RsItem rsItem=rsis.getItemById(Integer.valueOf(itemId));//需要校验？
+
+if(rsItem.getAddTs()==null){
+	rsItem.setAddTs(DateUtils.toDateTime("2013-01-01 08:00:00")); //这个路径已经配置化 TODO 需要提供两个不同的路径分别访问缩略图以及原始图
+	System.out.println(rsItem.getAddTs());
+}
 //TODO 增加无法查询到指定id的item时的处理
 
 %>
@@ -267,8 +279,12 @@ $(function(){
 	<div id="side_bar_right" class="span6">
 	
 		<div class="basic-info">
-			<p><%=rsItem.getOwnerId()%>发表于：<%=rsItem.getAddTs()%></p>
-			<p><b>:"</b><%=rsItem.getText()!=null?rsItem.getText():""%><b>"</b></p>
+			<p><strong><%=rsItem.getOwnerId()%></strong>&nbsp<small>发表于：<em><%=DateUtils.toDateTimeStr(rsItem.getAddTs())%></em></small></p>
+			<p>
+				<img style="hight:24px;width:24px;" src="<%=contextPath%>./res/image/left_quote_24.png" />
+				&nbsp<%=rsItem.getText()!=null?rsItem.getText():""%>&nbsp
+				<img style="hight:24px;width:24px;" src="<%=contextPath%>./res/image/right_quote_24.png" />
+			</p>
 		</div>
 		
 		<form id="tagsForm" >
