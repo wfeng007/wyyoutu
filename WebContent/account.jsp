@@ -9,10 +9,18 @@
 <%@ page import="wyyoutu.dao.CoPeopleDao" %>
 <%@ page import="wyyoutu.model.CoPeople" %>
 <%
+
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String contextPath=path+"/";
+
+
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 if(accountInfo==null){
 	//out.println("need to login"); //在jsp界面输出前不要用out输出。
+	response.sendRedirect(contextPath+"./login.jsp");
+	return ;//不再执行后续代码
 }
 
 
