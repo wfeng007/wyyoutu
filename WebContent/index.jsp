@@ -6,13 +6,28 @@
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
-
+<%!
+public String wf="wf";
+%>
 <%
+String path = request.getContextPath(); //应用所在contextpath， 不包括 前面协议IP域名端口部分。结尾没有斜杠。
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; //应用所在contextpath， 包括 前面协议IP域名端口部分。
+System.out.println(basePath);
+String contextPath=path+"/";
+String myPath=path+request.getServletPath(); //当前除去querypara的url
+System.out.println(myPath);
+
 //TODO 后期应该抛开session 从后台获取accountinfo来判断是否有session 后期不一定使用httpsession作为session判断
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 if(accountInfo==null){
 	//out.println("need to login"); 这里不能再加载css之前输出否则会影响一些样式，甚至直接导致ie无法正常展示页面，原因不明。 
 }
+
+//
+//querypara
+//
+//特定用户参数
+String owner=request.getParameter("owner");
 
 // 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
 // 当前页实际页数：
@@ -383,7 +398,7 @@ $(function(){
 				//隐藏 表单
 				//
 				formEditor.children("textarea.editor").val(text); //
-				formEditor.css("display","none")
+				formEditor.css("display","none");
 				
 				// 显示 文本 
 				//formEditor.prev().prev().html(text);//显示新内容
@@ -444,15 +459,23 @@ $(function(){
 			//
 			
 		}
+			
 		//后台获取项目内容
 		//读出数据逐一放入 container
-		userIdPara="";
+		
+		//具体用户作为参数
+		//userIdPara="";
+		/*
 		if(typeof(accountInfo)!='undefined'&&accountInfo!=null){
-			userIdPara="peopleId="+accountInfo.userId;
+			userIdPara="owner="+accountInfo.userId;
 		}
+		*/
+		userIdPara='<%=(owner==null)?"":"&owner="+owner%>';
+		
+		
 		
 		//页面初始化的时候做一次
-		$.getJSON("./item!listItem.act"+"?"+"pageNum="+<%=(pn*3)-2%>+"&"+userIdPara, fnRenderListItem); //注册一个全局函数
+		$.getJSON("./item!listItem.act"+"?"+"pageNum="+<%=(pn*3)-2%>+userIdPara, fnRenderListItem); //注册一个全局函数
 		//查询并放入 
 		
 		//
@@ -559,7 +582,7 @@ $(function(){
 			total: 10,
 			page: <%=pn%>, //当前页
 			maxVisible: 10,
-			href: "./index.jsp?pageNum={{number}}&numPerPage=10", // TODO 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
+			href: '<%=myPath%>?pageNum={{number}}&numPerPage=10<%=(owner==null)?"":"&owner="+owner%>', // TODO 获取url中的查询参数，比如 pageNum=" + num+ "&numPerPage=10 这样类似参数
 			leaps: false,
 			next: '>>',
 			prev: '<<'
@@ -567,9 +590,15 @@ $(function(){
 	});
 </script>
 
-
+<%
+String navPage="HOME";
+if(owner!=null&&accountInfo!=null&&owner.equals(accountInfo.getUserId())){ //当前用户浏览器自己的列表时
+	navPage="MYYOUTU";
+}
+pageContext.setAttribute("navPage",navPage); //pageContext可以用于el表达式 ，由于jsp中的变量一般为方法内部变量所以这里无法直接传递给el表达式需要用pageContext
+%>
 <jsp:include page="/neck.jsp" flush="true">
-	<jsp:param value="HOME" name="nav_page"/>
+	<jsp:param value="${navPage}" name="nav_page"/>
 </jsp:include>
 
 

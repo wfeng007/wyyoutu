@@ -96,7 +96,7 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
 //    			throw new RuntimeException(e1);
 //    		}
     		WebResult re=new WebResult(ServletActionContext.getRequest(),ServletActionContext.getResponse());
-    		re.setJSON(this.result).setRedirectUrl("/index.jsp", null).setMsg("ok").sendToTraffic();
+    		re.setJSON(this.result).setRedirectUrl("/index.jsp?owner="+accountInfo.getUserId(), null).setMsg("ok").sendToTraffic();
     		return;
     	}else{
     		Map<String, Object> map = new HashMap<String, Object>(0);

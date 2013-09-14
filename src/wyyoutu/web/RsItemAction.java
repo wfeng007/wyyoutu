@@ -38,24 +38,21 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 	// 文本
 	private String text;
 	
-	private String peopleId;
-	
-	
+	private String owner;
 	/**
-	 * @return the peopleId
+	 * @return the owner
 	 */
-	public String getPeopleId() {
-		return peopleId;
+	public String getOwner() {
+		return owner;
 	}
 
 	/**
-	 * @param peopleId the peopleId to set
+	 * @param owner the owner to set
 	 */
-	public void setPeopleId(String peopleId) {
-		this.peopleId = peopleId;
-		
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
-	
+
 	/**
 	 * @return the pageNum
 	 */
@@ -131,7 +128,7 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 //		System.out.println(pageNum);
 //		System.out.println(numPerPage);
 		
-		System.out.print(peopleId);
+		System.out.print(owner);
 		
 		if(pageNum!=null){
 			pn=pageNum.intValue();
@@ -153,7 +150,7 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		//分页查询  paraMap应该兼容null(修改代码生成)
 		Map<String,Object> paraMap=new HashMap<String, Object>();
 		
-		paraMap.put("ownerId", peopleId); //用户账号作为item拥有者查询。
+		paraMap.put("ownerId", owner); //用户账号作为item拥有者查询。
 		
 		paraMap.put("orderBy", "`seq_id`  DESC ");
 		List<RsItem> ls=this.rsItemService.listItem(paraMap, paging);
