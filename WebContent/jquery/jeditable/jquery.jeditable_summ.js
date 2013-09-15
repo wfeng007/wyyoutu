@@ -94,8 +94,8 @@
                     || $.editable.types['defaults'].element;
         var reset    = $.editable.types[settings.type].reset 
                     || $.editable.types['defaults'].reset;
-        var callback = settings.callback || function() { };
-        var onedit   = settings.onedit   || function() { }; 
+        var callback = settings.callback || function() { };//用来处理后台结果的回调函数
+        var onedit   = settings.onedit   || function() { };//用来处理修改内容时的回调
         var onsubmit = settings.onsubmit || function() { };
         var onreset  = settings.onreset  || function() { };
         var onerror  = settings.onerror  || reset;
@@ -125,7 +125,7 @@
             if (!$.trim($(this).html())) {
                 $(this).html(settings.placeholder);
             }
-            
+            //绑定事件 比如click dbclick等
             $(this).bind(settings.event, function(e) {
                 
                 /* abort if disabled for this element */
@@ -429,7 +429,7 @@
                             });
                         /* otherwise use button with given string as text */
                         } else {
-                            var submit = $('<button type="submit" />');
+                            var submit = $('<button type="submit" class="btn btn-small btn-primary" />'); //for bootstrap 
                             submit.html(settings.submit);                            
                         }
                         $(this).append(submit);
@@ -440,7 +440,7 @@
                             var cancel = $(settings.cancel);
                         /* otherwise use button with given string as text */
                         } else {
-                            var cancel = $('<button type="cancel" />');
+                            var cancel = $('<button type="cancel" class="btn btn-small" />');//for bootstrap 
                             cancel.html(settings.cancel);
                         }
                         $(this).append(cancel);

@@ -50,6 +50,7 @@ if(rsItem.getAddTs()==null){
 
 <!-- 区域编辑 -->
 <script src="./jquery/jeditable/jquery.autogrow.js"></script>
+<script src="./jquery/jeditable/jquery.charcounter.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable_summ.js"></script>
 <script src="./jquery/jeditable/jquery.jeditable.autogrow.js"></script>
 
@@ -161,48 +162,9 @@ img#itemMedia {
 			<img id="itemMedia" alt="<%=itemId%>" class=".clear" src="./svc/image?itemId=<%=itemId%>" />
 		</div>
 				
-<script type="text/javascript">
-$(function(){
-	$('.editable').editable('./item!modifyText.act',{
-		 id   : 'itemId',//idkey
-         name : 'text',//textkey
-         submitdata:{action:"modify"},
-		 type      : 'autogrow',
-		 autogrow : {
-	           lineHeight : 16,
-	           minHeight  : 32
-	     },
-		 //rows: 5, 
-         cancel    : '取消',
-         submit    : '保存',
-         indicator : '<img src="img/indicator.gif">',
-         tooltip   : '点击区域添加内容',
-         placeholder : '点击这里添加内容',
-         method :"POST",
-       	 callback : function(data, settings,submitdata) {//修改插件提供已经提交用的数据 submitdata
-       	  		console.log(this); //本jquery对应的dom对象
-            	console.log(data); //返回的内容
-             	console.log(settings); //参数
-             	if(data!=null&&typeof(data)==="object"&&data.success==true){
-             		//根据源代码情况，默认内容被放在了settings.name;
-             		//alert(submitdata[settings.name]);
-       				$(this).html(submitdata[settings.name]);
-             	}else{
-					alert("修改失败！"); // 测试 
-					//
-				}
-         },
-         ajaxdatatype:"json" //附加出来的ajax返回类型默认html
-	});
-});
-</script>
-		<!-- Text内容 itemText -->
-		<div class="edit_area">
-		<h1>说说：</h1>
-		<div id="<%=itemId%>" class="editable"><%=rsItem.getText()!=null?rsItem.getText():""%></div>
-		</div>
 
-		<div id="itemComments" >
+	
+	<div id="itemComments" >
 	<!-- Duoshuo Comment BEGIN -->
 	<div class="ds-thread"></div>
 	<script type="text/javascript">
@@ -275,16 +237,55 @@ $(function(){
     });
     </script>
 
-
+<%if(accountInfo!=null){ %>
+<script type="text/javascript">
+$(function(){
+	$('.editable').editable('./item!modifyText.act',{
+		 id   : 'itemId',//idkey
+         name : 'text',//textkey
+         submitdata:{action:"modify"},
+		 type      : 'autogrow',
+		 width: '100%',
+		 autogrow : {
+	           lineHeight : 20, //px
+	           minHeight  : 20,
+	           maxHeight: 120
+	     },
+	     charcounter : {
+	          characters : 60
+	     },
+		 //rows: 5, 
+         cancel    : '取消',
+         submit    : '保存',
+         indicator : '<img src="img/indicator.gif">',
+         tooltip   : '点击区域添加内容',
+         placeholder : '<em class="muted">点击这里添加内容</em>',
+         method :"POST",
+       	 callback : function(data, settings,submitdata) {//修改插件提供已经提交用的数据 submitdata
+       	  		console.log(this); //本jquery对应的dom对象
+            	console.log(data); //返回的内容
+             	console.log(settings); //参数
+             	if(data!=null&&typeof(data)==="object"&&data.success==true){
+             		//根据源代码情况，默认内容被放在了settings.name;
+             		//alert(submitdata[settings.name]);
+       				$(this).html(submitdata[settings.name]);
+             	}else{
+					alert("修改失败！"); // 测试 
+					//
+				}
+         },
+         ajaxdatatype:"json" //附加出来的ajax返回类型默认html
+	});
+});
+</script>
+<%} %>
 	<div id="side_bar_right" class="span6">
-	
+
 		<div class="basic-info">
 			<p><strong><%=rsItem.getOwnerId()%></strong>&nbsp<small>发表于：<em><%=DateUtils.toDateTimeStr(rsItem.getAddTs())%></em></small></p>
-			<p>
-				<img style="hight:24px;width:24px;" src="<%=contextPath%>./res/image/left_quote_24.png" />
-				&nbsp<%=rsItem.getText()!=null?rsItem.getText():""%>&nbsp
-				<img style="hight:24px;width:24px;" src="<%=contextPath%>./res/image/right_quote_24.png" />
-			</p>
+			<p><img style="hight:24px;width:24px;" src="<%=contextPath%>./res/image/left_quote_24.png" />
+				<line id="<%=itemId%>" class="editable" style='width:200px'><%=rsItem.getText()!=null?rsItem.getText():""%></line>
+				<img style="hight:24px;width:24px;" src="<%=contextPath%>./res/image/right_quote_24.png" /></p>
 		</div>
 		
 		<form id="tagsForm" >

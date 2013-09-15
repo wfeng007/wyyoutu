@@ -16,6 +16,7 @@ String contextPath=path+"/";
 <div id="copyright">
 51youtu v0.6@ 沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
 wfeng007@163.com <br/>
+<!-- 流量统计 -->
 <script type="text/javascript">
 var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
 document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fee10a81902f24b0f2e29893188089c0b' type='text/javascript'%3E%3C/script%3E"));

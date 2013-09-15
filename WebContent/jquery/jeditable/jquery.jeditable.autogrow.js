@@ -34,5 +34,8 @@ $.editable.addInputType('autogrow', {
     },
     plugin : function(settings, original) {
         $('textarea', this).autogrow(settings.autogrow);
+        
+        //数量
+        $('textarea', this).charCounter(settings.charcounter.characters, settings.charcounter);
     }
 });
