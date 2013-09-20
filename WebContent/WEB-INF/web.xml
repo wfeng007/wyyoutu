@@ -136,6 +136,59 @@
 		<servlet-name>Uploader</servlet-name>
 		<url-pattern>/svc/upload</url-pattern>
 	</servlet-mapping>
+
+	<!-- ringojs路径准发以及执行容器入口 -->
+	<servlet>
+		<servlet-name>ringo</servlet-name>
+		<servlet-class>summ.framework.scripting.ringo.SpringRingoServlet</servlet-class>
+		<init-param>
+			<description></description>
+			<param-name>optlevel</param-name>
+			<param-value>0</param-value>
+		</init-param>
+		<!-- jsgi应用作为cj模块的模块id，可以直接对应到应用（模块）文件名称。其实就是处理request时使用的模块。
+			模块查找方式根据cj模块（require）标准进行。 
+			默认为main。 -->
+		<init-param>
+			<param-name>app-module</param-name>
+			<param-value>jsgiservice</param-value>
+		</init-param>
+		<!-- jsgi应用的名称，在jsgi内部其实就是jsgi入口Function的名称（其实按照jsgi标准jsgi应用其实首先是这个Function。）。其实是处理request时指定的Function。
+			该函数由cj模块exports导出即可。默认为app。 -->
+		<init-param>
+			<param-name>app-name</param-name>
+			<param-value>doService</param-value>
+		</init-param>
+		<!-- ringo软件安装的位置，用于ringo导入资源等。其实只要有必要的jar包即可。
+			程序也会在其下找默认目录如modules pacakages等目录作为资源位置。默认为/WEB-INF-->
+		<init-param>
+			<param-name>ringo-home</param-name>
+			<param-value>/WEB-INF</param-value>
+		</init-param>
+		<!-- 应用级模块库位置，读取模块的父路径。可以使一个逗号分隔的列表。
+			jsgi应用本身也是一种特定规范的模块，基于cj模块标准。
+			相对于应用路径（内部应用路径就是web的根路径context.getRealPath('/')）下的 WEB-INF/app -->
+		<init-param>
+			<param-name>module-path</param-name>
+			<param-value>rjs,WEB-INF/rjweb,WEB-INF/rjm</param-value>
+		</init-param>
+		<init-param>
+			<param-name>production</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>verbose</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>legacy-mode</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ringo</servlet-name>
+		<url-pattern>/rjs/*</url-pattern>
+	</servlet-mapping>
 	
 	<!-- 获取流数据 首先是图片 -->
 	<servlet>

@@ -39,6 +39,7 @@ import wyyoutu.web.AccountInfo;
 public class UploadFileServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) {
+		
 		return;
 	}
 
