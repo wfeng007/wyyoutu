@@ -36,6 +36,7 @@ public class SpringRingoServlet extends JsgiServletProxy {
 //				.getRequiredWebApplicationContext(context);
 		
 		//使用summ框架的springholder来获取spring-context
+		//必须放置在springlisenter之后。
 		_springContext = SpringContextHolder.getApplicationContext();
 		
 		//获取父类中的engine。

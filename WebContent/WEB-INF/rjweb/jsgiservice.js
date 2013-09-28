@@ -24,12 +24,12 @@ function doService(request){
 //	var a = new Application();
 	log.info("info");
 	log.debug("debug");
-	print("do requset...");
+	print("do requset...中文");
 	summjs.foo();
     return {
         status: 200,
         headers: {"Content-Type": "text/plain"},
-        body: ["Hello World"]
+        body: ["Hello World 中文"]
     };
 };
 

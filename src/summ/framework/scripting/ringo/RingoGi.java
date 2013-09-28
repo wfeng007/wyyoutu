@@ -58,6 +58,10 @@ public class RingoGi {
 	    
 	    //
 	    public RingoGi() {}
+	    
+	    public RingoGi(RhinoEngine engine) {
+	    	this.engine=engine;
+	    }
 
 //	    public RingoGi(RhinoEngine engine) throws ServletException {
 //	        this(engine, null);
@@ -68,6 +72,9 @@ public class RingoGi {
 //	        this.function = callable;
 //	    }
 
+	    /**
+	     * 需要时初始化。
+	     */
 	    public void init(){
 
 	        // don't overwrite function if it was set in constructor

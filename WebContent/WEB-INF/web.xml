@@ -170,7 +170,7 @@
 			相对于应用路径（内部应用路径就是web的根路径context.getRealPath('/')）下的 WEB-INF/app -->
 		<init-param>
 			<param-name>module-path</param-name>
-			<param-value>rjs,WEB-INF/rjweb,WEB-INF/rjm</param-value>
+			<param-value>rjs,plg,WEB-INF/rjweb,WEB-INF/rjm</param-value>
 		</init-param>
 		<init-param>
 			<param-name>production</param-name>
