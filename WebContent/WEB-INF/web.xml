@@ -19,15 +19,6 @@
 	</listener>
 	
 	
-	<servlet>
-		<servlet-name>Jersey-Spring Container</servlet-name>
-		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Jersey-Spring Container</servlet-name>
-		<url-pattern>/rest/v0.1/*</url-pattern>
-	</servlet-mapping>
-	
 	<!-- spring log4j集成配置 周期刷新器 -->
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
@@ -40,7 +31,17 @@
 	<listener>	
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
-
+	
+	<!-- ringojs-jsgi listener（定制） -->
+	<context-param>
+		<param-name>ringo-module-path</param-name>
+		<param-value>rjs,plg,WEB-INF/rjm</param-value>
+	</context-param>
+	<listener>	
+		<listener-class>summ.framework.scripting.ringo.RingoListener</listener-class>
+	</listener>
+	
+	
 	<!-- 
 		常用的spring CharacterEncodingFilter 只进行request的setencoding
 		forceEncoding会强制reponse setencoding, contenttype 也会追加一个类型
@@ -62,19 +63,6 @@
 		<filter-name>springCharacterEncodingFilter</filter-name>
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
-	
-	
-	<!-- summ框架web入口 开发状态 -->
-	<filter>
-		<description>summFilter</description>
-		<filter-name>summFilter</filter-name>
-		<filter-class>summ.framework.web.SummFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>summFilter</filter-name>
-		<url-pattern>/scripting/*</url-pattern>
-	</filter-mapping>
-	
 	
 	<!-- for session check   --> 
 	<filter>
@@ -103,6 +91,18 @@
 		<url-pattern>/item!modifyText.act</url-pattern>
 	</filter-mapping>
 
+
+	<!-- summ框架web入口 开发状态 -->
+	<filter>
+		<description>summFilter</description>
+		<filter-name>summFilter</filter-name>
+		<filter-class>summ.framework.web.SummFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>summFilter</filter-name>
+		<url-pattern>/scripting/*</url-pattern>
+	</filter-mapping>
+	
 	
 	<!-- struts2  FilterDispatcher  -->  
 	<filter>  
@@ -125,6 +125,28 @@
 	</filter-mapping>
 	
 	
+	<!-- ringo jsgi-filter （定制） 
+		app-module的值为入口module的名称。其实整个web的应该由jsgiService引用其他的module实现来完成web处理，
+		或则说jsgiService的实现是就是web框架如dispatcher等。
+	-->
+	<filter>
+		<description>ringoJsgiFilter</description>
+		<filter-name>ringoJsgiFilter</filter-name>
+		<filter-class>summ.framework.scripting.ringo.JsgiFilter</filter-class>
+		<init-param>
+			<param-name>app-module</param-name>
+			<param-value>jsgiService</param-value>
+		</init-param>
+		<init-param>
+			<param-name>app-name</param-name>
+			<param-value>doService</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>ringoJsgiFilter</filter-name>
+		<url-pattern>/rjs/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- 简单的测试servlet -->
 	<servlet>
 		<description>for upload </description>
@@ -137,7 +159,7 @@
 		<url-pattern>/svc/upload</url-pattern>
 	</servlet-mapping>
 
-	<!-- ringojs路径准发以及执行容器入口 -->
+	<!-- 官方的jsgi实现或扩展实现 ringojs路径准发以及执行容器入口 。暂时不用！
 	<servlet>
 		<servlet-name>ringo</servlet-name>
 		<servlet-class>summ.framework.scripting.ringo.SpringRingoServlet</servlet-class>
@@ -146,28 +168,29 @@
 			<param-name>optlevel</param-name>
 			<param-value>0</param-value>
 		</init-param>
+		-->
 		<!-- jsgi应用作为cj模块的模块id，可以直接对应到应用（模块）文件名称。其实就是处理request时使用的模块。
 			模块查找方式根据cj模块（require）标准进行。 
-			默认为main。 -->
+			默认为main。
 		<init-param>
 			<param-name>app-module</param-name>
-			<param-value>jsgiservice</param-value>
-		</init-param>
+			<param-value>jsgiService</param-value>
+		</init-param> -->
 		<!-- jsgi应用的名称，在jsgi内部其实就是jsgi入口Function的名称（其实按照jsgi标准jsgi应用其实首先是这个Function。）。其实是处理request时指定的Function。
-			该函数由cj模块exports导出即可。默认为app。 -->
+			该函数由cj模块exports导出即可。默认为app。
 		<init-param>
 			<param-name>app-name</param-name>
 			<param-value>doService</param-value>
-		</init-param>
+		</init-param> -->
 		<!-- ringo软件安装的位置，用于ringo导入资源等。其实只要有必要的jar包即可。
-			程序也会在其下找默认目录如modules pacakages等目录作为资源位置。默认为/WEB-INF-->
+			程序也会在其下找默认目录如modules pacakages等目录作为资源位置。默认为/WEB-INF 
 		<init-param>
 			<param-name>ringo-home</param-name>
 			<param-value>/WEB-INF</param-value>
-		</init-param>
+		</init-param>-->
 		<!-- 应用级模块库位置，读取模块的父路径。可以使一个逗号分隔的列表。
 			jsgi应用本身也是一种特定规范的模块，基于cj模块标准。
-			相对于应用路径（内部应用路径就是web的根路径context.getRealPath('/')）下的 WEB-INF/app -->
+			相对于应用路径（内部应用路径就是web的根路径context.getRealPath('/')）下的 WEB-INF/app 
 		<init-param>
 			<param-name>module-path</param-name>
 			<param-value>rjs,plg,WEB-INF/rjweb,WEB-INF/rjm</param-value>
@@ -189,6 +212,8 @@
 		<servlet-name>ringo</servlet-name>
 		<url-pattern>/rjs/*</url-pattern>
 	</servlet-mapping>
+	-->
+	
 	
 	<!-- 获取流数据 首先是图片 -->
 	<servlet>
@@ -202,7 +227,7 @@
 		<url-pattern>/svc/image</url-pattern>
 	</servlet-mapping>
 
-	
+	<!-- 测试用 demo 要求清理程序已经删除
 	<servlet>
 		<description>basic test
 		</description>
@@ -224,6 +249,16 @@
 	<servlet-mapping>
 		<servlet-name>AjaxProxyServlet</servlet-name>
 		<url-pattern>/AjaxProxyServlet</url-pattern>
+	</servlet-mapping>
+	-->
+	
+	<servlet>
+		<servlet-name>Jersey-Spring Container</servlet-name>
+		<servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey-Spring Container</servlet-name>
+		<url-pattern>/rest/v0.1/*</url-pattern>
 	</servlet-mapping>
 	
 	<!-- session 超时事件30分钟 默认20分钟 -->

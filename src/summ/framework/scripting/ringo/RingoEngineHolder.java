@@ -11,7 +11,7 @@ import org.ringojs.engine.ScriptError;
 import org.ringojs.tools.RingoRunner;
 
 /**
- * 引用全局唯一的一个ringoengine。spring或web 容器外单独保存。
+ * 引用全局唯一的一个ringo-engine。spring或web 容器外单独保存。
  * 
  * 注意必须在初始化之后才能时候内部engine。否则npe错误。
  * 似乎只是在servlet中初始化，ringoEngine。
@@ -32,7 +32,7 @@ public class RingoEngineHolder {
 	/**
 	 * @param ringoEngine the ringoEngine to set
 	 */
-	public static void setRingoEngine(RhinoEngine ringoEngine) {
+	static void setRingoEngine(RhinoEngine ringoEngine) {
 		RingoEngineHolder.ringoEngine = ringoEngine;
 	}
 	

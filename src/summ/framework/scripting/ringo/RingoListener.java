@@ -26,20 +26,20 @@ import org.ringojs.util.StringUtils;
  * @author wfeng007
  * @date 2013-9-29 下午08:57:21
  */
-public class JsgiServletContextListener implements ServletContextListener {
+public class RingoListener implements ServletContextListener {
 
-	static Logger logger=Logger.getLogger(JsgiServletContextListener.class);
+	static Logger logger=Logger.getLogger(RingoListener.class);
 	
-	final static String RINGO_ENGINE_ATTRIBUTE = JsgiServletContextListener.class.getName() + ".RINGO_ENGINE";
-	final static String RINGO_CONFIG_="";
+	final static String RINGO_ENGINE_ATTRIBUTE = RingoListener.class.getName() + ".RINGO_ENGINE";
+	final static String RINGO_REQUEST_PROTOTYPE_ATTRIBUTE = RingoListener.class.getName() + ".RINGO_REQUEST_PROTOTYPE";
 	
+//	final static String RINGO_CONFIG_="";
 	
-    String module;
-    Object function;
     RhinoEngine engine;
-    JsgiRequest requestProto;
-    boolean hasContinuation = false;
-	
+   
+
+	JsgiRequest requestProto;
+    boolean hasContinuation = false; //这个用来支持异步支持？具体是指啥？
 	
 	
 	/* (non-Javadoc)
@@ -54,16 +54,13 @@ public class JsgiServletContextListener implements ServletContextListener {
 					"check whether you have multiple definitions in your web.xml!");
 		}
 		
-		// 这两个参数也应该在filter中定义吧。
-		// don't overwrite function if it was set in constructor
-        if (function == null) {
-            module = getStringParameter(servletContext, "app-module", "main");
-            function = getStringParameter(servletContext, "app-name", "app");
-        }
-		
 		servletContext.log("Initializing ringo-engine");
 		this.engine = createRingoEngine(servletContext);
 		servletContext.setAttribute(RINGO_ENGINE_ATTRIBUTE, this.engine);
+		
+		//同时将engine放置到一个静态holder中去.
+		RingoEngineHolder.setRingoEngine(this.engine);
+		//
 		
         // 考虑使用反射来判断
 //        try {
@@ -71,9 +68,12 @@ public class JsgiServletContextListener implements ServletContextListener {
 //        } catch (NoClassDefFoundError ignore) {
 //            hasContinuation = false;
 //        }
-    		
-        //这个句话应该放在filter中或servlet中吧？
+		
+        //TODO 这个句话应该放在filter中或servlet中吧？
+		//TODO 这个requestProto是否与engine一一对应么？
         requestProto = new JsgiRequest(engine.getScope(), hasContinuation);
+        servletContext.setAttribute(RINGO_REQUEST_PROTOTYPE_ATTRIBUTE, this.requestProto);
+        
 	}
 	
 	/* (non-Javadoc)
@@ -82,19 +82,21 @@ public class JsgiServletContextListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		logger.info(this.getClass().getName()+":contextDestroyed()");
+		//engine使用shutdownHook在jvm退出时关闭。
 	}
 	
 	protected RhinoEngine createRingoEngine(ServletContext servletContext){
         
         if (engine == null) {
             String ringoHome = getStringParameter(servletContext, "ringo-home", "/WEB-INF");
-            String modulePath = getStringParameter(servletContext, "module-path", "WEB-INF/app");
-            String bootScripts = getStringParameter(servletContext, "bootscript", null);
-            int optlevel = getIntParameter(servletContext, "optlevel", 0);
-            boolean debug = getBooleanParameter(servletContext, "debug", false);
-            boolean production = getBooleanParameter(servletContext, "production", false);
-            boolean verbose = getBooleanParameter(servletContext, "verbose", false);
-            boolean legacyMode = getBooleanParameter(servletContext, "legacy-mode", false);
+            String modulePath = getStringParameter(servletContext, "ringo-module-path", "WEB-INF/umodules"); //原来默认WEB-INF/app,可以多个逗号分割。
+            logger.info("modulePath:"+modulePath);
+            String bootScripts = getStringParameter(servletContext, "ringo-bootscript", null); //这个似乎不是基于module路径寻找的。
+            int optlevel = getIntParameter(servletContext, "ringo-optlevel", 0);
+            boolean debug = getBooleanParameter(servletContext, "ringo-debug", false);
+            boolean production = getBooleanParameter(servletContext, "ringo-production", false);
+            boolean verbose = getBooleanParameter(servletContext, "ringo-verbose", false);
+            boolean legacyMode = getBooleanParameter(servletContext, "ringo-legacy-mode", false);
 
 //            ServletContext context = servletContext;
             Repository base = new WebappRepository(servletContext, "/");
@@ -108,7 +110,7 @@ public class JsgiServletContextListener implements ServletContextListener {
                 }
                 // Use ',' as platform agnostic path separator
                 String[] paths = StringUtils.split(modulePath, ",");
-                String[] systemPaths = {"modules", "packages"};
+                String[] systemPaths = {"modules", "packages"}; //如果ringo-home下有则ringo会直接用该目录作为系统模块，而取消从jar包中读取。所以如果没有必要不要建立。
                 RingoConfig ringoConfig =
                         new RingoConfig(home, base, paths, systemPaths);
                 ringoConfig.setDebug(debug);
@@ -181,4 +183,13 @@ public class JsgiServletContextListener implements ServletContextListener {
 		return defaultValue;
 	}
 	
+	
+	
+	 /**
+	 * @return the engine
+	 */
+	protected RhinoEngine getEngine() {
+		return engine;
+	}
+
 }

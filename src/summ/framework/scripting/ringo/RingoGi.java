@@ -30,6 +30,11 @@ import org.ringojs.tools.RingoRunner;
 import org.ringojs.util.StringUtils;
 
 /**
+ * 
+ * FIXME 实验用
+ * 
+ * 抽象初始化以及调用过程？
+ * 
  * 简单的Ringo引擎调用分装接口（gateway interface）。
  * Pojo形式可以用于spring bean。可以直接通过参数初始化一个独立的ringo engine。
  * 
