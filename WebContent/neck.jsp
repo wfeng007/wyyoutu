@@ -1,3 +1,4 @@
+<%@page import="wyyoutu.web.WebPlugin"%>
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
 <%@ page language="java"%>
@@ -14,8 +15,8 @@ String contextPath=path+"/";
 AccountInfo accountInfo=AccountInfo.lookupAccountInfo(request);
 String navPage=request.getParameter("nav_page");
 if(navPage==null)navPage="HOME";
-
 %>
+
 <style type="text/css">
 /** 这样做会让body的内容到navbar下面 ，包括自己在背景上写的内容。 **/
   body { 
@@ -26,6 +27,7 @@ if(navPage==null)navPage="HOME";
 
 </head>
 <body>
+
 <!--navbar区域，定义了图层以及一般样式布局位置等  顶部导航条 navbar-fixed-top表示窗口顶部？ -->
 <div class="navbar navbar-inverse navbar-fixed-top">
    <div class="navbar-inner">
@@ -46,13 +48,17 @@ if(navPage==null)navPage="HOME";
 <%}%>
              <li <%=("ABOUT".equals(navPage))?"class='active' ":""%>><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li <%=("CALL".equals(navPage))?"class='active' ":""%>><a href="#contact"><i class="icon-envelope"></i>联系</a></li>
+             <%WebPlugin.doHandle("vNavbarItem",request,response); %>
            </ul>
-<%if(accountInfo==null){%>           
+           
+<%//登录信息等
+if(accountInfo==null){%>           
            <form class="navbar-form pull-right" action="./session!login.act" method="POST">
               <input id="userId" name="userId" class="span2" type="text" placeholder="邮箱 或 昵称">
               <input id="password" name="password" class="span2"  type="password" placeholder="密码">
               <button id="signin_submit" type="submit" class="btn btn-warning">登录</button>
            </form>
+           
 <%}else{ %> 
 <ul class="nav pull-right">
     <li class="dropdown">
@@ -76,8 +82,10 @@ if(navPage==null)navPage="HOME";
 		</div>
 
 <%}%>
-       
+       <%WebPlugin.doHandle("vNavbar",request,response); %>
          </div><!--/.nav-collapse -->
     </div>	 
   </div>
 </div>
+
+<%WebPlugin.doHandle("vPosNeck",request,response); %>

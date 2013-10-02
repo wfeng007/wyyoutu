@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.Assert;
 
 import summ.framework.scripting.ringo.RingoEngineHolder;
 
@@ -45,13 +46,18 @@ public class WebPlugin {
 //	public static Map<String,WebPlugin> _shPluginCache=new HashMap<String,WebPlugin>();
 //	
 	/**
-	 * 执行某个hook-hanlde
+	 * 执行某个plugin-hanlde
+	 * TODO 注意plugin调用的顶层需要注意异常处理以及完备处理
+	 * 
 	 * @param handleId
 	 * @param req
 	 * @param resp
 	 */
 	public static void doHandle(String handleId,HttpServletRequest req,HttpServletResponse resp){
+		if(handleId==null)return;//不做任何事情
 		Set<WebPlugin> plgLs=_handleMapping.get(handleId);
+		if(plgLs==null||plgLs.size()<=0)return;//钩子上没有插件也不做任何事情
+		if(plgLs.size()>20)_logger.warn("There are too much plugin-handle need to process! q:"+plgLs.size());
 		for (WebPlugin plg : plgLs) {
 			plg.handle(handleId, req,resp);
 		}
@@ -63,18 +69,17 @@ public class WebPlugin {
 	 * @param handleId
 	 * @param pluginId
 	 */
-	public static void doHandle(String handleId,HttpServletRequest req,HttpServletResponse resp,String ... pluginIds){
-		Set<WebPlugin> plgLs=_handleMapping.get(handleId);
-		
-		for (WebPlugin plg : plgLs) {
-			for (int i = 0; i < pluginIds.length; i++) {
-				if(plg.id.equals(pluginIds[i])){
-					plg.handle(handleId, req,resp);
-				}
-			}
-		}
-		
-	}
+//	public static void doHandle(String handleId,HttpServletRequest req,HttpServletResponse resp,String ... pluginIds){
+//		Set<WebPlugin> plgLs=_handleMapping.get(handleId);
+//		for (WebPlugin plg : plgLs) {
+//			for (int i = 0; i < pluginIds.length; i++) {
+//				if(plg.id.equals(pluginIds[i])){
+//					plg.handle(handleId, req,resp);
+//				}
+//			}
+//		}
+//		
+//	}
 	
 	/**
 	 * 加载指定插件（配置），内部使用module方式。
@@ -106,7 +111,7 @@ public class WebPlugin {
 			if(isOk)
 				_logger.info("add plugin:"+pluginId+" handle:"+handleName);
 			else
-				_logger.info("The plugin is already exists. plugin:"+pluginId+"at handle:"+handleName);
+				_logger.info("The plugin is already exists. plugin:"+pluginId+" at handle:"+handleName);
 		}
 		
 	}

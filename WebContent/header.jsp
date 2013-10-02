@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
+<%@page import="wyyoutu.web.WebPlugin"%>
 <%@ page language="java"%>
 <%@ page session="false"%>
 <%!%>
@@ -13,6 +14,7 @@ String contextPath=path+"/";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><%=request.getParameter("header_title")%></title>
+<%WebPlugin.doHandle("vPreHeader",request,response); %>
 <!-- bootstrap.css basic -->
 <link href="<%=contextPath%>./jquery/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
 
@@ -46,3 +48,4 @@ String contextPath=path+"/";
 	 /* border: 1px solid #eeeeee; */
 }
 </style>
+<%WebPlugin.doHandle("vPosHeader",request,response); %>

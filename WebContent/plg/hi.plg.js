@@ -12,7 +12,8 @@ var log = require("ringo/logging").getLogger(module.id);
 /**
  * export 的模块函数，同时也是插件的执行句柄。
  */
-export("prtHello"); //导出插件handle
+export("prtHello"
+		,"vPosNeck"); //导出插件handle
 
 //
 log.info("插件初始化时运行，初始化插件"+module.id);
@@ -31,6 +32,11 @@ function prtHello(req,resp){
 	return;
 };
 
+var vPosNeck=function(req,resp){
+	prtHello(req,resp);
+	log.info("prtHello!!");
+	return;
+};
 
 function getLyricsLine(){
 	// These are the lyrics to Hello Dolly  

@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="utf-8"
 	contentType="text/html; charset=utf-8"%>
+<%@ page import="wyyoutu.web.WebPlugin"%>
 <%@ page language="java"%>
 <%@ page session="false"%>
 <%
@@ -9,12 +10,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 String contextPath=path+"/";
 
 %>
+<%WebPlugin.doHandle("vPreFooter",request,response); %>
 <hr/>
 <link rel="stylesheet" href="<%=contextPath%>./res/footer.css"/>
 <footer>
 <div id="footer"> 
 <div id="copyright">
-51youtu v0.6@ 沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
+51youtu v0.7@ 沪ICP备12041334号 Copyright © 2012 - 2013 wfeng007 <br/> 
 wfeng007@163.com <br/>
 <!-- 流量统计 -->
 <script type="text/javascript">
@@ -24,6 +26,7 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <br/>
 </div> 
 </div>
+<%WebPlugin.doHandle("vPosFooter",request,response); %>
 </footer>
 </body>
 </html>
