@@ -89,7 +89,7 @@ public class RingoListener implements ServletContextListener {
         
         if (engine == null) {
             String ringoHome = getStringParameter(servletContext, "ringo-home", "/WEB-INF");
-            String modulePath = getStringParameter(servletContext, "ringo-module-path", "WEB-INF/umodules"); //原来默认WEB-INF/app,可以多个逗号分割。
+            String modulePath = getStringParameter(servletContext, "ringo-module-path", "WEB-INF/usrmod"); //原来默认WEB-INF/app,可以多个逗号分割。
             logger.info("modulePath:"+modulePath);
             String bootScripts = getStringParameter(servletContext, "ringo-bootscript", null); //这个似乎不是基于module路径寻找的。
             int optlevel = getIntParameter(servletContext, "ringo-optlevel", 0);

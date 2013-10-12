@@ -193,7 +193,7 @@ img#itemMedia {
     	
     	//启动时加载数据
     	//$('#tags').tagit(); 
-    	$.get("./scripting/listTag.jss?itemId="+<%=itemId%>, //默认使用post,json对象其实会转变为form格式数据向后传
+    	$.get("./rjs/listTag?itemId="+<%=itemId%>, //默认使用post,json对象其实会转变为form格式数据向后传
 				function (data, textStatus){
 					//alert(data.tags);
 					$('#tagsForm').find('#tags').attr('value',data.tags); //修改内容 逗号分割内容。
@@ -217,7 +217,7 @@ img#itemMedia {
 			//其实应该用$("#myTags").tagit("assignedTags");
 			
 			var itemId=<%=itemId%>;
-			$.post("./scripting/addTags.jss", {action:'addTags',itemId:itemId, tags: tags }, //默认使用post,json对象其实会转变为form格式数据向后传
+			$.post("./rjs/replaceTags", {action:'addTags',itemId:itemId, tags: tags }, //默认使用post,json对象其实会转变为form格式数据向后传
 					function (data, textStatus){
 						//data 当前为json对象(取决于后面一个参数datatype(返回值)使用的是json),可以是 xmlDoc, jsonObj, html, text, 等等.
 						//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this

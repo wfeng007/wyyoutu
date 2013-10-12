@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>testweb</display-name>
-	
+	<display-name>wyyoutu</display-name>
 
-	
 	<!-- spring上下文配置文件 以及监听程序 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -92,7 +90,7 @@
 	</filter-mapping>
 
 
-	<!-- summ框架web入口 开发状态 -->
+	<!-- summ框架web入口 开发状态
 	<filter>
 		<description>summFilter</description>
 		<filter-name>summFilter</filter-name>
@@ -102,7 +100,7 @@
 		<filter-name>summFilter</filter-name>
 		<url-pattern>/scripting/*</url-pattern>
 	</filter-mapping>
-	
+	 -->
 	
 	<!-- struts2  FilterDispatcher  -->  
 	<filter>  
@@ -135,7 +133,7 @@
 		<filter-class>summ.framework.scripting.ringo.JsgiFilter</filter-class>
 		<init-param>
 			<param-name>app-module</param-name>
-			<param-value>jsgiService</param-value>
+			<param-value>jsgiService2</param-value>
 		</init-param>
 		<init-param>
 			<param-name>app-name</param-name>

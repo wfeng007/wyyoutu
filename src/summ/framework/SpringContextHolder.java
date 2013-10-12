@@ -20,4 +20,13 @@ public class SpringContextHolder {
 	static public void setApplicationContext(ApplicationContext context) {
 		springContext = context;
 	}
+	
+	static public Object getBean(String beanId){
+		try{
+			return springContext.getBean(beanId);
+		}catch (Throwable th) {
+			th.printStackTrace(System.err);
+			throw null;
+		}
+	}
 }

@@ -28,8 +28,6 @@ import org.ringojs.jsgi.JsgiRequest;
 import org.ringojs.jsgi.JsgiServlet;
 import org.ringojs.tools.RingoRunner;
 
-import summ.framework.web.SummFilter;
-
 /**
  * 使用filter作为jsgi上层接口实现。接收request转接到ringo-engine中去。
  * 参考官方jsgi servlet实现。
@@ -38,7 +36,7 @@ import summ.framework.web.SummFilter;
  */
 public class JsgiFilter implements Filter {
 	
-	private final static Logger logger=Logger.getLogger(SummFilter.class);
+	private final static Logger logger=Logger.getLogger(JsgiFilter.class);
 	
 	private ServletContext servletContext;
 	private RhinoEngine engine;
@@ -257,6 +255,18 @@ public class JsgiFilter implements Filter {
 				Scriptable scope,ServletContext servletContext,Filter filter,FilterConfig filterConfig,FilterChain filterChain) {
 			super(request, response, prototype, scope, new JsgiServlet()); //一个空的jsgiservlet之后需要删除。
 			deleteProperty((Scriptable)this.getProperty(this, "env"),"servlet"); //删除该对象引用，与servlet互相排斥？
+			
+			//FIXED pathInfo一直为空串“”
+			//null很奇怪的现象，无论web.xml怎么配置（/xxx/*）request.getPathInfo()似乎一直为null。而servletPath总是完整路径，tomcat版本问题？ 或filter的关系？
+			System.out.println("pathInfo:"+request.getPathInfo());
+			System.out.println("servletPath:"+request.getServletPath()); 
+			//filter形式path映射直接修正映射以/ContextPath后为基准，即jsgi-pathInfo <=> ServletPath+PathInfo映射。（原来是以ServletPath之后为基准。）
+			//修订pathInfo策略，设置为servletPath+pathinfo的形式。
+			String pathInfo=request.getServletPath()+(request.getPathInfo()!=null?request.getPathInfo():"");
+			String uri = request.getRequestURI();
+			put("pathInfo", this, "/".equals(pathInfo) && !uri.endsWith("/") ? //为何要这样写？uri而不是pathInfo？
+		                "" : (pathInfo==null?"":pathInfo));
+			//
 			
 			//env-ext
 			defineProperty((Scriptable)this.getProperty(this, "env"),"servletContext", //filter.filterConfig可以得到config?

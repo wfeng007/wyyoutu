@@ -83,7 +83,7 @@ CoPeople people=peopleDao.getByPk(accountInfo.getUserId());//需要校验？
 		<div class="span3">
 		</div>
 		<div class="span12">
-			<form class="form-horizontal form-account" action="./scripting/modifyPeople.jss" method="post">
+			<form class="form-horizontal form-account" action="./rjs/modifyPeople" method="post">
 				<legend><h2>基本信息</h2></legend>
 				<div class="control-group">
 					<label class="control-label">账号标识：</label>
@@ -105,7 +105,7 @@ CoPeople people=peopleDao.getByPk(accountInfo.getUserId());//需要校验？
 					</div>
 				</div>
 			</form>
-			<form class="form-horizontal form-account" action="./scripting/modifyPassword.jss" method="post">
+			<form class="form-horizontal form-account" action="./rjs/modifyPassword" method="post">
 				<input id="userId" name="userId" type="text" class="hide" value="<%=accountInfo.getUserId()%>"/>
 				<legend><h2>密码</h2></legend>
 				<div class="control-group">
