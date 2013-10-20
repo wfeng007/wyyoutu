@@ -39,6 +39,10 @@
 		<listener-class>summ.framework.scripting.ringo.RingoListener</listener-class>
 	</listener>
 	
+	<!-- 使用spring容器以及js容器进行plugin初始化 -->
+	<listener>	
+		<listener-class>wyyoutu.web.WebPluginFactoryListener</listener-class>
+	</listener>
 	
 	<!-- 
 		常用的spring CharacterEncodingFilter 只进行request的setencoding

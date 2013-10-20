@@ -6,6 +6,7 @@ package wyyoutu.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
 import wyyoutu.model.CoPeople;
+import wyyoutu.service.CoService;
 import wyyoutu.service.LoginService;
 
 /**
@@ -30,7 +32,7 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
 	
 	// for spring DI
 	private LoginService loginService;
-	
+	private CoService coService;
    
 	//
 	private String userId;
@@ -58,15 +60,26 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
 //		}
 		
 		//
-		logger.debug("user&password"+this.userId+"/"+this.password);
+		logger.info("user&password"+this.userId+"/"+this.password);
     	CoPeople cp= this.loginService.login(this.userId, this.password);
     	
     	logger.info(cp);
+//    	try{
     	if(cp!=null){
+    		
+    		//生成Session账户信息
     		AccountInfo accountInfo=new AccountInfo();
     		accountInfo.setUserId(cp.getId());
     		accountInfo.setUserName(cp.getName());
+    		//设置权限与角色备用
+    		//FIXME 执行了两次查询role
+    		List<String> allPerms=this.coService.listAllPermIdByPeopleId(accountInfo.getUserId());
+    		List<String> roles=this.coService.listRoleIdByPeopleId(accountInfo.getUserId());
+    		accountInfo.setAllPerms(allPerms);
+    		accountInfo.setRoles(roles);
+    		//
     		
+    		//生成session-scope context
     		//set session
     		HttpServletRequest request=ServletActionContext.getRequest();
     		HttpSession session=request.getSession(true);
@@ -79,8 +92,6 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
     		map.put("sessionId", session.getId());
     		map.put("success", true);
     		this.result=JSONObject.fromObject(map);
-    		
-    		
     		
     		//登录成功会转发到 result.jsp 并使其redirect to /index.jsp
 //    		HttpServletResponse response=ServletActionContext.getResponse();
@@ -97,6 +108,7 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
 //    		}
     		WebResult re=new WebResult(ServletActionContext.getRequest(),ServletActionContext.getResponse());
     		re.setJSON(this.result).setRedirectUrl("/index.jsp?owner="+accountInfo.getUserId(), null).setMsg("ok").sendToTraffic();
+    		
     		return;
     	}else{
     		Map<String, Object> map = new HashMap<String, Object>(0);
@@ -112,6 +124,10 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
     		return ;
     	}
     	
+//    	}
+//    	catch(Exception e){
+//    		e.printStackTrace();
+//    	}
     	
 		/*
 		ServletActionContext.getResponse().setContentType("application/json");// 设置http头部为json
@@ -274,7 +290,21 @@ public class SessionAction /*extends BasicAction*/ { //struts2不继承actionsup
 	public void setLoginService(LoginService loginService) {
 		this.loginService = loginService;
 	}
-	
+
+	/**
+	 * @return the coService
+	 */
+	public CoService getCoService() {
+		return coService;
+	}
+
+	/**
+	 * @param coService the coService to set
+	 */
+	public void setCoService(CoService coService) {
+		this.coService = coService;
+	}
+
 	
     
 }

@@ -5,7 +5,7 @@
  * require & import
  */
 var strings = require("ringo/utils/strings");
-var summjs=require("summ");
+//var summjs=require("summ");
 
 //日志器
 var log = require("ringo/logging").getLogger(module.id);
@@ -27,7 +27,7 @@ function prtHello(req,resp){
 	out.print(getLyricsLine()+"<br/>");
 	
 	//测试导入的其他模块内容
-	summjs.foo();
+//	summjs.foo();
 	//
 	return;
 };

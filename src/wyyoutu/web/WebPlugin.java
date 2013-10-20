@@ -11,12 +11,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.sun.jersey.spi.container.WebApplication;
+
+import summ.framework.SpringContextHolder;
 import summ.framework.scripting.ringo.RingoEngineHolder;
 
 /**
@@ -30,12 +38,12 @@ import summ.framework.scripting.ringo.RingoEngineHolder;
  */
 public class WebPlugin {
 	
+	public static final String DATAKEY=WebPlugin.class.getName()+".DATAKEY";
+	
 	private static final Logger _logger=Logger.getLogger(WebPlugin.class);
 	
 	//handleId - Plugin
 	public static Map<String,LinkedHashSet<WebPlugin>> _handleMapping=null;
-	
-	
 //	public static 
 	static{
 		_handleMapping=new HashMap<String,LinkedHashSet<WebPlugin>>();
@@ -217,5 +225,22 @@ public class WebPlugin {
 		return true;
 	}
 	
+	
+	/**
+	 * 用来初始化默认的plugin
+	 * 这些plugin在启动的时候被加载
+	 * @author wfeng007
+	 * @date 2013-10-20 下午03:36:43
+	 */
+	public static class PluginFactory{
+		public PluginFactory(List<String> initPluginIdLs) {
+			System.out.println(initPluginIdLs);
+			for (String id : initPluginIdLs) {
+				WebPlugin.addPlugin(id);
+			}
+		}
+	}
+	
+
 	
 }

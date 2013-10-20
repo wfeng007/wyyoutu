@@ -118,11 +118,11 @@ doService.post("/rjs/modifyPassword",function modifyPassword(req){
 	print("checkPwd:"+param.checkPwd);
 	
 	
-	var accountService=$SF("loginService");
+	var coService=$SF("coService");
 	var b=false;
 	importPackage(Packages.wyyoutu.model);
 	var people=new CoPeople();
-	var b=accountService["modifyPassword"](param.userId,param.curPwd,param.newPwd); //FIXME 这里如果param.userId没有定义会给对象设置"undefine怎样的字符串。需要提供方便的转换工具。"
+	var b=coService["modifyPassword"](param.userId,param.curPwd,param.newPwd); //FIXME 这里如果param.userId没有定义会给对象设置"undefine怎样的字符串。需要提供方便的转换工具。"
 	delete people;
 
 	var result={success:b,msg:"add ok. "};
@@ -152,13 +152,13 @@ doService.post("/rjs/modifyPeople",function modifyPeople(req){
 	var param=$SW.parseParams(req.env.servletRequest).param;
 	print("userName:"+param.userName);
 	print("userId:"+param.userId);
-	var accountService=$SF("loginService");
+	var coService=$SF("coService");
 
 	importPackage(Packages.wyyoutu.model);
 	var people=new CoPeople();
 	people["id"]=param.userId; //FIXME 这里如果param.userId没有定义会给对象设置"undefine怎样的字符串。需要提供方便的转换工具。"
 	people["name"]=param.userName;
-	var b=accountService["modifyPeopleBaisc"](people);
+	var b=coService["modifyPeopleBaisc"](people);
 	delete people;
 
 	var result={success:b,msg:"add ok. "};

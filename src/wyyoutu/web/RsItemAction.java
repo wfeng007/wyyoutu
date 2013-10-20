@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -149,10 +152,21 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		//seq_id倒序
 		//分页查询  paraMap应该兼容null(修改代码生成)
 		Map<String,Object> paraMap=new HashMap<String, Object>();
-		
 		paraMap.put("ownerId", owner); //用户账号作为item拥有者查询。
-		
 		paraMap.put("orderBy", "`seq_id`  DESC ");
+		
+		
+		//plugin钩子 aListItem
+		//参数都是使用req传递
+		HttpServletRequest req=	ServletActionContext.getRequest();
+		HttpServletResponse resp=	ServletActionContext.getResponse();
+		//参数
+		req.setAttribute(WebPlugin.DATAKEY+".paraMap", paraMap);
+		WebPlugin.doHandle("aPreListItem", req, resp);
+		//
+		
+		
+		
 		List<RsItem> ls=this.rsItemService.listItem(paraMap, paging);
 		
 		//

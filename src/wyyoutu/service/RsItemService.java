@@ -61,7 +61,9 @@ public class RsItemService {
 	}
 	
 	/**
+	 * TODO 增加关联查询即有其扩展属性的条件查询。
 	 * 查询分页
+	 * 
 	 * @param mp
 	 * @param paging
 	 * @return

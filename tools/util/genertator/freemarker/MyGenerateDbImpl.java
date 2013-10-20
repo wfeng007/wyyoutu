@@ -59,7 +59,8 @@ public class MyGenerateDbImpl {
 		//summ.wuyoutu
 //		tableNameList.add("RS_ITEM");
 //		tableNameList.add("co_people");
-		tableNameList.add("RS_TAGGED");
+//		tableNameList.add("RS_TAGGED");
+		tableNameList.add("co_people_exten");
 		
 		//iccs.pm
 //		tableNameList.add("PM_SM_SYSTEM_INFO");

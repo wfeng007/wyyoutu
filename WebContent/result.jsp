@@ -38,9 +38,11 @@ Throwable error=null;
 if(request.getAttribute(WebResult.RESULT_DATA_KEY_ERROR) instanceof Throwable){
 	error=(Throwable)request.getAttribute(WebResult.RESULT_DATA_KEY_ERROR);
 }
+
 if (exception != null) { //是isErrorPage导致的获取错误信息。
 	error=exception; //首先处理isErrorPage默认的
 }
+
 //读取json信息对象
 JSONObject resultJson=null;
 if(request.getAttribute(WebResult.RESULT_DATA_KEY_RESULT_JSON) instanceof JSONObject){
@@ -92,6 +94,7 @@ if(WebResult.HANDLE_TYPE_REDIRECT.equals(handleType) && redirectUrl!=null && aut
 </jsp:include>
 <jsp:include page="/neck.jsp" flush="true"/>
 <div class="contianer">
+
 <%if(redirectUrl!=null){%>
 <p>Redirect Url:<a href="<%=application.getContextPath()+redirectUrl%>"><%=redirectUrl%></a></p>
 <%out.flush();

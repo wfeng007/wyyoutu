@@ -58,17 +58,17 @@
  	
  	<!-- 公共功能 不进行认证控制    / 下直接路径 -->
  	<package name="pub" extends="struts-default" namespace="/">
+ 		<!-- 如果有exception也可以作为一种返回来处理并跳转到特定位置  异常处理页面需要用struts标签来输出异常-->
  		<global-exception-mappings>
- 		<!-- 如果有exception也可以作为一种返回来处理并跳转到特定位置 -->
- 			<exception-mapping result="error" exception="java.lang.Exception">/result.jsp</exception-mapping>
+ 			<exception-mapping result="error" exception="java.lang.Exception">/strutsErrorPage.jsp</exception-mapping>
  		</global-exception-mappings>
- 		
  		<!-- 指定到 方法-->
  		<action name="item" method="listItem" class="rsItemAction"></action>
- 		
  		<!--获取session信息  现在还是使用 servletfilter完成的 session过滤，用struts的内部filter则很多内容需要复杂配置。-->
 		<action name="session" class="sessionAction">
-			<result name="error" >/result.jsp</result>
+			<!-- 如果没有配置exception-mapping则 内部抛出异常会走默认的error -->
+			<result name="error" >/strutsErrorPage.jsp</result>
+			<!-- 如果内部不自行跳转，直接返回字符串也能跳转！ -->
 			<result name="success" type="dispatcher">/result.jsp</result>
 		</action>
  	</package>

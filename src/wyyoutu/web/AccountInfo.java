@@ -3,7 +3,9 @@
  */
 package wyyoutu.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +54,36 @@ public class AccountInfo {
 //	public void setIntoSession(request){
 //		
 //	}
+	
+	
+	List<String> allPerms=new ArrayList<String>();
+	List<String> roles=new ArrayList<String>();
+	/**
+	 * 
+	 * @param permission
+	 * @return
+	 */
+	public boolean hasCap(String permission){
+		return this.hasPerm(permission);
+	}
+	public boolean hasPerm(String permission){return this.allPerms.contains(permission);};
+	/**
+	 * 
+	 * @param permission
+	 * @return
+	 */
+	public boolean addCap4Session(String permission){
+		return allPerms.add(permission);
+	}
+	/**
+	 * 
+	 * @param permission
+	 * @return
+	 */
+	public boolean removeCap4Session(String permission){
+		return allPerms.remove(permission);
+	}
+	
 	
 	/**
 	 * 用户id、登录账号
@@ -108,8 +140,12 @@ public class AccountInfo {
 	 */
 	@Override
 	public String toString() {
-		return "AccountInfo [userId=" + userId + ", userName=" + userName + "]";
+		return "AccountInfo [allPerms=" + allPerms + ", roles=" + roles
+				+ ", userId=" + userId + ", userName=" + userName
+				+ ", isOAuthBound=" + isOAuthBound + ", oauthTokenObjMap="
+				+ oauthTokenObjMap + "]";
 	}
+	
 	
 	//用于保存第三方的token等信息
 	private Map oauthTokenObjMap=new HashMap();
@@ -119,6 +155,36 @@ public class AccountInfo {
 	
 	public void putOAuthToken(String provider, Object tokenObj){
 		this.oauthTokenObjMap.put(provider, tokenObj);
+	}
+
+	
+	
+	/**
+	 * @return the allPerms
+	 */
+	public List<String> getAllPerms() {
+		return allPerms;
+	}
+
+	/**
+	 * @param allPerms the allPerms to set
+	 */
+	public void setAllPerms(List<String> allPerms) {
+		this.allPerms = allPerms;
+	}
+
+	/**
+	 * @return the roles
+	 */
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 	
 }

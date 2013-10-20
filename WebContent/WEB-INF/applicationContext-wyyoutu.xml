@@ -3,11 +3,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+	<!-- web-plugin 临时用法 -->
+	<bean id="pluginFactory" class="wyyoutu.web.WebPlugin.PluginFactory" lazy-init="true">
+		<constructor-arg index="0">
+			<list>
+				<value>perms</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
 	<!-- dao -->
-	<bean id="rsItemDao" class="wyyoutu.dao.RsItemDao">
+	<bean id="rsItemDao" class="wyyoutu.dao.RsItemDao" >
 		<property name="sessionTemplate" ref="sessionTemplate" />
 	</bean>
 	<bean id="coPeopleDao" class="wyyoutu.dao.CoPeopleDao">
+		<property name="sessionTemplate" ref="sessionTemplate" />
+	</bean>
+	<bean id="coPeopleExtenDao" class="wyyoutu.dao.CoPeopleExtenDao">
 		<property name="sessionTemplate" ref="sessionTemplate" />
 	</bean>
 	<bean id="rsTaggedDao" class="wyyoutu.dao.RsTaggedDao">
@@ -18,12 +30,19 @@
 		<property name="rsItemDao" ref="rsItemDao" />
 		<property name="rsTaggedDao" ref="rsTaggedDao" />
 	</bean>
+	<bean id="coService" class="wyyoutu.service.CoService">
+		<property name="coPeopleDao" ref="coPeopleDao" />
+		<property name="loginService" ref="loginService" />
+		<property name="coPeopleExtenDao" ref="coPeopleExtenDao" />
+	</bean>
 	<bean id="loginService" class="wyyoutu.service.LoginService">
 		<property name="coPeopleDao" ref="coPeopleDao" />
+		<property name="coService" ref="coService" />
 	</bean>
-	<bean id="rsTagService" class="wyyoutu.service.RsTagService">
+	
+<!-- 	<bean id="rsTagService" class="wyyoutu.service.RsTagService">
 		<property name="rsTaggedDao" ref="rsTaggedDao" />
-	</bean>	
+	</bean>	 -->
 	
 	<!-- action for struts2
 		其中pmSmSystemInfoAction需要struts在配置文件中指定
@@ -32,6 +51,7 @@
 		<property name="rsItemService" ref="rsItemService" />
 	</bean>
 	<bean id="sessionAction" class="wyyoutu.web.SessionAction" scope="prototype">
+		<property name="coService" ref="coService" />
 		<property name="loginService" ref="loginService" />
 	</bean>
 	

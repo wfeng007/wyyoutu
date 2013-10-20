@@ -19,12 +19,28 @@ CREATE TABLE `CO_PEOPLE` (
 --  `status` DATETIME NULL COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE (`seq_id`) 
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='人概要信息';
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='人员概要信息';
 
 -- 默认用户
 insert into `CO_PEOPLE` (`id`, `name`, `password`, `add_ts`)
 	values('admin','系统管理员','21232f297a57a5a743894a0e4a801fc3','2012-12-1');
 
+-- 人员用户信息扩展
+DROP TABLE IF EXISTS `CO_PEOPLE_EXTEN`;
+CREATE TABLE `CO_PEOPLE_EXTEN` (
+	`seq_id` BIGINT NOT NULL  auto_increment,
+	`people_id` VARCHAR(100) NOT NULL COMMENT '用户id',
+	`exten_key` VARCHAR(100) NOT NULL COMMENT '扩展键',
+	`exten_value` VARCHAR(2000) NULL COMMENT '扩展值',
+	 PRIMARY KEY (`seq_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='人员用户信息扩展';	
+
+-- 默认admin的角色与权限
+insert into `CO_PEOPLE_EXTEN` (`people_id`, `exten_key`, `exten_value`)
+	values('admin','role','Administrator');
+insert into `CO_PEOPLE_EXTEN` (`people_id`, `exten_key`, `exten_value`)
+	values('admin','permission','read');	
+	
 	
 -- 图片、音频（包括文本）等 资源项
 DROP TABLE IF EXISTS `RS_ITEM`;
@@ -50,8 +66,23 @@ CREATE TABLE `RS_ITEM` (
 insert into `rs_item` (`seq_id`,`iid`, `name`, `url`, `access_type`, `add_ts`, `text`) values('1','_default_1_','测试内容1','http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg',NULL,NULL,'测试内容111111 这个内容就多了 从整体上来看 这个非常关键的发挥发的海风好大夫哈发放大方地将阿凡达发酵法大解放大房间dajfdafdafjaljfdas');
 insert into `rs_item` (`seq_id`,`iid`, `name`, `url`, `access_type`, `add_ts`, `text`) values('2','_default_2_','测试内容2','./jquery/lightbox/images/next.png',NULL,NULL,'测试内容2222');
 
+-- 资源项信息扩展
+DROP TABLE IF EXISTS `RS_ITEM_EXTEN`;
+CREATE TABLE `RS_ITEM_EXTEN` (
+	`seq_id` BIGINT NOT NULL auto_increment,
+	`item_iid` VARCHAR(128) NOT NULL COMMENT '资源项iid',
+	`exten_key` VARCHAR(100) NOT NULL COMMENT '扩展键',
+	`exten_value` VARCHAR(2000) NULL COMMENT '扩展值',
+	 PRIMARY KEY (`seq_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='资源项信息扩展';	
+-- ...
+--	insert into `RS_ITEM_EXTEN` (`people_id`, `exten_key`, `exten_value`)
+--		values('admin','role','Administrator');
+--	insert into `RS_ITEM_EXTEN` (`people_id`, `exten_key`, `exten_value`)
+--		values('admin','permission','read');	
 
---  资源项评论或回复
+
+--  资源项评论或回复 暂时没有用。
 DROP TABLE IF EXISTS `RS_COMMENT`;
 CREATE TABLE `RS_COMMENT` (
   `seq_id` BIGINT(20) NOT NULL auto_increment COMMENT '自增id，对应程序应该为long类型', 
