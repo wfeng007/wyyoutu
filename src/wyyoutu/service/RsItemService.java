@@ -69,8 +69,16 @@ public class RsItemService {
 	 * @return
 	 */
 	public List<RsItem> listItem(Map<String,Object> mp,Paging paging) {
-		return this.rsItemDao.query(mp, paging);
+		if(mp.containsKey("condition")){
+			System.out.println("*******************************condition:"+mp.get("condition"));
+			mp.put("orderBy", "RS_ITEM.`seq_id`  DESC ");
+			return this.rsItemDao.queryConditionAndExten(mp, paging);
+		}else{
+			System.out.println("no condition");
+			return this.rsItemDao.query(mp, paging);
+		}
 	}
+	
 	
 	/**
 	 * 查询所有内容
@@ -81,6 +89,9 @@ public class RsItemService {
 		System.out.println(reLs);
 		return reLs;
 	}
+	
+	
+
 	
 	
 	/**

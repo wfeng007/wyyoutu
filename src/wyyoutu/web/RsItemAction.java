@@ -151,10 +151,11 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		
 		//seq_id倒序
 		//分页查询  paraMap应该兼容null(修改代码生成)
+		//TODO 这部分逻辑应该放在service中。
 		Map<String,Object> paraMap=new HashMap<String, Object>();
-		paraMap.put("ownerId", owner); //用户账号作为item拥有者查询。
-		paraMap.put("orderBy", "`seq_id`  DESC ");
-		
+		paraMap.put("ownerId", owner); //用户账号作为item拥有者查询。 
+		paraMap.put("orderBy", "RS_ITEM.`seq_id`  DESC ");
+		paraMap.put("condition", "ITEM_EXTEN.`exten_key`='PUB'");
 		
 		//plugin钩子 aListItem
 		//参数都是使用req传递
@@ -165,8 +166,7 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		WebPlugin.doHandle("aPreListItem", req, resp);
 		//
 		
-		
-		
+		System.err.println("*******************************condition:"+paraMap.get("condition"));
 		List<RsItem> ls=this.rsItemService.listItem(paraMap, paging);
 		
 		//

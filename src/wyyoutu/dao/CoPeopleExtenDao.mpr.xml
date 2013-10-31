@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		table information
+		Generate time : 2013-10-20 14:46:12
+   		Version :  3.0.0
+		tableName :co_people_exten 
+		  seq_id  BIGINT   NOT NULL   primarykey, 		
+		  people_id  VARCHAR   NOT NULL, 		-REMARKS-:用户id
+		  exten_key  VARCHAR   NOT NULL, 		-REMARKS-:扩展键
+		  exten_value  VARCHAR		-REMARKS-:扩展值
+	-->
+<mapper namespace="wyyoutu.dao.CoPeopleExtenDao">
+	<!-- table selected columns  -->
+	<sql id="selectedColumns">
+	<![CDATA[
+		  `seq_id` as "seqId", 
+		  `people_id` as "peopleId", 
+		  `exten_key` as "extenKey", 
+		  `exten_value` as "extenValue"
+	]]>
+	</sql>
+	
+	<!-- querying conditions -->
+	<sql id="queryingConditions">
+		<if test="@summ.framework.util.Ognl@isNotEmpty(seqId)"> 
+	      <![CDATA[	
+	        AND `seq_id` = #{seqId}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(peopleId)"> 
+	      <![CDATA[	
+	        AND `people_id` = #{peopleId}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(extenKey)"> 
+	      <![CDATA[	
+	        AND `exten_key` = #{extenKey}
+		  ]]>
+	 	</if>
+		<if test="@summ.framework.util.Ognl@isNotEmpty(extenValue)"> 
+	      <![CDATA[	
+	        AND `exten_value` = #{extenValue}
+		  ]]>
+	 	</if>
+	</sql>
+	
+	<select id="query" resultType="wyyoutu.model.CoPeopleExten">
+ 	<![CDATA[
+ 		select 
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.CoPeopleExtenDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="selectedColumns"/>
+ 	<![CDATA[
+ 		from  co_people_exten 
+ 	]]>
+	    <where>
+		  <include refid="queryingConditions"/>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[
+		ORDER BY `seq_id`  ASC 
+		]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) FROM co_people_exten 
+	  ]]>
+	  <where>
+		<include refid="queryingConditions"/>
+	  </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+
+
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO co_people_exten (
+		  `seq_id`,
+		  `people_id`,
+		  `exten_key`,
+		  `exten_value`
+		)
+		VALUES (		 
+	      #{seqId}, 
+	      #{peopleId,jdbcType=VARCHAR}, 
+	      #{extenKey,jdbcType=VARCHAR}, 
+	      #{extenValue,jdbcType=VARCHAR}
+	    )
+	]]>
+	</insert>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM co_people_exten WHERE 
+			`seq_id` =  #{seqId}
+	]]>
+	</delete>
+	
+	<update id="update">
+		UPDATE co_people_exten 
+		<set> 
+		<if test="peopleId != null">
+		<![CDATA[
+		  `people_id` = #{peopleId,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="extenKey != null">
+		<![CDATA[
+		  `exten_key` = #{extenKey,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="extenValue != null">
+		<![CDATA[
+		  `exten_value` = #{extenValue,jdbcType=VARCHAR}
+	    ]]>
+	    </if>
+		</set> 
+		<![CDATA[
+		WHERE 	
+		  `seq_id` = #{seqId}
+		]]>
+	</update>
+	
+	
+</mapper> 

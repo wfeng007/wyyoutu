@@ -21,6 +21,10 @@
 		  owner_id  VARCHAR		-REMARKS-:关联用户id
 	-->
 <mapper namespace="wyyoutu.dao.RsItemDao">
+
+	<!-- basic info for sql -->
+	<sql id="tableName"><![CDATA[RS_ITEM]]></sql>
+	
 	<!-- table selected columns  -->
 	<sql id="selectedColumns">
 	<![CDATA[
@@ -231,5 +235,38 @@
 		]]>
 	</update>
 	
+	
+	<!-- table name for cascade -->
+	<sql id="tableNameForCascade"><![CDATA[RS_ITEM]]></sql>
+	
+	<!-- table selected columns for cascade -->
+	<sql id="selectedColumnsForCascade">
+		<![CDATA[
+		  RS_ITEM.`seq_id` AS "RS_ITEM_seq_id", 
+		  RS_ITEM.`iid` AS "RS_ITEM_iid", 
+		  RS_ITEM.`name` AS "RS_ITEM_name", 
+		  RS_ITEM.`url` AS "RS_ITEM_url", 
+		  RS_ITEM.`access_type` AS "RS_ITEM_access_type", 
+		  RS_ITEM.`add_ts` AS "RS_ITEM_add_ts", 
+		  RS_ITEM.`modify_ts` AS "RS_ITEM_modify_ts", 
+		  RS_ITEM.`status` AS "RS_ITEM_status", 
+		  RS_ITEM.`text` AS "RS_ITEM_text", 
+		  RS_ITEM.`owner_id` AS "RS_ITEM_owner_id"
+		]]>
+	</sql>
+
+	<!-- basic result-Map for table -->
+	<resultMap type="wyyoutu.model.RsItem" id="RsItemResult">
+		<id property="seqId" column="RS_ITEM_seq_id" />
+		<result property="iid" column="RS_ITEM_iid"/>
+		<result property="name" column="RS_ITEM_name"/>
+		<result property="url" column="RS_ITEM_url"/>
+		<result property="accessType" column="RS_ITEM_access_type"/>
+		<result property="addTs" column="RS_ITEM_add_ts"/>
+		<result property="modifyTs" column="RS_ITEM_modify_ts"/>
+		<result property="status" column="RS_ITEM_status"/>
+		<result property="text" column="RS_ITEM_text"/>
+		<result property="ownerId" column="RS_ITEM_owner_id"/>
+	</resultMap>
 	
 </mapper> 

@@ -198,5 +198,45 @@ public class RsItemDao {
 	// custom 
 	//
 	
+	/**
+ 	 * 
+ 	 * 基本查询或列表功能
+ 	 * 
+ 	 * @param mp Map方式参数条件
+ 	 * 
+ 	 *
+ 	 */
+	public List<RsItem> queryConditionAndExten(Map<String,Object> mp) {
+		return (List<RsItem>)sessionTemplate.selectList("wyyoutu.dao.CustomRsItemDao.queryConditionAndExten",mp);
+	}
+	/**
+ 	 * 
+ 	 * 基本查询或列表功能
+ 	 * 
+ 	 * @param mp Map方式参数条件
+ 	 * @param paging 分页条件 paging==null时则为不分页
+ 	 *
+ 	 */
+	public List<RsItem> queryConditionAndExten(Map<String,Object> mp,Paging paging) {
+		if(paging!=null){
+			mp.put("paging",paging);
+		}
+		return (List<RsItem>)sessionTemplate.selectList("wyyoutu.dao.CustomRsItemDao.queryConditionAndExten",mp);
+	}
+
+	
+	public int countConditionAndExten(Map<String,Object> mp) {
+		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.CustomRsItemDao.countConditionAndExten",mp);
+	}
+	
+	public int countConditionAndExten(Map<String,Object> mp,Paging paging) {
+		if(paging!=null){
+			mp.put("paging",paging);
+		}
+		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.CustomRsItemDao.countConditionAndExten",mp);
+	}
+	
+	
+	
 	
 }

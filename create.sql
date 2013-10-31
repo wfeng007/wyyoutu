@@ -76,8 +76,10 @@ CREATE TABLE `RS_ITEM_EXTEN` (
 	 PRIMARY KEY (`seq_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='资源项信息扩展';	
 -- ...
---	insert into `RS_ITEM_EXTEN` (`people_id`, `exten_key`, `exten_value`)
---		values('admin','role','Administrator');
+insert into `RS_ITEM_EXTEN` (`item_iid`, `exten_key`, `exten_value`)
+		values('_default_1_','PUB','y');
+insert into `RS_ITEM_EXTEN` (`item_iid`, `exten_key`, `exten_value`)
+		values('_default_2_','PUB','y');
 --	insert into `RS_ITEM_EXTEN` (`people_id`, `exten_key`, `exten_value`)
 --		values('admin','permission','read');	
 

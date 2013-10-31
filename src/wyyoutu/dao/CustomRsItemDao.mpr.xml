@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		定制的联合查询
+	-->
+<mapper namespace="wyyoutu.dao.CustomRsItemDao">
+	
+	<!-- resultType="wyyoutu.model.RsItem" -->
+	<select id="queryConditionAndExten" resultMap="wyyoutu.dao.RsItemDao.RsItemResult" >
+ 	<![CDATA[
+ 		select DISTINCT
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.RsItemDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="wyyoutu.dao.RsItemDao.selectedColumnsForCascade"/>
+ 	 
+	 	<![CDATA[ from ]]>
+	 	 <include refid="wyyoutu.dao.RsItemDao.tableName"/> <![CDATA[ AS ]]><include refid="wyyoutu.dao.RsItemDao.tableNameForCascade"/>
+	 	<![CDATA[ , ]]>
+ 	 	<include refid="wyyoutu.dao.RsItemExtenDao.tableName"/> <![CDATA[ AS ]]><include refid="wyyoutu.dao.RsItemExtenDao.tableNameForCascade"/>
+	    <where>
+<!-- 	     ITEM_EXTEN.`item_iid` AS "ITEM_EXTEN_item_iid",
+	      RS_ITEM.`iid` AS "RS_ITEM_iid",   -->
+		<include refid="wyyoutu.dao.RsItemDao.tableNameForCascade"/>.`iid` = <include refid="wyyoutu.dao.RsItemExtenDao.tableNameForCascade"/>.`item_iid`
+		<!-- 看上去貌似condition没有的话查询出来的内容没有意义所有有exten的item？ -->
+		<if test="@summ.framework.util.Ognl@isNotEmpty(condition)"> 
+	      <![CDATA[	
+	        AND  ${condition}
+		  ]]>
+	 	</if>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[ ORDER BY ]]>
+		<include refid="wyyoutu.dao.RsItemDao.tableNameForCascade"/>.`seq_id`
+		<![CDATA[ DESC ]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <!-- query用distinct 则count不准,
+    	应该用类似如下子查询写法？但记录数一多还是有问题，是否效率很低下？： FIXME 大数据量时关联查询的count确实是个问题。
+    SELECT COUNT(*) FROM (
+  		 SELECT DISTINCT RS_ITEM.`seq_id`	
+   		 FROM RS_ITEM AS RS_ITEM , RS_ITEM_EXTEN AS ITEM_EXTEN 
+   		 WHERE RS_ITEM.`iid` = ITEM_EXTEN.`item_iid` AND ITEM_EXTEN.`exten_key`='PUB'
+	) AS c
+      -->
+    <select id="countConditionAndExten" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) from ]]>
+ 	 <include refid="wyyoutu.dao.RsItemDao.tableName"/> <![CDATA[ AS ]]><include refid="wyyoutu.dao.RsItemDao.tableNameForCascade"/>
+ 	<![CDATA[ , ]]>
+ 	 <include refid="wyyoutu.dao.RsItemExtenDao.tableName"/> <![CDATA[ AS ]]><include refid="wyyoutu.dao.RsItemExtenDao.tableNameForCascade"/>
+	    <where>
+<!-- 	     ITEM_EXTEN.`item_iid` AS "ITEM_EXTEN_item_iid",
+	      RS_ITEM.`iid` AS "RS_ITEM_iid",   -->
+		<include refid="wyyoutu.dao.RsItemDao.tableNameForCascade"/>.`iid` = <include refid="wyyoutu.dao.RsItemExtenDao.tableNameForCascade"/>.`item_iid`
+		<if test="@summ.framework.util.Ognl@isNotEmpty(condition)"> 
+	      <![CDATA[	
+	        AND  ${condition}
+		  ]]>
+	 	</if>
+	    </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+	
+</mapper> 

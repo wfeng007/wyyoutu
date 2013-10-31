@@ -5,6 +5,7 @@
 - version: 0.4 query count修改为全部参数
 - version: 0.5 namespace内容更换为${daoPackage}.${mapping.className}Dao
 - version: 0.6 增加mysql库时默认的分页 select 字段变为sql片断 修订联合主件的orderby问题 去掉部分不需要生成的内容
+- version: 0.7 增加提供及联操作查询的一些基本sql片断
 -->
 <?xml version="1.0" encoding="UTF-8" ?> 
 <!DOCTYPE mapper 
@@ -26,6 +27,11 @@
 <mapper namespace="${nameSpace}">
 -->
 <mapper namespace="${daoPackage}.${mapping.className}Dao">
+
+	<!-- basic info for sql -->
+	<sql id="tableName"><![CDATA[${mapping.tableName}]]></sql>
+	
+	
 	<!-- table selected columns  -->
 	<sql id="selectedColumns">
 	<![CDATA[
@@ -37,13 +43,13 @@
 	]]>
 	</sql>
 	
-	<#--  test="@summ.framework.util.Ognl@isNotEmpty(${property.propertyName})" 或  test="${property.propertyName} != null" -->
+	<#--  test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(${property.propertyName})" 或  test="${property.propertyName} != null" -->
 	<!-- querying conditions -->
 	<sql id="queryingConditions">
 	<#-- 直接所有字段条件 FIXME 当前框架包没有动态给 -->
 		<#list mapping.propertyMappingList as property>
 		<#if (property.generate)> 
-		<if test="@summ.framework.util.Ognl@isNotEmpty(${property.propertyName})"> 
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(${property.propertyName})"> 
 	      <![CDATA[	
 	        AND `${property.columnName}` = ${r"#"}{${property.propertyName}}
 		  ]]>
@@ -265,5 +271,61 @@
 	</update>
 	
 	<#-- TODO 批量更新  使用IN 以及自定义条件? -->
+	
+	
+	
+	<#-- 
+	提供级联用的基础片断 
+	-->
+	<!-- table name for cascade -->
+	<#-- 另一种写法
+	<#if (mapping.tableName?length > 10)  ><![CDATA[${mapping.tableName?substring((mapping.tableName?length)-10)}]]><#else><![CDATA[${mapping.tableName}]]></#if>
+	<![CDATA[${mapping.tableName?substring(mapping.tableName?last_index_of("_",(mapping.tableName?length)-10)+1)}]]>
+	 -->
+	<sql id="tableNameForCascade"><![CDATA[${mapping.tableName?substring(mapping.tableName?last_index_of("_",(mapping.tableName?length)-10)+1)}]]></sql>
+	
+	
+	<#--
+	  kan_ban.id AS kan_ban_id,
+	  kan_ban.name AS kan_ban_name,
+	  kan_ban.defined_ts AS kan_ban_defined_ts,
+	  kan_ban.priority AS kan_ban_priority,
+	  kan_ban.usage AS kan_ban_usage,
+	  kan_ban.isoff AS kan_ban_isoff,
+	  kan_ban.display_name AS kan_ban_display_name
+	 -->
+	<!-- table selected columns for cascade -->
+	<sql id="selectedColumnsForCascade">
+		<![CDATA[
+		<#list mapping.propertyMappingList as property>
+		<#if (property.generate)> 
+		  ${mapping.tableName?substring(mapping.tableName?last_index_of("_",(mapping.tableName?length)-10)+1)}.`${property.columnName}` AS "${mapping.tableName?substring(mapping.tableName?last_index_of("_",(mapping.tableName?length)-10)+1)}_${property.columnName}"<#if property_has_next>, </#if>
+		</#if>
+		</#list>
+		]]>
+	</sql>
+
+	<#--
+	<resultMap type="ecdata.iccs.kanban.model.PmSmKanBanItem"
+		id="PmSmKanBanItemResult2">
+		<id property="id" column="ban_item_id" />
+		<result property="name" column="ban_item_name"/>
+		<result property="definedTs" column="ban_item_defined_ts"/>
+		<result property="priority" column="ban_item_priority"/>
+		<result property="usage" column="ban_item_usage"/>
+	</resultMap>
+	-->
+	<!-- basic result-Map for table -->
+	<resultMap type="${mapping.packageName}.${mapping.className}" id="${mapping.className}Result">
+		<#list pk as pk>
+		<id property="${pk.propertyName}" column="${mapping.tableName?substring(mapping.tableName?last_index_of("_",(mapping.tableName?length)-10)+1)}_${pk.columnName}" />
+		</#list>
+		<#list mapping.propertyMappingList as property>	
+		<#if (property.generate && !property.primaryKey)>
+		<result property="${property.propertyName}" column="${mapping.tableName?substring(mapping.tableName?last_index_of("_",(mapping.tableName?length)-10)+1)}_${property.columnName}"/>
+		</#if> 
+		</#list>
+	</resultMap>
+	
 	
 </mapper> 
