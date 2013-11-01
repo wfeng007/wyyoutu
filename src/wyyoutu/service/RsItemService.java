@@ -60,21 +60,35 @@ public class RsItemService {
 		System.out.println("delete count:"+deleteC);
 	}
 	
+	//stutas值 其他状态默认为私有状态，其实所有状态owner都可以查看到。 审核者可以看到申请状态。
+//	final static String ITEM_STUTAS_PUBLISHED="PUBLISHED";
+//	final static String ITEM_STUTAS_PRIVATE="PRIVATE";
+//	final static String ITEM_STUTAS_DELETED="DELETED";
+//	final static String ITEM_STUTAS_RESERVED="RESERVED";
+	
+	public final static int ITEM_STUTAS_PUBLISHED=1; //发布、公开
+	public final static int ITEM_STUTAS_PRIVATE=0; //私有、隐藏
+	public final static int ITEM_STUTAS_DELETED=2; //删除
+	public final static int ITEM_STUTAS_RESERVED=3; //私有、预留
+	public final static int ITEM_STUTAS_APPLYING_PUBLICATION=4; //申请发布状态
+	
+	//
 	/**
-	 * TODO 增加关联查询即有其扩展属性的条件查询。
+	 * 增加关联查询即有其扩展属性的条件查询。
 	 * 查询分页
-	 * 
-	 * @param mp
+	 * @param mp 其他参数。
 	 * @param paging
+	 * 
+	 * @param isExten
 	 * @return
 	 */
-	public List<RsItem> listItem(Map<String,Object> mp,Paging paging) {
-		if(mp.containsKey("condition")){
-			System.out.println("*******************************condition:"+mp.get("condition"));
+	public List<RsItem> listItem(final Map<String,Object> mp,Paging paging,boolean isExten) {
+		if(isExten && mp.containsKey("condition")){
+//			System.out.println("*******************************condition:"+mp.get("condition"));
 			mp.put("orderBy", "RS_ITEM.`seq_id`  DESC ");
 			return this.rsItemDao.queryConditionAndExten(mp, paging);
 		}else{
-			System.out.println("no condition");
+//			System.out.println("no condition");
 			return this.rsItemDao.query(mp, paging);
 		}
 	}
@@ -89,10 +103,7 @@ public class RsItemService {
 		System.out.println(reLs);
 		return reLs;
 	}
-	
-	
 
-	
 	
 	/**
 	 * 

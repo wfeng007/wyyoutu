@@ -42,6 +42,21 @@ public class AccountInfo {
 	}
 	
 	/**
+	 * 检测给出用户ID为当前session的用户ID
+	 * @param useId
+	 * @param request
+	 * @return
+	 */
+	public static boolean isNowUser(String useId,HttpServletRequest request){
+		AccountInfo accountInfo =lookupAccountInfo(request);
+		if(useId==null || accountInfo==null || !useId.equals(accountInfo.getUserId())){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	/**
 	 * 设置Account到session
 	 * @param request
 	 * @return

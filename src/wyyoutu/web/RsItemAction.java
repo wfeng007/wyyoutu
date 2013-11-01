@@ -153,9 +153,23 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		//分页查询  paraMap应该兼容null(修改代码生成)
 		//TODO 这部分逻辑应该放在service中。
 		Map<String,Object> paraMap=new HashMap<String, Object>();
-		paraMap.put("ownerId", owner); //用户账号作为item拥有者查询。 
-		paraMap.put("orderBy", "RS_ITEM.`seq_id`  DESC ");
-		paraMap.put("condition", "ITEM_EXTEN.`exten_key`='PUB'");
+		
+		//查看某人的item
+		paraMap.put("ownerId", owner); //用户账号作为item拥有者查询。
+		
+		//当查看大众面板或owner
+//		AccountInfo accountInfo= AccountInfo.lookupAccountInfo(ServletActionContext.getRequest());
+//		if(owner==null || accountInfo==null || !owner.equals(accountInfo.getUserId()) ){
+		if(owner==null || !AccountInfo.isNowUser(owner, ServletActionContext.getRequest())){
+			paraMap.put("status", RsItemService.ITEM_STUTAS_PUBLISHED);
+		}
+		
+		paraMap.put("orderBy", "`seq_id`  DESC ");
+		
+		//exten设置
+//		paraMap.put("orderBy", "RS_ITEM.`seq_id`  DESC ");
+//		paraMap.put("condition", "ITEM_EXTEN.`exten_key`='PUB'");
+
 		
 		//plugin钩子 aListItem
 		//参数都是使用req传递
@@ -167,7 +181,7 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		//
 		
 		System.err.println("*******************************condition:"+paraMap.get("condition"));
-		List<RsItem> ls=this.rsItemService.listItem(paraMap, paging);
+		List<RsItem> ls=this.rsItemService.listItem(paraMap, paging,false);
 		
 		//
 		// TODO 这部分到底是界面逻辑还是后台service逻辑呢？
