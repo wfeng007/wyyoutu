@@ -57,11 +57,14 @@ public class MyGenerateDbImpl {
 		tableNameList = new ArrayList<String>();
 		
 		//summ.wuyoutu
-		tableNameList.add("RS_ITEM");
-		tableNameList.add("co_people");
-		tableNameList.add("RS_TAGGED");
-		tableNameList.add("co_people_exten");
-		tableNameList.add("RS_ITEM_EXTEN");
+//		tableNameList.add("RS_ITEM");
+//		tableNameList.add("co_people");
+//		tableNameList.add("RS_TAGGED");
+//		tableNameList.add("co_people_exten");
+//		tableNameList.add("RS_ITEM_EXTEN");
+		tableNameList.add("rs_board");
+		tableNameList.add("rs_board_item_ref");
+		tableNameList.add("rs_book");
 		
 		//iccs.pm
 //		tableNameList.add("PM_SM_SYSTEM_INFO");

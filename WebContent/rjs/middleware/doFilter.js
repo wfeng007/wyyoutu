@@ -25,7 +25,7 @@ exports.middleware = function doFilter(next, app) {
         		};
         	}
             return resp
-        } catch (e if e.notfound) {
+        } catch (e if e.notfound) { //next(request)时执行jsgi的函数时没有找到资源
         	//没有资源则直接调用serlvet filter中的下个filter。
         	request.env.filterChain.doFilter(request.env.servletRequest,request.env.servletResponse);
         	return  {

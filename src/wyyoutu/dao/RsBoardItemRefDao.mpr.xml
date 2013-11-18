@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		table information
+		Generate time : 2013-11-18 21:31:26
+   		Version :  3.0.0
+		tableName :rs_board_item_ref 
+		  seq_id  BIGINT   NOT NULL   primarykey, 		
+		  item_iid  VARCHAR   NOT NULL, 		-REMARKS-:项目id
+		  board_bid  VARCHAR   NOT NULL, 		-REMARKS-:展板id
+		  ref_seq_num  INTEGER   NOT NULL		-REMARKS-:展板中的序号,1开始记录。
+	-->
+<mapper namespace="wyyoutu.dao.RsBoardItemRefDao">
+
+	<!-- basic info for sql -->
+	<sql id="tableName"><![CDATA[rs_board_item_ref]]></sql>
+	
+	
+	<!-- table selected columns  -->
+	<sql id="selectedColumns">
+	<![CDATA[
+		  `seq_id` as "seqId", 
+		  `item_iid` as "itemIid", 
+		  `board_bid` as "boardBid", 
+		  `ref_seq_num` as "refSeqNum"
+	]]>
+	</sql>
+	
+	<!-- querying conditions -->
+	<sql id="queryingConditions">
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(seqId)"> 
+	      <![CDATA[	
+	        AND `seq_id` = #{seqId}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(itemIid)"> 
+	      <![CDATA[	
+	        AND `item_iid` = #{itemIid}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(boardBid)"> 
+	      <![CDATA[	
+	        AND `board_bid` = #{boardBid}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(refSeqNum)"> 
+	      <![CDATA[	
+	        AND `ref_seq_num` = #{refSeqNum}
+		  ]]>
+	 	</if>
+	</sql>
+	
+	<select id="query" resultType="wyyoutu.model.RsBoardItemRef">
+ 	<![CDATA[
+ 		select 
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.RsBoardItemRefDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="selectedColumns"/>
+ 	<![CDATA[
+ 		from  rs_board_item_ref 
+ 	]]>
+	    <where>
+		  <include refid="queryingConditions"/>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[
+		ORDER BY `seq_id`  ASC 
+		]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) FROM rs_board_item_ref 
+	  ]]>
+	  <where>
+		<include refid="queryingConditions"/>
+	  </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+
+
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO rs_board_item_ref (
+		  `seq_id`,
+		  `item_iid`,
+		  `board_bid`,
+		  `ref_seq_num`
+		)
+		VALUES (		 
+	      #{seqId}, 
+	      #{itemIid,jdbcType=VARCHAR}, 
+	      #{boardBid,jdbcType=VARCHAR}, 
+	      #{refSeqNum}
+	    )
+	]]>
+	</insert>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM rs_board_item_ref WHERE 
+			`seq_id` =  #{seqId}
+	]]>
+	</delete>
+	
+	<update id="update">
+		UPDATE rs_board_item_ref 
+		<set> 
+		<if test="itemIid != null">
+		<![CDATA[
+		  `item_iid` = #{itemIid,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="boardBid != null">
+		<![CDATA[
+		  `board_bid` = #{boardBid,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="refSeqNum != null">
+		<![CDATA[
+		  `ref_seq_num` = #{refSeqNum}
+	    ]]>
+	    </if>
+		</set> 
+		<![CDATA[
+		WHERE 	
+		  `seq_id` = #{seqId}
+		]]>
+	</update>
+	
+	<!-- table name for cascade -->
+	<sql id="tableNameForCascade"><![CDATA[board_item_ref]]></sql>
+	
+	
+	<!-- table selected columns for cascade -->
+	<sql id="selectedColumnsForCascade">
+		<![CDATA[
+		  board_item_ref.`seq_id` AS "board_item_ref_seq_id", 
+		  board_item_ref.`item_iid` AS "board_item_ref_item_iid", 
+		  board_item_ref.`board_bid` AS "board_item_ref_board_bid", 
+		  board_item_ref.`ref_seq_num` AS "board_item_ref_ref_seq_num"
+		]]>
+	</sql>
+
+	<!-- basic result-Map for table -->
+	<resultMap type="wyyoutu.model.RsBoardItemRef" id="RsBoardItemRefResult">
+		<id property="seqId" column="board_item_ref_seq_id" />
+		<result property="itemIid" column="board_item_ref_item_iid"/>
+		<result property="boardBid" column="board_item_ref_board_bid"/>
+		<result property="refSeqNum" column="board_item_ref_ref_seq_num"/>
+	</resultMap>
+	
+	
+</mapper> 

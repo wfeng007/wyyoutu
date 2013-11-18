@@ -56,11 +56,14 @@ CREATE TABLE `RS_ITEM` (
   `text` VARCHAR(2000) NULL COMMENT '文本内容',
   `binary` LONGBLOB NULL  COMMENT '图片、音频、压缩包等',
   `thumbnail` MEDIUMBLOB NULL COMMENT '缩略图或其他缩略数据',
+--  `book_bid` VARCHAR(128) NULL COMMENT '所属book',
   `owner_id` VARCHAR(100) NULL COMMENT '关联用户id',
   PRIMARY KEY (`seq_id`),
 --  FOREIGN KEY (`owner_id`) REFERENCES CO_PEOPLE (`id`) ON DELETE SET NULL , --有没有都没有关系 对于之后可能用mongodb应该都没有类似功能
   UNIQUE (`iid`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='数据信息具体项目图片、文本、声音等';
+-- alter table
+ALTER TABLE `RS_ITEM` ADD `book_bid` VARCHAR(128) NULL COMMENT '所属book';
 
 -- for RS_ITEM default data
 insert into `rs_item` (`seq_id`,`iid`, `name`, `url`, `access_type`, `add_ts`, `text`) values('1','_default_1_','测试内容1','http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg',NULL,NULL,'测试内容111111 这个内容就多了 从整体上来看 这个非常关键的发挥发的海风好大夫哈发放大方地将阿凡达发酵法大解放大房间dajfdafdafjaljfdas');
@@ -82,6 +85,54 @@ insert into `RS_ITEM_EXTEN` (`item_iid`, `exten_key`, `exten_value`)
 		values('_default_2_','PUB','y');
 --	insert into `RS_ITEM_EXTEN` (`people_id`, `exten_key`, `exten_value`)
 --		values('admin','permission','read');	
+		
+-- 内容展板
+DROP TABLE IF EXISTS `RS_BOARD`;
+CREATE TABLE `RS_BOARD` (
+  `seq_id` INT NOT NULL auto_increment,
+  `bid` VARCHAR(128) NOT NULL COMMENT '展板标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。',
+  `name` VARCHAR(512) NOT NULL COMMENT '展板名称',
+  `desc` VARCHAR(2000) NULL COMMENT '内容描述',
+  `special_type` VARCHAR(128) NOT NULL COMMENT '面板内容领域类型domian_type,专业类型，包括视图的展示类型；基本列表，md-wiki，经验，问答，公告，专辑等等',
+  `special_subtype` VARCHAR(128) NULL COMMENT '子类型；主要是展示各种视图',
+  `add_ts` DATETIME NULL COMMENT '新增时间戳',
+  `modify_ts` DATETIME NULL COMMENT '最后更新时间戳',
+  `status` INT NULL COMMENT '项状态；锁定、删除、活动',
+  `owner_id` VARCHAR(100) NULL COMMENT '关联用户id，如果为null则说明是系统特殊展板，只有特定权限角色可以编辑。',
+  PRIMARY KEY (`seq_id`),
+--  FOREIGN KEY (`owner_id`) REFERENCES CO_PEOPLE (`id`) ON DELETE SET NULL , --有没有都没有关系 对于之后可能用mongodb应该都没有类似功能
+  UNIQUE (`bid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用于特定展示的展板信息';
+
+-- 
+
+--
+-- 展板引用item项目关联引用
+DROP TABLE IF EXISTS `RS_BOARD_ITEM_REF`;
+CREATE TABLE `RS_BOARD_ITEM_REF` (
+	`seq_id` BIGINT NOT NULL  auto_increment,
+	`item_iid` VARCHAR(128) NOT NULL COMMENT '项目id',
+	`board_bid` VARCHAR(128) NOT NULL COMMENT '展板id',
+	`ref_seq_num` INT NOT NULL COMMENT '展板中的序号,1开始记录。',
+	PRIMARY KEY (`seq_id`),
+	UNIQUE (`item_iid`,`board_bid`,`ref_seq_num`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='展板引用item项目关联引用';	
+
+
+-- 图册
+DROP TABLE IF EXISTS `RS_BOOK`;
+CREATE TABLE `RS_BOOK` (
+  `seq_id` INT NOT NULL auto_increment,
+  `bid` VARCHAR(128) NOT NULL COMMENT '图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。',
+  `name` VARCHAR(512) NOT NULL COMMENT '图册名称',
+  `desc` VARCHAR(2000) NULL COMMENT '内容描述',
+  `add_ts` DATETIME NULL COMMENT '新增时间戳',
+  `modify_ts` DATETIME NULL COMMENT '最后更新时间戳',
+  `status` INT NULL COMMENT '项状态；锁定、删除、活动',
+  `owner_id` VARCHAR(100) NULL COMMENT '关联用户id，如果为null则说明是系统图册，只有特定权限角色可以编辑。',
+  PRIMARY KEY (`seq_id`),
+  UNIQUE (`bid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用于存放item，一个item只能存在于一个book。';
 
 
 --  资源项评论或回复 暂时没有用。

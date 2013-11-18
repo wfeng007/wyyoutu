@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!--      
+		table information
+		Generate time : 2013-11-18 21:31:26
+   		Version :  3.0.0
+		tableName :rs_book 
+		  seq_id  INTEGER   NOT NULL   primarykey, 		
+		  bid  VARCHAR   NOT NULL, 		-REMARKS-:图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。
+		  name  VARCHAR   NOT NULL, 		-REMARKS-:图册名称
+		  desc  VARCHAR, 		-REMARKS-:内容描述
+		  add_ts  DATETIME, 		-REMARKS-:新增时间戳
+		  modify_ts  DATETIME, 		-REMARKS-:最后更新时间戳
+		  status  INTEGER, 		-REMARKS-:项状态；锁定、删除、活动
+		  owner_id  VARCHAR		-REMARKS-:关联用户id，如果为null则说明是系统图册，只有特定权限角色可以编辑。
+	-->
+<mapper namespace="wyyoutu.dao.RsBookDao">
+
+	<!-- basic info for sql -->
+	<sql id="tableName"><![CDATA[rs_book]]></sql>
+	
+	
+	<!-- table selected columns  -->
+	<sql id="selectedColumns">
+	<![CDATA[
+		  `seq_id` as "seqId", 
+		  `bid` as "bid", 
+		  `name` as "name", 
+		  `desc` as "desc", 
+		  `add_ts` as "addTs", 
+		  `modify_ts` as "modifyTs", 
+		  `status` as "status", 
+		  `owner_id` as "ownerId"
+	]]>
+	</sql>
+	
+	<!-- querying conditions -->
+	<sql id="queryingConditions">
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(seqId)"> 
+	      <![CDATA[	
+	        AND `seq_id` = #{seqId}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(bid)"> 
+	      <![CDATA[	
+	        AND `bid` = #{bid}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(name)"> 
+	      <![CDATA[	
+	        AND `name` = #{name}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(desc)"> 
+	      <![CDATA[	
+	        AND `desc` = #{desc}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(addTs)"> 
+	      <![CDATA[	
+	        AND `add_ts` = #{addTs}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(modifyTs)"> 
+	      <![CDATA[	
+	        AND `modify_ts` = #{modifyTs}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(status)"> 
+	      <![CDATA[	
+	        AND `status` = #{status}
+		  ]]>
+	 	</if>
+		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(ownerId)"> 
+	      <![CDATA[	
+	        AND `owner_id` = #{ownerId}
+		  ]]>
+	 	</if>
+	</sql>
+	
+	<select id="query" resultType="wyyoutu.model.RsBook">
+ 	<![CDATA[
+ 		select 
+ 	]]>
+ 		  <!-- 
+ 		  "selectedColumns" for same-file include.  
+ 		  "wyyoutu.model.RsBookDao.selectedColumns" is for other-file 
+ 		  and this sql-segment must be load first...
+ 		   -->
+ 		  <include refid="selectedColumns"/>
+ 	<![CDATA[
+ 		from  rs_book 
+ 	]]>
+	    <where>
+		  <include refid="queryingConditions"/>
+	    </where>
+	    <!-- order by need test -->	    
+		<if test="orderBy != null">
+		<![CDATA[
+		ORDER BY ${orderBy}
+		]]>
+		</if>
+		<if test="orderBy == null">
+		<![CDATA[
+		ORDER BY `seq_id`  ASC 
+		]]>
+		</if>
+		<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+    </select>
+    
+    <select id="count" resultType="int">
+      <![CDATA[
+	  SELECT COUNT(*) FROM rs_book 
+	  ]]>
+	  <where>
+		<include refid="queryingConditions"/>
+	  </where>
+	  	<if test="paging != null">
+		<![CDATA[
+			LIMIT  #{paging.currentPositionWithZeroStart}, #{paging.countPerPage}
+		]]>
+		</if>
+	</select>
+
+
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO rs_book (
+		  `seq_id`,
+		  `bid`,
+		  `name`,
+		  `desc`,
+		  `add_ts`,
+		  `modify_ts`,
+		  `status`,
+		  `owner_id`
+		)
+		VALUES (		 
+	      #{seqId}, 
+	      #{bid,jdbcType=VARCHAR}, 
+	      #{name,jdbcType=VARCHAR}, 
+	      #{desc,jdbcType=VARCHAR}, 
+	      #{addTs,jdbcType=TIMESTAMP}, 
+	      #{modifyTs,jdbcType=TIMESTAMP}, 
+	      #{status}, 
+	      #{ownerId,jdbcType=VARCHAR}
+	    )
+	]]>
+	</insert>
+	
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM rs_book WHERE 
+			`seq_id` =  #{seqId}
+	]]>
+	</delete>
+	
+	<update id="update">
+		UPDATE rs_book 
+		<set> 
+		<if test="bid != null">
+		<![CDATA[
+		  `bid` = #{bid,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="name != null">
+		<![CDATA[
+		  `name` = #{name,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="desc != null">
+		<![CDATA[
+		  `desc` = #{desc,jdbcType=VARCHAR}, 
+	    ]]>
+	    </if>
+		<if test="addTs != null">
+		<![CDATA[
+		  `add_ts` = #{addTs,jdbcType=TIMESTAMP}, 
+	    ]]>
+	    </if>
+		<if test="modifyTs != null">
+		<![CDATA[
+		  `modify_ts` = #{modifyTs,jdbcType=TIMESTAMP}, 
+	    ]]>
+	    </if>
+		<if test="status != null">
+		<![CDATA[
+		  `status` = #{status}, 
+	    ]]>
+	    </if>
+		<if test="ownerId != null">
+		<![CDATA[
+		  `owner_id` = #{ownerId,jdbcType=VARCHAR}
+	    ]]>
+	    </if>
+		</set> 
+		<![CDATA[
+		WHERE 	
+		  `seq_id` = #{seqId}
+		]]>
+	</update>
+	
+	<!-- table name for cascade -->
+	<sql id="tableNameForCascade"><![CDATA[rs_book]]></sql>
+	
+	
+	<!-- table selected columns for cascade -->
+	<sql id="selectedColumnsForCascade">
+		<![CDATA[
+		  rs_book.`seq_id` AS "rs_book_seq_id", 
+		  rs_book.`bid` AS "rs_book_bid", 
+		  rs_book.`name` AS "rs_book_name", 
+		  rs_book.`desc` AS "rs_book_desc", 
+		  rs_book.`add_ts` AS "rs_book_add_ts", 
+		  rs_book.`modify_ts` AS "rs_book_modify_ts", 
+		  rs_book.`status` AS "rs_book_status", 
+		  rs_book.`owner_id` AS "rs_book_owner_id"
+		]]>
+	</sql>
+
+	<!-- basic result-Map for table -->
+	<resultMap type="wyyoutu.model.RsBook" id="RsBookResult">
+		<id property="seqId" column="rs_book_seq_id" />
+		<result property="bid" column="rs_book_bid"/>
+		<result property="name" column="rs_book_name"/>
+		<result property="desc" column="rs_book_desc"/>
+		<result property="addTs" column="rs_book_add_ts"/>
+		<result property="modifyTs" column="rs_book_modify_ts"/>
+		<result property="status" column="rs_book_status"/>
+		<result property="ownerId" column="rs_book_owner_id"/>
+	</resultMap>
+	
+	
+</mapper> 

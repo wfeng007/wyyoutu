@@ -27,7 +27,7 @@ export("doService"); //ringo中导出的另一种写法。
 log.info("to init app&module:"+module.id);
 
 var doService=new Application();
-doService.configure(require('./middleware/doFilter')); //serlvet-Filter 在没有找到资源时执行。
+doService.configure(require('./middleware/doFilter')); //serlvet-Filter 在没有找到资源时执行，同时可以提供一个强制忽略jsgi对result的输出处理。不用notfound。
 doService.configure("route","mount"); //按照middleware设置顺序运行,执行方式类似filter.
 
 //
@@ -61,7 +61,7 @@ doService.get("/rjs/listTag",listTag);function listTag(request){
 	var result={success:true,'tags':tags,msg:"list ok. "};
 	//println(JSON.stringify(result));
 	
-	return resp.json(result);
+	return resp.json(result); //返回一个json对象由上层strik-jsgi-connector完成reponse的out输出。
 	
 	//另一种方式使用$SW 并要求忽略response
 //	$SW.outJSON(request.env.servletResponse,result);
@@ -172,7 +172,7 @@ doService.post("/rjs/modifyPeople",function modifyPeople(req){
 //	//忽略返回，方便以上直接使用response进行操作。
 	return  {
 		status: 404, //无实际作用。
-		headers: {"X-JSGI-Skip-Response": "true"},
+		headers: {"X-JSGI-Skip-Response": "true"}, //忽略
 		body: []
 	};
 	
