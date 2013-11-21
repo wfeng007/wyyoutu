@@ -35,6 +35,7 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 	// for spring DI
 	private RsItemService rsItemService;
 	private Integer itemId;
+	private Integer status;
 	// 分页参数
 	private Integer pageNum;
 	private Integer numPerPage;
@@ -403,6 +404,47 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 		}
 	}
 	
+	/**
+	 * 
+	 * 将item的状态在共有与私有之间切换
+	 */
+	public void publishToggle(){
+		if(this.itemId!=null){
+			//
+			int originStatus=(this.status==null)?0:this.status;
+			Integer uc=this.rsItemService.publishToggle(this.itemId,originStatus);
+			//
+			Map<String, Object> map = new HashMap<String, Object>(0);
+			if(uc==null){
+				map.put("success", false);
+				map.put("msg", "do publishToggle failed!! origin:"+originStatus);
+			}else{
+				map.put("success", true);
+				map.put("data",uc);
+				map.put("msg", "publishToggle! origin:"+originStatus);
+			}
+			//
+			
+			// 构建json result
+			this.result=JSONObject.fromObject(map);
+			ServletActionContext.getResponse().setContentType("application/json");// 设置http头部为json
+			//输出
+			PrintWriter out=null;
+			try {
+				out = ServletActionContext.getResponse().getWriter();
+				out.print(result); //写的其实是内容response 
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(out!=null)
+					out.close();
+			}
+		}
+		//这里应该处理一下itemId==null的状况吧。
+	}
+	
 //	/*
 //	 * 其中 pmSmSystemInfo是aciton名字中间不带方法  act为指定后缀(act就是后缀而已)
 //	 * pm/pmSmSystemInfo.act
@@ -440,6 +482,20 @@ public class RsItemAction /*extends BasicAction*/ { //struts2不继承actionsupp
 	 */
 	public void setResult(JSONObject result) {
 		this.result = result;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public Integer getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
     
 }

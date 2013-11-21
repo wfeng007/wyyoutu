@@ -234,7 +234,14 @@ $(function(){
 		}
 		//
 		
-		
+		//返回状态按钮内容
+		var _publishType=function(status){
+			if(status==1){
+				return '<i class="icon-eye-open"></i>公';
+			}else{
+				return '<i class="icon-eye-close"></i>私';
+			}
+		};
 		//查询数据将一组数据放入瀑布布局 可能要反复使用 并刷新
 		fnRenderListItem=function(data){
 			var items = "";
@@ -246,13 +253,17 @@ $(function(){
 					+'<!-- top 显示图片 -->'
 					+'<div class="item_t">'
 						+'<div class="img">'
-							+'<a href="'+item.thumbnailUrl+'" rel="lightbox" title="'+item.name+'">'
+							+'<a href="./item.jsp?itemId='+item.seqId+'" target="_blank" title="'+item.name+'">'
 								+'<img alt="test" src="'+item.thumbnailUrl+'" >'
 							+'</a>'
 							+'<span class="price">有图有真相</span>'
 							+'<div class="btns" >'
-								+'<a href="'+item.url+'" class="btn btn-small img_album_btn_left" target="_blank" title="下载"><i class="icon-download-alt"></i>下</a>'
-								+'<a href="./item.jsp?itemId='+item.seqId+'" class="btn btn-small img_album_btn_right" target="_blank" title="详细">详<i class="icon-file"></i></a>'
+								+'<div class="img_album_panel_left">'
+									+'<a href="'+item.thumbnailUrl+'"  class="btn btn-small img_album_btn" rel="lightbox" title="'+item.name+'">展<i class="icon-fullscreen"></i></a>'
+								+'</div>'
+								+'<div class="img_album_panel_right">'
+									+'<a href="'+item.url+'" class="btn btn-small img_album_btn" target="_blank" title="下载"><i class="icon-download-alt"></i>下</a>'
+								+'</div>'
 							+'</div>'
 						+'</div>'
 						+'<h5 class="" style="word-break:break-all;">'+item.name+'</h5>'
@@ -271,7 +282,8 @@ $(function(){
 							+'<!-- <a href="#" class="like_btn"></a><em class="bold">916</em> -->'
 						+'</div>'
 						+'<!-- <div class="items_comment fr"><a href="#">底部备用按钮</a><em class="bold">(0)</em></div>-->'
-						+'<a itemId="'+item.seqId+'" class="btn btn-small btn-danger btn_right delete" href="javascript:void(0);" title="删除">删<i class="icon-trash icon-white"></i></a>'
+						+'<a itemId="'+item.seqId+'" status="'+item.status+'" href="javascript:void(0);" class="btn btn-small btn_left doPublishToggle" title="切换">'+_publishType(item.status)+'</a>'
+						+'<a itemId="'+item.seqId+'" class="btn btn-small btn-danger btn_right doDelete" href="javascript:void(0);" title="删除">删<i class="icon-trash icon-white"></i></a>'
 					+'</div>'
 				+'</div>'
 				+'<!--item box end-->'
@@ -303,7 +315,7 @@ $(function(){
 			
 			//注册删除按钮功能
 			//alert($tt.find("a.delete").length);
-			$tt.find("a.delete").click(function(event){
+			$tt.find("a.doDelete").click(function(event){
 					//var oevent = event.originalEvent;
 					//alert(oevent.target || oevent.srcElement);
 					//alert("attr:"+$(oevent.target).attr("itemId"));
@@ -335,7 +347,42 @@ $(function(){
 				}
 			);
 			
-		
+			//注册发布按钮功能
+			$tt.find("a.doPublishToggle").click(function(event){
+					//var oevent = event.originalEvent;
+					//alert(oevent.target || oevent.srcElement);
+					//alert("attr:"+$(oevent.target).attr("itemId"));
+					//alert("attr:"+$(event.target).attr("itemId"));、
+				 	//alert("attr:"+$(this).attr("itemId")); //都可以
+				 	//outerHTML()获取整个html
+				 	var item=$(this);
+					var itemId=item.attr("itemId");
+				 	var status=item.attr("status");
+					//alert("a");
+					$.post("./item!publishToggle.act", {action:"publish",itemId:itemId, itemIid: "?" ,status:status}, //默认使用post,json对象其实会转变为form格式数据向后传
+						function (data, textStatus){
+							//data 可以是 xmlDoc, jsonObj, html, text, 等等.
+							//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
+							//data 当前为json对象
+							if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断
+								alert("ok 发布状态切换成功!"+itemId); 
+								//
+								// 界面效果 从masonery中删除 对应item的box
+								//
+								//$('#container').masonry( 'reload' ); // TODO 不应该刷新masonry而应该设置当前按钮状态
+								//alert(data.data); //data中为newStatus
+								item.html(_publishType(data.data));//状态1指发布
+								item.attr("status",data.data);
+								//
+							}else{
+								//处理错误情况
+								alert("ok 发布状态切换失败!id:"+itemId); 
+							}
+						}, 
+					"json"); //要求返回值为json
+				}
+			);
+			
 			//
 			//TODO 以下编辑框、显示、保存、放弃功能 修改为 插件 jeditable分装  http://www.appelsiini.net/projects/jeditable
 			//
@@ -458,8 +505,10 @@ $(function(){
 			// 等待图片加载
 			//
 			
-		}
-			
+		};//fnRenderListItem=function(data) end
+		
+		
+		
 		//后台获取项目内容
 		//读出数据逐一放入 container
 		

@@ -192,6 +192,35 @@ public class RsItemService {
 		return this.rsItemDao.update(mp);
 	}
 	
+	
+	/**
+	 * 发布公开与私有之前切换
+	 * @param itemId seqid
+	 * @param orginStatus 原始状态//这样可能不好原始状态应该从数据库中取出
+	 * @return newStatus
+	 */
+	public Integer publishToggle(int itemId,int orginStatus){
+		Map<String,Object> mp=new HashMap<String,Object>();
+		mp.put("seqId", itemId);
+		int newStatus;
+		if(orginStatus==ITEM_STUTAS_PRIVATE){
+			newStatus=ITEM_STUTAS_PUBLISHED;
+			mp.put("status", newStatus);//
+			
+		}else if(orginStatus==ITEM_STUTAS_PUBLISHED){
+			newStatus=ITEM_STUTAS_PRIVATE;
+			mp.put("status", newStatus);//
+		}
+		else{
+			return null;
+		}
+		int c=this.rsItemDao.update(mp);
+		if(c!=1){
+			return null;
+		}
+		return new Integer(newStatus);
+	}
+	
 	/**
 	 * 生成在表中唯一的IID（暂时使用UUID实现）
 	 * @return IID

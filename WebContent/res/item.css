@@ -57,8 +57,8 @@
 .item .btns {
 	display: none; /* */
 }
-/**/
-.item .img_album_btn_right {
+/*右上角面板*/
+.item .img_album_panel_right{
 	top: 5px;
 	right: 5px;
 	position: absolute;
@@ -69,15 +69,12 @@
 	/* height: 24px; */
 	/* line-height: 20px; */
 	/* width: 24px; */
-	border: 1px solid #aaa;
+	/* border: 1px solid #aaa; */
 	/* border-radius:3px; */
 }
-.item .img_album_btn_right:hover {
-	color: #ff0000;
-}
 
-/**/
-.item .img_album_btn_left {
+/*左上角面板*/
+.item .img_album_panel_left {
 	top: 5px;
 	left: 5px;
 	position: absolute;
@@ -88,10 +85,44 @@
 	/* height: 24px; */
 	/* line-height: 20px; */
 	/* width: 24px; */
-	border: 1px solid #aaa;
+	/* border: 1px solid #aaa; */
 	/* border-radius:3px; */
 }
-.item .img_album_btn_left:hover {
+
+/*左下角面板*/
+.item .img_album_panel_left_bottom {
+	bottom: 5px;
+	left: 5px;
+	position: absolute;
+	/* background: #ff6fa6; */
+	/* background: #ffffff url("image/icon/download.png") no-repeat; */
+	background-size:contain; /*css3*/
+	/* color: #ffffff; */
+	/* height: 24px; */
+	/* line-height: 20px; */
+	/* width: 24px; */
+	/* border: 1px solid #aaa; */
+	/* border-radius:3px; */
+}
+/*右下角面板*/
+.item .img_album_panel_right_bottom {
+	bottom: 5px;
+	right: 5px;
+	position: absolute;
+	/* background: #ff6fa6; */
+	/* background: #ffffff url("image/icon/download.png") no-repeat; */
+	background-size:contain; /*css3*/
+	/* color: #ffffff; */
+	/* height: 24px; */
+	/* line-height: 20px; */
+	/* width: 24px; */
+	/* border: 1px solid #aaa; */
+	/* border-radius:3px; */
+}
+.item .img_album_btn {
+	 border: 1px solid #000;
+}
+.item .img_album_btn:hover {
 	 color: #ff0000; 
 }
 
@@ -133,6 +164,14 @@
 	/* background: #ffffff url("image/icon/system/delete.png") no-repeat;  */
 	display: block;
 	float: right;
+	/* height: 24px; 
+	width: 24px; */
+	margin-right: 5px;
+}
+.item_b .btn_left{
+	/* background: #ffffff url("image/icon/system/delete.png") no-repeat;  */
+	display: block;
+	float: left;
 	/* height: 24px; 
 	width: 24px; */
 	margin-right: 5px;
