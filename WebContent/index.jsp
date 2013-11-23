@@ -772,7 +772,7 @@ img.portrait{
 			  <div id="jquery-wrapped-fine-uploader">上传</div>
 			</div>
 			
-		</div>
+		</div> 
 		<!-- #container -->
 				
 	<link href="./res/paginator.css" rel="stylesheet" />
