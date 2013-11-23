@@ -7,7 +7,7 @@
 <%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="wyyoutu.web.AccountInfo" %>
 <%!
-public String wf="wf";
+//public String wf="wf";
 %>
 <%
 String path = request.getContextPath(); //应用所在contextpath， 不包括 前面协议IP域名端口部分。结尾没有斜杠。
@@ -269,7 +269,7 @@ $(function(){
 						+'<h5 class="" style="word-break:break-all;">'+item.name+'</h5>'
 						+'<div class="title"  style="word-break:break-all;">'
 						+'<p>'+item.text+'</p>'
-						+'<a class="showEditor" href="javascript:void(0)" title="编辑">编辑</a> '
+						+((typeof(accountInfo)==='object' && (typeof(accountInfo.userId))==='string' && item.ownerId==accountInfo.userId)?'<a class="showEditor" href="javascript:void(0)" title="编辑">编辑</a> ':"")
 						+'<form itemId="'+item.seqId+'" class="editor" style="display:none">'
 						+'<textarea class="editor" rows="4" style="overflow-y:visible;resize:none;"></textarea>'
 						+'<input class="btn btn-mini btn-primary save" type="button" onclick="" value="保存"/> <input class="btn btn-mini reset" type="button" onclick="" value="放弃"/>'
@@ -282,11 +282,14 @@ $(function(){
 							+'<!-- <a href="#" class="like_btn"></a><em class="bold">916</em> -->'
 						+'</div>'
 						+'<!-- <div class="items_comment fr"><a href="#">底部备用按钮</a><em class="bold">(0)</em></div>-->'
-						+'<a itemId="'+item.seqId+'" status="'+item.status+'" href="javascript:void(0);" class="btn btn-small btn_left doPublishToggle" title="切换">'+_publishType(item.status)+'</a>'
-						+'<a itemId="'+item.seqId+'" class="btn btn-small btn-danger btn_right doDelete" href="javascript:void(0);" title="删除">删<i class="icon-trash icon-white"></i></a>'
+						+((typeof(accountInfo)==='object' && (typeof(accountInfo.userId))==='string' && item.ownerId==accountInfo.userId)?('<a itemId="'+item.seqId+'" status="'+item.status+'" href="javascript:void(0);" class="btn btn-small btn_left doPublishToggle" title="切换">'+_publishType(item.status)+'</a>'):"")
+						+((typeof(accountInfo)==='object' && (typeof(accountInfo.userId))==='string' && item.ownerId==accountInfo.userId)?('<a itemId="'+item.seqId+'" class="btn btn-small btn-danger btn_right doDelete" href="javascript:void(0);" title="删除">删<i class="icon-trash icon-white"></i></a>'):"")
 					+'</div>'
 				+'</div>'
 				+'<!--item box end-->'
+				//TODO 以上的某些控制面板中功能在后台也需要做验证，使用不同权限控制不同的功能。当前暂时使用界面的session信息控制展示。
+				//TODO 之后页面需要提供单独进行权限分析的区域达到逻辑单独地方处理的效果。
+				
 				
 				//以下是一个代码说明没有业务意义 忽略了第一条数据
 				if(idx==0){
@@ -314,168 +317,171 @@ $(function(){
 			//注册按钮的功能
 			
 			//注册删除按钮功能
+			
 			//alert($tt.find("a.delete").length);
-			$tt.find("a.doDelete").click(function(event){
-					//var oevent = event.originalEvent;
-					//alert(oevent.target || oevent.srcElement);
-					//alert("attr:"+$(oevent.target).attr("itemId"));
-					//alert("attr:"+$(event.target).attr("itemId"));、
-				 	//alert("attr:"+$(this).attr("itemId")); //都可以
-				 	//outerHTML()获取整个html
-				 	
-					var itemId=$(this).attr("itemId");
-					//alert("a");
-					$.post("./item!removeItem.act", {action:"remove",itemId:itemId, itemIid: "?" }, //默认使用post,json对象其实会转变为form格式数据向后传
-						function (data, textStatus){
-							//data 可以是 xmlDoc, jsonObj, html, text, 等等.
-							//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
-							//data 当前为json对象
-							if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断
-								alert("ok 删除成功效果"+itemId); // 删除成功效果。
-								
+			if(typeof(accountInfo)==='object' && (typeof(accountInfo.userId))==='string' && item.ownerId==accountInfo.userId){ //TODO 临时的权限控制
+				
+				$tt.find("a.doDelete").click(function(event){
+						//var oevent = event.originalEvent;
+						//alert(oevent.target || oevent.srcElement);
+						//alert("attr:"+$(oevent.target).attr("itemId"));
+						//alert("attr:"+$(event.target).attr("itemId"));、
+					 	//alert("attr:"+$(this).attr("itemId")); //都可以
+					 	//outerHTML()获取整个html
+					 	
+						var itemId=$(this).attr("itemId");
+						//alert("a");
+						$.post("./item!removeItem.act", {action:"remove",itemId:itemId, itemIid: "?" }, //默认使用post,json对象其实会转变为form格式数据向后传
+							function (data, textStatus){
+								//data 可以是 xmlDoc, jsonObj, html, text, 等等.
+								//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
+								//data 当前为json对象
+								if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断
+									alert("ok 删除成功效果"+itemId); // 删除成功效果。
+									
+									//
+									// 界面效果 从masonery中删除 对应item的box
+									//
+									$('#container').children('div[itemId="'+itemId+'"]').remove();
+									$('#container').masonry( 'reload' );
+									//
+									//
+									
+								}
+							}, 
+						"json"); //要求返回值为json
+					}
+				);
+				//注册发布按钮功能
+				$tt.find("a.doPublishToggle").click(function(event){
+						//var oevent = event.originalEvent;
+						//alert(oevent.target || oevent.srcElement);
+						//alert("attr:"+$(oevent.target).attr("itemId"));
+						//alert("attr:"+$(event.target).attr("itemId"));、
+					 	//alert("attr:"+$(this).attr("itemId")); //都可以
+					 	//outerHTML()获取整个html
+					 	var item=$(this);
+						var itemId=item.attr("itemId");
+					 	var status=item.attr("status");
+						//alert("a");
+						$.post("./item!publishToggle.act", {action:"publish",itemId:itemId, itemIid: "?" ,status:status}, //默认使用post,json对象其实会转变为form格式数据向后传
+							function (data, textStatus){
+								//data 可以是 xmlDoc, jsonObj, html, text, 等等.
+								//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
+								//data 当前为json对象
+								if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断
+									alert("ok 发布状态切换成功!"+itemId); 
+									//
+									// 界面效果 从masonery中删除 对应item的box
+									//
+									//$('#container').masonry( 'reload' ); // TODO 不应该刷新masonry而应该设置当前按钮状态
+									//alert(data.data); //data中为newStatus
+									item.html(_publishType(data.data));//状态1指发布
+									item.attr("status",data.data);
+									//
+								}else{
+									//处理错误情况
+									alert("ok 发布状态切换失败!id:"+itemId); 
+								}
+							}, 
+						"json"); //要求返回值为json
+					}
+				);
+				
+				//
+				//TODO 以下编辑框、显示、保存、放弃功能 修改为 插件 jeditable分装  http://www.appelsiini.net/projects/jeditable
+				//
+				//注册显示编辑框的按钮
+				//
+				$tt.find("a.showEditor").click(function(){
+					//
+					//隐藏 文本内容 显示Textarea并将文本内容显示在Textarea中。
+					//
+					var txtCont =$(this).prev();
+					$(this).next("form").children("textarea.editor").html(txtCont.html());//内容显示在
+					$(this).next("form").css("display","block")
+					//文本框隐藏//隐藏 a.showEditor按钮
+					txtCont.hide();
+					$(this).hide();
+					
+					//这里需要保证$tt在这个布局对象中
+					$('#container').masonry( 'reload' );
+				});
+				// 注册编辑框resize动作的影响
+				//$tt.find("textarea.editor").resize(function(){});
+				//
+				// 注册 editor保存 按钮功能
+				//
+				$tt.find("form.editor input.save").click(function(){
+					// 整个form
+					var formEditor =$(this).parent();
+					//获取itemid
+					var itemId=formEditor.attr("itemId");
+					//获取文本框中的内容
+					var text = formEditor.children("textarea.editor").val();
+					//alert(text);
+					// 提交更新文本内容
+	 				$.post("./item!modifyText.act", {action:"modify",itemId:itemId,"text": text}, //默认使用post,json对象其实会转变为form格式数据向后传
+							function (data, textStatus){
+								//data 可以是 xmlDoc, jsonObj, html, text, 等等.
+								//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
+								//data 当前为json对象
+								//alert(data.success);
 								//
-								// 界面效果 从masonery中删除 对应item的box
+								//window.location.href='\\';过是ajax的请求可以使用 该方法让浏览器跳转到指定页面，比如登录框。似乎很多系统提供一个延迟刷新的面板？
 								//
-								$('#container').children('div[itemId="'+itemId+'"]').remove();
+								if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断 //需要区分ajax方式与普通跳转方法。
+									//alert("ok 修改成功"); // 测试 
+									
+									//放在这里显示内容
+									formEditor.prev().prev().html(text);//显示新内容 显示的时候转义而已 
+								}else{
+									alert("修改失败！"); // 测试 
+									//
+								}
+								//内容变更后也要执行重新布局
 								$('#container').masonry( 'reload' );
-								//
-								//
-								
-							}
-						}, 
+							}, 
 					"json"); //要求返回值为json
-				}
-			);
-			
-			//注册发布按钮功能
-			$tt.find("a.doPublishToggle").click(function(event){
-					//var oevent = event.originalEvent;
-					//alert(oevent.target || oevent.srcElement);
-					//alert("attr:"+$(oevent.target).attr("itemId"));
-					//alert("attr:"+$(event.target).attr("itemId"));、
-				 	//alert("attr:"+$(this).attr("itemId")); //都可以
-				 	//outerHTML()获取整个html
-				 	var item=$(this);
-					var itemId=item.attr("itemId");
-				 	var status=item.attr("status");
-					//alert("a");
-					$.post("./item!publishToggle.act", {action:"publish",itemId:itemId, itemIid: "?" ,status:status}, //默认使用post,json对象其实会转变为form格式数据向后传
-						function (data, textStatus){
-							//data 可以是 xmlDoc, jsonObj, html, text, 等等.
-							//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
-							//data 当前为json对象
-							if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断
-								alert("ok 发布状态切换成功!"+itemId); 
-								//
-								// 界面效果 从masonery中删除 对应item的box
-								//
-								//$('#container').masonry( 'reload' ); // TODO 不应该刷新masonry而应该设置当前按钮状态
-								//alert(data.data); //data中为newStatus
-								item.html(_publishType(data.data));//状态1指发布
-								item.attr("status",data.data);
-								//
-							}else{
-								//处理错误情况
-								alert("ok 发布状态切换失败!id:"+itemId); 
-							}
-						}, 
-					"json"); //要求返回值为json
-				}
-			);
-			
-			//
-			//TODO 以下编辑框、显示、保存、放弃功能 修改为 插件 jeditable分装  http://www.appelsiini.net/projects/jeditable
-			//
-			//注册显示编辑框的按钮
-			//
-			$tt.find("a.showEditor").click(function(){
+					
+					
+					//
+					//隐藏 表单
+					//
+					formEditor.children("textarea.editor").val(text); //
+					formEditor.css("display","none");
+					
+					// 显示 文本 
+					//formEditor.prev().prev().html(text);//显示新内容
+					formEditor.prev().prev().show();
+					// 
+					formEditor.prev().show();
+					
+					//这里需要保证$tt在这个布局对象中
+					$('#container').masonry( 'reload' );
+				});
 				//
-				//隐藏 文本内容 显示Textarea并将文本内容显示在Textarea中。
+				// 注册 editor放弃 按钮功能
 				//
-				var txtCont =$(this).prev();
-				$(this).next("form").children("textarea.editor").html(txtCont.html());//内容显示在
-				$(this).next("form").css("display","block")
-				//文本框隐藏//隐藏 a.showEditor按钮
-				txtCont.hide();
-				$(this).hide();
-				
-				//这里需要保证$tt在这个布局对象中
-				$('#container').masonry( 'reload' );
-			});
-			
-			// 注册编辑框resize动作的影响
-			//$tt.find("textarea.editor").resize(function(){});
-			//
-			// 注册 editor保存 按钮功能
-			//
-			$tt.find("form.editor input.save").click(function(){
-				// 整个form
-				var formEditor =$(this).parent();
-				//获取itemid
-				var itemId=formEditor.attr("itemId");
-				//获取文本框中的内容
-				var text = formEditor.children("textarea.editor").val();
-				//alert(text);
-				// 提交更新文本内容
- 				$.post("./item!modifyText.act", {action:"modify",itemId:itemId,"text": text}, //默认使用post,json对象其实会转变为form格式数据向后传
-						function (data, textStatus){
-							//data 可以是 xmlDoc, jsonObj, html, text, 等等.
-							//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this
-							//data 当前为json对象
-							//alert(data.success);
-							//
-							//window.location.href='\\';过是ajax的请求可以使用 该方法让浏览器跳转到指定页面，比如登录框。似乎很多系统提供一个延迟刷新的面板？
-							//
-							if(data!=null&&typeof(data)==="object"&&data.success==true){ //类型判断 //需要区分ajax方式与普通跳转方法。
-								//alert("ok 修改成功"); // 测试 
-								
-								//放在这里显示内容
-								formEditor.prev().prev().html(text);//显示新内容 显示的时候转义而已 
-							}else{
-								alert("修改失败！"); // 测试 
-								//
-							}
-							//内容变更后也要执行重新布局
-							$('#container').masonry( 'reload' );
-						}, 
-				"json"); //要求返回值为json
-				
-				
-				//
-				//隐藏 表单
-				//
-				formEditor.children("textarea.editor").val(text); //
-				formEditor.css("display","none");
-				
-				// 显示 文本 
-				//formEditor.prev().prev().html(text);//显示新内容
-				formEditor.prev().prev().show();
+				$tt.find("form.editor input.reset").click(function(){
+					//
+					//隐藏 表单
+					//
+					var formEditor =$(this).parent();
+					formEditor.children("textarea.editor").val(formEditor.prev().prev().html());
+					formEditor.css("display","none");
+					
+					//显示 文本
+					formEditor.prev().prev().show();
+					formEditor.prev().show();
+					
+					
+					//这里需要保证$tt在这个布局对象中
+					$('#container').masonry( 'reload' );
+				});
 				// 
-				formEditor.prev().show();
-				
-				//这里需要保证$tt在这个布局对象中
-				$('#container').masonry( 'reload' );
-			});
-			//
-			// 注册 editor放弃 按钮功能
-			//
-			$tt.find("form.editor input.reset").click(function(){
-				//
-				//隐藏 表单
-				//
-				var formEditor =$(this).parent();
-				formEditor.children("textarea.editor").val(formEditor.prev().prev().html());
-				formEditor.css("display","none");
-				
-				//显示 文本
-				formEditor.prev().prev().show();
-				formEditor.prev().show();
-				
-				
-				//这里需要保证$tt在这个布局对象中
-				$('#container').masonry( 'reload' );
-			});
-			// 
+			}//权限相关按钮结束
+			
 			
 			////
 			//注册其他按钮功能
