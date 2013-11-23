@@ -319,7 +319,7 @@ $(function(){
 			//注册删除按钮功能
 			
 			//alert($tt.find("a.delete").length);
-			if(typeof(accountInfo)==='object' && (typeof(accountInfo.userId))==='string' && item.ownerId==accountInfo.userId){ //TODO 临时的权限控制
+			if(typeof(accountInfo)==='object' && (typeof(accountInfo.userId))==='string'){ //TODO 临时的权限控制,当已经刚登时才考虑设置事件 
 				
 				$tt.find("a.doDelete").click(function(event){
 						//var oevent = event.originalEvent;
