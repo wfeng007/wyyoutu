@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	<!--      
 		table information
-		Generate time : 2013-11-18 21:31:26
+		Generate time : 2013-11-24 18:29:56
    		Version :  3.0.0
 		tableName :rs_book 
 		  seq_id  INTEGER   NOT NULL   primarykey, 		
@@ -38,42 +38,42 @@
 	
 	<!-- querying conditions -->
 	<sql id="queryingConditions">
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(seqId)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(seqId)"> 
 	      <![CDATA[	
 	        AND `seq_id` = #{seqId}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(bid)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(bid)"> 
 	      <![CDATA[	
 	        AND `bid` = #{bid}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(name)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(name)"> 
 	      <![CDATA[	
 	        AND `name` = #{name}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(desc)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(desc)"> 
 	      <![CDATA[	
 	        AND `desc` = #{desc}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(addTs)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(addTs)"> 
 	      <![CDATA[	
 	        AND `add_ts` = #{addTs}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(modifyTs)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(modifyTs)"> 
 	      <![CDATA[	
 	        AND `modify_ts` = #{modifyTs}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(status)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(status)"> 
 	      <![CDATA[	
 	        AND `status` = #{status}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(ownerId)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(ownerId)"> 
 	      <![CDATA[	
 	        AND `owner_id` = #{ownerId}
 		  ]]>

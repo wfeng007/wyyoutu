@@ -185,6 +185,88 @@ doService.post("/rjs/modifyPeople",function modifyPeople(req){
 });
 
 
+/**
+ * 增加board
+ * @param req
+ * @returns
+ */
+doService.post("/rjs/addBoard",function addBoard(req){
+	// servlet对象
+	var request =req.env.servletRequest;
+	var response = req.env.servletResponse;
+	//
+	print("pathInfo:"+req.pathInfo);
+	var contextPath=request.getContextPath();
+	
+	//web参数
+	var param=$SW.parseParams(req.env.servletRequest).param;
+	print("owner:"+param.owner);
+	print("boardName:"+param.boardName);
+	
+	//
+	//service-logic
+	var rsBoardDao=$SF("rsBoardDao");
+	importPackage(Packages.wyyoutu.model);
+	var board=new RsBoard();
+	board["name"]=param.boardName;
+	board["ownerId"]=param.owner;
+//	importClass(Packages.java.util.UUID);
+	var UUID=Packages.java.util.UUID;
+	board["bid"]=UUID.randomUUID().toString();
+	board["specialType"]="BASIC";
+	board["addTs"]=new Date();
+	board["status"]=1;
+	rsBoardDao["insert"](board);
+	delete board;
+	//
+	//
+
+	//返回response
+	return resp.redirect(contextPath+"/boards.jsp");
+	//
+});
+
+
+/**
+ * 列出board
+ * @param req
+ * @returns
+ */
+doService.get("/rjs/listBoard",listBoard);function listBoard(req){
+	// servlet对象
+	var request =req.env.servletRequest;
+	var response = req.env.servletResponse;
+	//
+	
+	//web参数
+	var param=$SW.parseParams(req.env.servletRequest).param;
+	print("owner:"+param.owner);
+	if(typeof(param.owner)==="undefined"){
+		param.owner=null;
+	}
+	//
+	//service-logic
+	var rsBoardDao=$SF("rsBoardDao");
+//	importPackage(Packages.java.util.HashMap);
+	var HashMap=Packages.java.util.HashMap;
+	var pm=new HashMap();
+	pm.put("ownerId",param.owner);
+	var boardList=rsBoardDao["query"](pm);
+	
+	//可以使用以下方式进行类型检测
+	print("(boardList instanceof java.util.List):"+(boardList instanceof java.util.List) );
+	//response返回 
+	//TODO 将一下java对象解析为js对象功能工具化
+	var JSONArray=Packages.net.sf.json.JSONArray;
+	var jsonStr=JSONArray.fromObject(boardList).toString();
+	var bLs=JSON.parse(jsonStr);
+	var result={success:true,'boardList':bLs,msg:"list ok. "};
+	//println(JSON.stringify(result));
+	return resp.json(result); //返回一个json对象由上层strik-jsgi-connector完成reponse的out输出。
+	//
+};
+
+
 
 //转发到特定处理函数pathinfo不变。
 //注意pathinfo以servletcontext之后为基准。
@@ -213,6 +295,9 @@ doService.get("/rjs/hello",function(request){
       body: ["Hello World 中文"]
   };
 });
+
+
+
 
 //
 //mount

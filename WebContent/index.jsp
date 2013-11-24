@@ -331,7 +331,7 @@ $(function(){
 					 	
 						var itemId=$(this).attr("itemId");
 						//alert("a");
-						$.post("./item!removeItem.act", {action:"remove",itemId:itemId, itemIid: "?" }, //默认使用post,json对象其实会转变为form格式数据向后传
+						$.post("./item!removeItem.act", {action:"remove",itemId:itemId, itemIid: "?" }, //默认使用post,json对象其实会转变为form格式数据向后传//默认如果不指定发送的contenttype就会使用form方式。
 							function (data, textStatus){
 								//data 可以是 xmlDoc, jsonObj, html, text, 等等.
 								//this; 这个Ajax请求的选项配置信息，请参考jQuery.get()说到的this

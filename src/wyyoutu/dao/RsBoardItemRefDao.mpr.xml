@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	<!--      
 		table information
-		Generate time : 2013-11-18 21:31:26
+		Generate time : 2013-11-24 18:29:56
    		Version :  3.0.0
 		tableName :rs_board_item_ref 
 		  seq_id  BIGINT   NOT NULL   primarykey, 		
@@ -30,22 +30,22 @@
 	
 	<!-- querying conditions -->
 	<sql id="queryingConditions">
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(seqId)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(seqId)"> 
 	      <![CDATA[	
 	        AND `seq_id` = #{seqId}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(itemIid)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(itemIid)"> 
 	      <![CDATA[	
 	        AND `item_iid` = #{itemIid}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(boardBid)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(boardBid)"> 
 	      <![CDATA[	
 	        AND `board_bid` = #{boardBid}
 		  ]]>
 	 	</if>
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(refSeqNum)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(refSeqNum)"> 
 	      <![CDATA[	
 	        AND `ref_seq_num` = #{refSeqNum}
 		  ]]>

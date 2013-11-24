@@ -43,13 +43,13 @@
 	]]>
 	</sql>
 	
-	<#--  test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(${property.propertyName})" 或  test="${property.propertyName} != null" -->
+	<#--  test="@summ.framework.util.Ognl@isNotEmpty(${property.propertyName})" 或  test="${property.propertyName} != null" -->
 	<!-- querying conditions -->
 	<sql id="queryingConditions">
 	<#-- 直接所有字段条件 FIXME 当前框架包没有动态给 -->
 		<#list mapping.propertyMappingList as property>
 		<#if (property.generate)> 
-		<if test="@ecdata.iccs.framework.util.Ognl@isNotEmpty(${property.propertyName})"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(${property.propertyName})"> 
 	      <![CDATA[	
 	        AND `${property.columnName}` = ${r"#"}{${property.propertyName}}
 		  ]]>

@@ -25,6 +25,10 @@
 	<bean id="rsTaggedDao" class="wyyoutu.dao.RsTaggedDao">
 		<property name="sessionTemplate" ref="sessionTemplate" />
 	</bean>
+	<!-- boarddao当前暂时直接被web部分（ringojs）使用，没有service。 -->
+	<bean id="rsBoardDao" class="wyyoutu.dao.RsBoardDao">
+		<property name="sessionTemplate" ref="sessionTemplate" />
+	</bean>
 	<!-- service -->
 	<bean id="rsItemService" class="wyyoutu.service.RsItemService">
 		<property name="rsItemDao" ref="rsItemDao" />

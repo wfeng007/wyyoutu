@@ -270,9 +270,15 @@ var toJavJson=function(json){
 	}
 }
 
+/**
+ * 将java的对象Map或ArrayList转换为js-json对象
+ */
+
 //$S=summjs;
 //exports.toJavJson=summjs.toJavJson;
 export("toJavJson");
+
+
 
 //***********
 //核心框架部分
