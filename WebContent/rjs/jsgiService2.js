@@ -216,14 +216,26 @@ doService.post("/rjs/addBoard",function addBoard(req){
 	board["specialType"]="BASIC";
 	board["addTs"]=new Date();
 	board["status"]=1;
-	rsBoardDao["insert"](board);
+	var reC=rsBoardDao["insert"](board);
 	delete board;
 	//
 	//
-
+	
+	//这里使用了跳转
 	//返回response
-	return resp.redirect(contextPath+"/boards.jsp");
-	//
+	//response对象实现redirect居然是发送303状态而不是302，javaservlet默认是302。
+//	return resp.redirect(contextPath+"/boards.jsp?owner=admin");
+	//如果客户端是ajax的程序，直接redirect似乎不行。
+//	var location=contextPath+"/boards.jsp";
+//	return {
+//        status: 302,
+//        headers: {Location: location},
+//        body: ["Found:" + location]
+//    };
+	//使用ajax方式跳转
+	var result=reC>0?{success:true,msg:"新增成功！",reload:true}:{success:true,msg:"新增失败！",redirect:contextPath+"/boards.jsp?",reload:false};
+	return resp.json(result);
+	
 });
 
 
@@ -265,6 +277,13 @@ doService.get("/rjs/listBoard",listBoard);function listBoard(req){
 	return resp.json(result); //返回一个json对象由上层strik-jsgi-connector完成reponse的out输出。
 	//
 };
+
+//删除board
+
+
+//在board中引用item(replace)
+
+//
 
 
 
