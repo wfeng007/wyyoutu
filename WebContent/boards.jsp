@@ -151,7 +151,7 @@ $(function() {
 </script>
 
 <div id="container" class="container" >
-	<div class="box col25 board"><h4>新增test</h4><hr><a id="addBoardBtn" href="javascript:void(0);"><img alt="add" src="./res/image/folder_add.png"/></a></div>
+	<div class="box col25 board"><h4>新增test</h4><hr><a role="button" data-toggle="modal" href="#myModal"><img alt="add" src="./res/image/folder_add.png"/></a></div>
 <%
 for (RsBoard rB : boardList){
 %>
@@ -160,6 +160,30 @@ for (RsBoard rB : boardList){
 <%
 }
 %>
+</div>
+<!-- 新增模态界面 -->
+<div id="myModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabel">新增展板</h3>
+	</div>
+	<div class="modal-body">
+		<h4>展板名字：</h4>
+		<p><input id="boardName" type="text"/><a class="tooltip-test" title="" href="#" data-original-title="Tooltip">提示</a>
+		</p>
+		<h4>描述：</h4>
+		<p><input id="boardDesc" type="text"/><a class="tooltip-test" title="" href="#" data-original-title="Tooltip">提示</a></p>
+		<hr></hr>
+		<h4>
+		    说明：
+		</h4>
+		<p>描述可选。开发中。。。</p>
+		<a id="addBoardBtn" class="btn" href="javascript:void(0);">新增</a>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+		<!-- <button class="btn btn-primary">提交</button> -->
+	</div>
 </div>
 <!-- TODO 增加分页条 -->
 
