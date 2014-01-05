@@ -30,7 +30,7 @@ String contextPath=path+"/";
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container{
-	width: 1194px;/* 1180(1184) 15个span 默认940 为12个span */ 
+	width: 1190px;/* 1180(1184) 15个span 默认940 为12个span ,之后需要整体调整 */ 
 	/* border: 1px solid #eeeeee; */
 }
 .span12,

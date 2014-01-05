@@ -156,7 +156,10 @@ $(function() {
 for (RsBoard rB : boardList){
 %>
 	<!-- 布局调整 -->
-	<div class="box col25 board"><h4><%=rB.getName()%></h4><hr><a><img alt="board" src="./res/image/folder.png"/></a></div>
+	<div class="box col25 board">
+		<h4><%=rB.getName()%></h4>
+		<hr><a href="./boardeditor.jsp"><img alt="board" src="./res/image/folder.png"/></a>
+	</div>
 <%
 }
 %>
