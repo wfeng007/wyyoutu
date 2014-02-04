@@ -45,7 +45,8 @@ if(navPage==null)navPage="HOME";
 <%if(accountInfo!=null){%>
              <li <%=("SETTING".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./account.jsp"><i class="icon-wrench"></i>设置</a></li>
              <li <%=("MYYOUTU".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./index.jsp?owner=<%=accountInfo.getUserId()%>"><i class="icon-home"></i>我的优图</a></li>
-             <li <%=("BOARDS".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./boards.jsp?owner=<%=accountInfo.getUserId()%>"><i class="icon-th-large"></i>我的展板</a></li>
+             <%-- <li <%=("BOARDS".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./boards.jsp?owner=<%=accountInfo.getUserId()%>"><i class="icon-th-large"></i>我的展板</a></li> --%>
+			 <li <%=("ALBUM".equals(navPage))?"class='active' ":""%>><a href="<%=contextPath%>./album.jsp?owner=<%=accountInfo.getUserId()%>"><i class="icon-th-large"></i>我的专辑</a></li>
 <%}%>
              <li <%=("ABOUT".equals(navPage))?"class='active' ":""%>><a href="#about"><i class="icon-book"></i>关于</a></li>
              <li <%=("CALL".equals(navPage))?"class='active' ":""%>><a href="#contact"><i class="icon-envelope"></i>联系</a></li>

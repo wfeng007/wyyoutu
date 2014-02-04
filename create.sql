@@ -63,7 +63,9 @@ CREATE TABLE `RS_ITEM` (
   UNIQUE (`iid`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='数据信息具体项目图片、文本、声音等';
 -- alter table
-ALTER TABLE `RS_ITEM` ADD `book_bid` VARCHAR(128) NULL COMMENT '所属book';
+-- ALTER TABLE `RS_ITEM` DROP COLUMN `book_bid`;
+ALTER TABLE `RS_ITEM` ADD `album_aid` VARCHAR(128) NULL COMMENT '所属album';
+
 
 -- for RS_ITEM default data
 insert into `rs_item` (`seq_id`,`iid`, `name`, `url`, `access_type`, `add_ts`, `text`) values('1','_default_1_','测试内容1','http://www.shgtj.gov.cn/hdpt/gzcy/sj/201208/W020120830595827523916.jpg',NULL,NULL,'测试内容111111 这个内容就多了 从整体上来看 这个非常关键的发挥发的海风好大夫哈发放大方地将阿凡达发酵法大解放大房间dajfdafdafjaljfdas');
@@ -121,9 +123,24 @@ CREATE TABLE `RS_BOARD_ITEM_REF` (
 
 -- 图册
 DROP TABLE IF EXISTS `RS_BOOK`;
-CREATE TABLE `RS_BOOK` (
+-- CREATE TABLE `RS_BOOK` (
+--  `seq_id` INT NOT NULL auto_increment,
+--  `bid` VARCHAR(128) NOT NULL COMMENT '图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。',
+--  `name` VARCHAR(512) NOT NULL COMMENT '图册名称',
+--  `desc` VARCHAR(2000) NULL COMMENT '内容描述',
+--  `add_ts` DATETIME NULL COMMENT '新增时间戳',
+--  `modify_ts` DATETIME NULL COMMENT '最后更新时间戳',
+--  `status` INT NULL COMMENT '项状态；锁定、删除、活动',
+--  `owner_id` VARCHAR(100) NULL COMMENT '关联用户id，如果为null则说明是系统图册，只有特定权限角色可以编辑。',
+--  PRIMARY KEY (`seq_id`),
+--  UNIQUE (`bid`)
+-- ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用于存放item，一个item只能存在于一个book。';
+
+-- 图册
+DROP TABLE IF EXISTS `RS_ALBUM`;
+CREATE TABLE `RS_ALBUM` (
   `seq_id` INT NOT NULL auto_increment,
-  `bid` VARCHAR(128) NOT NULL COMMENT '图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。',
+  `aid` VARCHAR(128) NOT NULL COMMENT '图册标识；唯一键可以使用任意算法生成。',
   `name` VARCHAR(512) NOT NULL COMMENT '图册名称',
   `desc` VARCHAR(2000) NULL COMMENT '内容描述',
   `add_ts` DATETIME NULL COMMENT '新增时间戳',
@@ -131,8 +148,8 @@ CREATE TABLE `RS_BOOK` (
   `status` INT NULL COMMENT '项状态；锁定、删除、活动',
   `owner_id` VARCHAR(100) NULL COMMENT '关联用户id，如果为null则说明是系统图册，只有特定权限角色可以编辑。',
   PRIMARY KEY (`seq_id`),
-  UNIQUE (`bid`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用于存放item，一个item只能存在于一个book。';
+  UNIQUE (`aid`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用于存放item，一个item只能存在于一个ALBUM中。';
 
 
 --  资源项评论或回复 暂时没有用。

@@ -1,5 +1,5 @@
   /*
-   * Generate time : 2013-11-18 21:31:26
+   * Generate time : 2014-02-04 16:21:21
    * Version : 3.0.0
    */
 package wyyoutu.model;
@@ -8,13 +8,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 /**
- * RsBook 
+ * RsAlbum 
  *  
  */
-public class RsBook {
+public class RsAlbum {
 
 	private Integer seqId ; 
-	private String bid ;	/* 图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。*/
+	private String aid ;	/* 图册标识；唯一键可以使用任意算法生成。*/
 	private String name ;	/* 图册名称*/
 	private String desc ;	/* 内容描述*/
 	private Date addTs ; /* 新增时间戳*/
@@ -26,7 +26,7 @@ public class RsBook {
 	/**
 	 * the constructor
 	 */
-	public RsBook() {
+	public RsAlbum() {
 		//TODO
 	}
 	
@@ -49,18 +49,18 @@ public class RsBook {
 	}
 	
 	/**
-	 * get the bid - 图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。
-	 * @return the bid
+	 * get the aid - 图册标识；唯一键可以使用任意算法生成。
+	 * @return the aid
 	 */
-	public String getBid() {
-		return this.bid;
+	public String getAid() {
+		return this.aid;
 	}
 	
 	/**
-	 * set the bid - 图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。
+	 * set the aid - 图册标识；唯一键可以使用任意算法生成。
 	 */
-	public void setBid(String bid) {
-		this.bid = bid;
+	public void setAid(String aid) {
+		this.aid = aid;
 	}
 	
 	/**
@@ -161,9 +161,9 @@ public class RsBook {
 	 */
 	@Override
 	public String toString() {
-		return "RsBook [" 
+		return "RsAlbum [" 
 	 		+ "seqId=" + seqId  + ", "  
-	 		+ "bid=" + bid  + ", "  
+	 		+ "aid=" + aid  + ", "  
 	 		+ "name=" + name  + ", "  
 	 		+ "desc=" + desc  + ", "  
 	 		+ "addTs=" + addTs  + ", "  

@@ -56,6 +56,12 @@
 	 	</if>
 		</#if>
 		</#list>
+		<#-- 增加额外的查询条件功能  -->
+		<if test="@summ.framework.util.Ognl@isNotEmpty(otherCondition)"> 
+	      <![CDATA[	
+	        ${r"$"}{otherCondition}
+		  ]]>
+	 	</if>
 	</sql>
 	
 <#--

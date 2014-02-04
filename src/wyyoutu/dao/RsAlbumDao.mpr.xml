@@ -4,11 +4,11 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	<!--      
 		table information
-		Generate time : 2013-11-24 18:29:56
+		Generate time : 2014-02-04 16:21:21
    		Version :  3.0.0
-		tableName :rs_book 
+		tableName :rs_album 
 		  seq_id  INTEGER   NOT NULL   primarykey, 		
-		  bid  VARCHAR   NOT NULL, 		-REMARKS-:图册标识；唯一键可以使用任意算法生成。系统展板id是固定的几个。
+		  aid  VARCHAR   NOT NULL, 		-REMARKS-:图册标识；唯一键可以使用任意算法生成。
 		  name  VARCHAR   NOT NULL, 		-REMARKS-:图册名称
 		  desc  VARCHAR, 		-REMARKS-:内容描述
 		  add_ts  DATETIME, 		-REMARKS-:新增时间戳
@@ -16,17 +16,17 @@
 		  status  INTEGER, 		-REMARKS-:项状态；锁定、删除、活动
 		  owner_id  VARCHAR		-REMARKS-:关联用户id，如果为null则说明是系统图册，只有特定权限角色可以编辑。
 	-->
-<mapper namespace="wyyoutu.dao.RsBookDao">
+<mapper namespace="wyyoutu.dao.RsAlbumDao">
 
 	<!-- basic info for sql -->
-	<sql id="tableName"><![CDATA[rs_book]]></sql>
+	<sql id="tableName"><![CDATA[rs_album]]></sql>
 	
 	
 	<!-- table selected columns  -->
 	<sql id="selectedColumns">
 	<![CDATA[
 		  `seq_id` as "seqId", 
-		  `bid` as "bid", 
+		  `aid` as "aid", 
 		  `name` as "name", 
 		  `desc` as "desc", 
 		  `add_ts` as "addTs", 
@@ -43,9 +43,9 @@
 	        AND `seq_id` = #{seqId}
 		  ]]>
 	 	</if>
-		<if test="@summ.framework.util.Ognl@isNotEmpty(bid)"> 
+		<if test="@summ.framework.util.Ognl@isNotEmpty(aid)"> 
 	      <![CDATA[	
-	        AND `bid` = #{bid}
+	        AND `aid` = #{aid}
 		  ]]>
 	 	</if>
 		<if test="@summ.framework.util.Ognl@isNotEmpty(name)"> 
@@ -80,18 +80,18 @@
 	 	</if>
 	</sql>
 	
-	<select id="query" resultType="wyyoutu.model.RsBook">
+	<select id="query" resultType="wyyoutu.model.RsAlbum">
  	<![CDATA[
  		select 
  	]]>
  		  <!-- 
  		  "selectedColumns" for same-file include.  
- 		  "wyyoutu.model.RsBookDao.selectedColumns" is for other-file 
+ 		  "wyyoutu.model.RsAlbumDao.selectedColumns" is for other-file 
  		  and this sql-segment must be load first...
  		   -->
  		  <include refid="selectedColumns"/>
  	<![CDATA[
- 		from  rs_book 
+ 		from  rs_album 
  	]]>
 	    <where>
 		  <include refid="queryingConditions"/>
@@ -116,7 +116,7 @@
     
     <select id="count" resultType="int">
       <![CDATA[
-	  SELECT COUNT(*) FROM rs_book 
+	  SELECT COUNT(*) FROM rs_album 
 	  ]]>
 	  <where>
 		<include refid="queryingConditions"/>
@@ -131,9 +131,9 @@
 
 	<insert id="insert">
 	<![CDATA[
-		INSERT INTO rs_book (
+		INSERT INTO rs_album (
 		  `seq_id`,
-		  `bid`,
+		  `aid`,
 		  `name`,
 		  `desc`,
 		  `add_ts`,
@@ -143,7 +143,7 @@
 		)
 		VALUES (		 
 	      #{seqId}, 
-	      #{bid,jdbcType=VARCHAR}, 
+	      #{aid,jdbcType=VARCHAR}, 
 	      #{name,jdbcType=VARCHAR}, 
 	      #{desc,jdbcType=VARCHAR}, 
 	      #{addTs,jdbcType=TIMESTAMP}, 
@@ -156,17 +156,17 @@
 	
 	<delete id="delete">
 	<![CDATA[
-		DELETE FROM rs_book WHERE 
+		DELETE FROM rs_album WHERE 
 			`seq_id` =  #{seqId}
 	]]>
 	</delete>
 	
 	<update id="update">
-		UPDATE rs_book 
+		UPDATE rs_album 
 		<set> 
-		<if test="bid != null">
+		<if test="aid != null">
 		<![CDATA[
-		  `bid` = #{bid,jdbcType=VARCHAR}, 
+		  `aid` = #{aid,jdbcType=VARCHAR}, 
 	    ]]>
 	    </if>
 		<if test="name != null">
@@ -207,33 +207,33 @@
 	</update>
 	
 	<!-- table name for cascade -->
-	<sql id="tableNameForCascade"><![CDATA[rs_book]]></sql>
+	<sql id="tableNameForCascade"><![CDATA[rs_album]]></sql>
 	
 	
 	<!-- table selected columns for cascade -->
 	<sql id="selectedColumnsForCascade">
 		<![CDATA[
-		  rs_book.`seq_id` AS "rs_book_seq_id", 
-		  rs_book.`bid` AS "rs_book_bid", 
-		  rs_book.`name` AS "rs_book_name", 
-		  rs_book.`desc` AS "rs_book_desc", 
-		  rs_book.`add_ts` AS "rs_book_add_ts", 
-		  rs_book.`modify_ts` AS "rs_book_modify_ts", 
-		  rs_book.`status` AS "rs_book_status", 
-		  rs_book.`owner_id` AS "rs_book_owner_id"
+		  rs_album.`seq_id` AS "rs_album_seq_id", 
+		  rs_album.`aid` AS "rs_album_aid", 
+		  rs_album.`name` AS "rs_album_name", 
+		  rs_album.`desc` AS "rs_album_desc", 
+		  rs_album.`add_ts` AS "rs_album_add_ts", 
+		  rs_album.`modify_ts` AS "rs_album_modify_ts", 
+		  rs_album.`status` AS "rs_album_status", 
+		  rs_album.`owner_id` AS "rs_album_owner_id"
 		]]>
 	</sql>
 
 	<!-- basic result-Map for table -->
-	<resultMap type="wyyoutu.model.RsBook" id="RsBookResult">
-		<id property="seqId" column="rs_book_seq_id" />
-		<result property="bid" column="rs_book_bid"/>
-		<result property="name" column="rs_book_name"/>
-		<result property="desc" column="rs_book_desc"/>
-		<result property="addTs" column="rs_book_add_ts"/>
-		<result property="modifyTs" column="rs_book_modify_ts"/>
-		<result property="status" column="rs_book_status"/>
-		<result property="ownerId" column="rs_book_owner_id"/>
+	<resultMap type="wyyoutu.model.RsAlbum" id="RsAlbumResult">
+		<id property="seqId" column="rs_album_seq_id" />
+		<result property="aid" column="rs_album_aid"/>
+		<result property="name" column="rs_album_name"/>
+		<result property="desc" column="rs_album_desc"/>
+		<result property="addTs" column="rs_album_add_ts"/>
+		<result property="modifyTs" column="rs_album_modify_ts"/>
+		<result property="status" column="rs_album_status"/>
+		<result property="ownerId" column="rs_album_owner_id"/>
 	</resultMap>
 	
 	

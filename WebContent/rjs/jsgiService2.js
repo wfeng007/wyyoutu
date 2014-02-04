@@ -283,7 +283,95 @@ doService.get("/rjs/listBoard",listBoard);function listBoard(req){
 
 //在board中引用item(replace)
 
-//
+//增加album
+/**
+ * 增加board
+ * @param req
+ * @returns
+ */
+doService.post("/rjs/addAlbum",function addAlbum(req){
+	// servlet对象
+	var request =req.env.servletRequest;
+	var response = req.env.servletResponse;
+	//
+	print("pathInfo:"+req.pathInfo);
+	var contextPath=request.getContextPath();
+	
+	//web参数
+	var param=$SW.parseParams(req.env.servletRequest).param;
+	print("owner:"+param.owner);
+	print("albumName:"+param.albumName);
+	
+	
+	//
+	//service-logic
+	var rsAlbumDao=$SF("rsAlbumDao");
+	importPackage(Packages.wyyoutu.model);
+	var album=new RsAlbum();
+	album["name"]=param.albumName;
+	album["ownerId"]=param.owner;
+//	importClass(Packages.java.util.UUID);
+	var UUID=Packages.java.util.UUID;
+	album["aid"]=UUID.randomUUID().toString();
+	album["addTs"]=new Date();
+	album["status"]=1;
+	var reC=rsAlbumDao["insert"](album);
+	delete album;
+	//
+	//
+	
+	//这里使用了跳转
+	//返回response
+	//response对象实现redirect居然是发送303状态而不是302，javaservlet默认是302。
+//	return resp.redirect(contextPath+"/boards.jsp?owner=admin");
+	//如果客户端是ajax的程序，直接redirect似乎不行。
+//	var location=contextPath+"/boards.jsp";
+//	return {
+//        status: 302,
+//        headers: {Location: location},
+//        body: ["Found:" + location]
+//    };
+	//使用ajax方式跳转
+	var result=reC>0?{success:true,msg:"新增成功！",reload:true}:{success:true,msg:"新增失败！",redirect:contextPath+"/album.jsp?",reload:false};
+	return resp.json(result);
+	
+});
+
+//删除album
+/**
+ * 增加board
+ * @param req
+ * @returns
+ */
+doService.post("/rjs/removeAlbum",function removeAlbum(req){
+	// servlet对象
+	var request =req.env.servletRequest;
+	var response = req.env.servletResponse;
+	//
+	print("pathInfo:"+req.pathInfo);
+	var contextPath=request.getContextPath();
+	
+	//web参数
+	var param=$SW.parseParams(req.env.servletRequest).param;
+	print("owner:"+param.owner);
+	print("album-seqId:"+param.seqId);
+	
+	//
+	//service-logic
+	var rsAlbumDao=$SF("rsAlbumDao");
+//	importPackage(Packages.wyyoutu.model);
+	var HashMap=Packages.java.util.HashMap;
+	var pm=new HashMap();
+	pm.put("ownerId",param.owner);
+	pm.put("seqId",param.seqId);
+	var reC=rsAlbumDao["delete"](pm);
+	//
+	//
+	
+	//使用ajax方式跳转
+	var result=reC>0?{success:true,msg:"新增成功！",reload:true}:{success:true,msg:"新增失败！",redirect:contextPath+"/album.jsp?",reload:false};
+	return resp.json(result);
+});
 
 
 

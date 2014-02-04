@@ -62,9 +62,10 @@ public class MyGenerateDbImpl {
 //		tableNameList.add("RS_TAGGED");
 //		tableNameList.add("co_people_exten");
 //		tableNameList.add("RS_ITEM_EXTEN");
-		tableNameList.add("rs_board");
-		tableNameList.add("rs_board_item_ref");
-		tableNameList.add("rs_book");
+//		tableNameList.add("rs_board");
+//		tableNameList.add("rs_board_item_ref");
+//		tableNameList.add("rs_book");
+		tableNameList.add("rs_album");
 		
 		//iccs.pm
 //		tableNameList.add("PM_SM_SYSTEM_INFO");

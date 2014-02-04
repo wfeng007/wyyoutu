@@ -93,6 +93,11 @@
 	        AND `owner_id` = #{ownerId}
 		  ]]>
 	 	</if>
+	 	<if test="@summ.framework.util.Ognl@isNotEmpty(otherCondition)"> 
+	      <![CDATA[	
+	        ${otherCondition}
+		  ]]>
+	 	</if>
 	</sql>
 	
 	<select id="query" resultType="wyyoutu.model.RsItem">

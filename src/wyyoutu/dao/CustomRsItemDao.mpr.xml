@@ -27,7 +27,7 @@
 <!-- 	     ITEM_EXTEN.`item_iid` AS "ITEM_EXTEN_item_iid",
 	      RS_ITEM.`iid` AS "RS_ITEM_iid",   -->
 		<include refid="wyyoutu.dao.RsItemDao.tableNameForCascade"/>.`iid` = <include refid="wyyoutu.dao.RsItemExtenDao.tableNameForCascade"/>.`item_iid`
-		<!-- 看上去貌似condition没有的话查询出来的内容没有意义所有有exten的item？ -->
+		<!-- 看上去貌似condition没有的话查询出来的内容没有意义所有有exten的item，因为where之后已经有iid=item_iid 这个条件 -->
 		<if test="@summ.framework.util.Ognl@isNotEmpty(condition)"> 
 	      <![CDATA[	
 	        AND  ${condition}

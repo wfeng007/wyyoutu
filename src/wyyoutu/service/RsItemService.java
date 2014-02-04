@@ -79,7 +79,7 @@ public class RsItemService {
 	 * @param mp 其他参数。
 	 * @param paging
 	 * 
-	 * @param isExten
+	 * @param isExten 是否增加扩展参数查询
 	 * @return
 	 */
 	public List<RsItem> listItem(final Map<String,Object> mp,Paging paging,boolean isExten) {

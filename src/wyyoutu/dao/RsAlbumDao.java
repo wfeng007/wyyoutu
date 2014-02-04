@@ -1,5 +1,5 @@
 /*
- * Generate time : 2013-11-18 21:31:27
+ * Generate time : 2014-02-04 16:21:22
  * Version : 3.0.0
  */
 package wyyoutu.dao;
@@ -12,13 +12,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.apache.commons.beanutils.PropertyUtils; // for beanutils
 import summ.framework.Paging; //for paging
-import wyyoutu.model.RsBook;
+import wyyoutu.model.RsAlbum;
 
 /**
- * RsBookDao
- * for table/view rs_book 
+ * RsAlbumDao
+ * for table/view rs_album 
  */
-public class RsBookDao {
+public class RsAlbumDao {
 	
 	//gen begin
 	private SqlSessionTemplate sessionTemplate;
@@ -45,12 +45,12 @@ public class RsBookDao {
 		this.sessionTemplate = sessionTemplate;
 	}
 	
-	public int insert(RsBook obj) {
-		return sessionTemplate.insert("wyyoutu.dao.RsBookDao.insert", obj);
+	public int insert(RsAlbum obj) {
+		return sessionTemplate.insert("wyyoutu.dao.RsAlbumDao.insert", obj);
 	}
 	
 	public int insert(Map<String,Object> mp) {
-		return sessionTemplate.insert("wyyoutu.dao.RsBookDao.insert", mp);
+		return sessionTemplate.insert("wyyoutu.dao.RsAlbumDao.insert", mp);
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class RsBookDao {
  	 * 
  	 * @param obj 参数条件
  	 */
-	public List<RsBook> query(RsBook obj) {
+	public List<RsAlbum> query(RsAlbum obj) {
 		// for beanutils
 		Map mp=null;
 		try {
@@ -67,7 +67,7 @@ public class RsBookDao {
 		} catch (Exception e) {
 			new RuntimeException("describe failed!!",e);
 		}
-		return (List<RsBook>)sessionTemplate.selectList("wyyoutu.dao.RsBookDao.query",mp);
+		return (List<RsAlbum>)sessionTemplate.selectList("wyyoutu.dao.RsAlbumDao.query",mp);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class RsBookDao {
  	 * @param paging 分页条件 paging==null时则为不分页
  	 *
  	 */
-	public List<RsBook> query(RsBook obj,Paging paging) {
+	public List<RsAlbum> query(RsAlbum obj,Paging paging) {
 		// for beanutils
 		Map mp=null;
 		try {
@@ -89,7 +89,7 @@ public class RsBookDao {
 		} catch (Exception e) {
 			new RuntimeException("describe failed!!",e);
 		}
-		return (List<RsBook>)sessionTemplate.selectList("wyyoutu.dao.RsBookDao.query",mp);
+		return (List<RsAlbum>)sessionTemplate.selectList("wyyoutu.dao.RsAlbumDao.query",mp);
 	}
 	
 	/**
@@ -100,8 +100,8 @@ public class RsBookDao {
  	 * 
  	 *
  	 */
-	public List<RsBook> query(Map<String,Object> mp) {
-		return (List<RsBook>)sessionTemplate.selectList("wyyoutu.dao.RsBookDao.query",mp);
+	public List<RsAlbum> query(Map<String,Object> mp) {
+		return (List<RsAlbum>)sessionTemplate.selectList("wyyoutu.dao.RsAlbumDao.query",mp);
 	}
 	
 	/**
@@ -112,14 +112,14 @@ public class RsBookDao {
  	 * @param paging 分页条件 paging==null时则为不分页
  	 *
  	 */
-	public List<RsBook> query(Map<String,Object> mp,Paging paging) {
+	public List<RsAlbum> query(Map<String,Object> mp,Paging paging) {
 		if(paging!=null){
 			mp.put("paging",paging);
 		}
-		return (List<RsBook>)sessionTemplate.selectList("wyyoutu.dao.RsBookDao.query",mp);
+		return (List<RsAlbum>)sessionTemplate.selectList("wyyoutu.dao.RsAlbumDao.query",mp);
 	}
 	
-	public int count(RsBook obj) {
+	public int count(RsAlbum obj) {
 		// for beanutils
 		Map mp=null;
 		try {
@@ -127,10 +127,10 @@ public class RsBookDao {
 		} catch (Exception e) {
 			new RuntimeException("describe failed!!",e);
 		}
-		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsBookDao.count",mp);
+		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsAlbumDao.count",mp);
 	}
 	
-	public int count(RsBook obj,Paging paging) {
+	public int count(RsAlbum obj,Paging paging) {
 		// for beanutils
 		Map mp=null;
 		try {
@@ -141,23 +141,23 @@ public class RsBookDao {
 		} catch (Exception e) {
 			new RuntimeException("describe failed!!",e);
 		}
-		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsBookDao.count",mp);
+		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsAlbumDao.count",mp);
 	}
 	
 	public int count(Map<String,Object> mp) {
-		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsBookDao.count",mp);
+		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsAlbumDao.count",mp);
 	}
 	
 	public int count(Map<String,Object> mp,Paging paging) {
 		if(paging!=null){
 			mp.put("paging",paging);
 		}
-		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsBookDao.count",mp);
+		return (Integer)sessionTemplate.selectOne("wyyoutu.dao.RsAlbumDao.count",mp);
 	}
 	
 	
 	
-	public RsBook getByPk(
+	public RsAlbum getByPk(
 			Integer seqId
 			) {
 		// validate pk-para
@@ -171,24 +171,24 @@ public class RsBookDao {
 		Map<String,Object> kpParaMap=new HashMap<String,Object>();
 		kpParaMap.put("seqId",seqId);
 		
-		return (RsBook)sessionTemplate.selectOne("wyyoutu.dao.RsBookDao.query",kpParaMap);
+		return (RsAlbum)sessionTemplate.selectOne("wyyoutu.dao.RsAlbumDao.query",kpParaMap);
 	}
 	
 
-	public int update(RsBook obj) {
-		return sessionTemplate.update("wyyoutu.dao.RsBookDao.update", obj);
+	public int update(RsAlbum obj) {
+		return sessionTemplate.update("wyyoutu.dao.RsAlbumDao.update", obj);
 	}
 	
 	public int update(Map<String,Object> mp) {
-		return sessionTemplate.update("wyyoutu.dao.RsBookDao.update", mp);
+		return sessionTemplate.update("wyyoutu.dao.RsAlbumDao.update", mp);
 	}
 	
-	public int delete(RsBook obj) {
-		return sessionTemplate.delete("wyyoutu.dao.RsBookDao.delete", obj);
+	public int delete(RsAlbum obj) {
+		return sessionTemplate.delete("wyyoutu.dao.RsAlbumDao.delete", obj);
 	}
 	
 	public int delete(Map<String,Object> mp) {
-		return sessionTemplate.delete("wyyoutu.dao.RsBookDao.delete", mp);
+		return sessionTemplate.delete("wyyoutu.dao.RsAlbumDao.delete", mp);
 	}
 	//gen end
 	
